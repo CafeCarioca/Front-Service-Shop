@@ -22,8 +22,7 @@ const CoffeesText = styled.div`
     font-size: ${({ theme }) => theme.fontSizes.medium};
   }
   div {
-    @media screen and (max-width: ${({ theme }) =>
-        theme.mediaScreen.tablet640}) {
+    @media screen and (max-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
       display: none;
     }
   }
@@ -34,10 +33,10 @@ const Coffees = () => {
     <CoffeesSection>
       <CoffeesContainer>
         <CoffeesText>
-          <h2>our coffee blends</h2>
+          <h2>blends de café</h2>
           <div>
             <StyledLinks to="/collections/coffee-blends/">
-              <MoreInfoArrow>View all products</MoreInfoArrow>
+              <MoreInfoArrow>Ver mas productos</MoreInfoArrow>
             </StyledLinks>
           </div>
         </CoffeesText>

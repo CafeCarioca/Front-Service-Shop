@@ -16,18 +16,17 @@ const SocialLinks = styled.div`
 const CTAsocials = (props) => {
   return (
     <CTAcard
-      bg={(props) => props.theme.colors.primaryGreen}
+      bg={(props) => props.theme.colors.darkGray}
       colorH3={(props) => props.theme.colors.lightestGray}
       color={(props) => props.theme.colors.lightGray}
     >
-      <h3>follow us</h3>
+      <h3>Síguenos</h3>
       <p>
-        You know the drill. Show your support by following and sharing our
-        message on social media.
+        Síguenos en nuestras redes sociales y ayudanos a difundir nuestra pasión por el café.
       </p>
       <SocialLinks>
         <a
-          href="https://www.instagram.com/two14coffeeco/"
+          href="https://www.instagram.com/cafeelcarioca"
           target="_blank"
           rel="noopener noreferrer"
         >

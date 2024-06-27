@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { BsArrowRightShort } from "react-icons/bs";
 const InfoArrow = styled.span`
-  color: ${({ theme }) => theme.colors.secondaryGreen};
+  color: ${({ theme }) => theme.colors.darkGray};
   display: flex;
   align-items: center;
 

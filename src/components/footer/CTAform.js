@@ -67,10 +67,9 @@ const CTAform = (props) => {
   }, [formIsValid]);
   return (
     <CTAcard bg={(props) => props.theme.colors.lightGray}>
-      <h3>sign up for our newsletter</h3>
+      <h3>REGÍSTRATE PARA RECIBIR NUESTRAS novedades</h3>
       <p>
-        Be the first to know when we launch a new product or when we need your
-        support to rally for a cause.
+        Sé el primero en conocer nuestros nuevos productos, ofertas especiales y códigos de descuento exclusivos. ¡No te pierdas ninguna novedad ni promoción!
       </p>
 
       <Form>
@@ -81,20 +80,20 @@ const CTAform = (props) => {
           className={formIsValid === false ? "error" : null}
         />
         <SimpleButton
-          bg={(props) => props.theme.colors.secondaryGreen}
+          bg={(props) => props.theme.colors.darkGray}
           color={(props) => props.theme.colors.lightestGray}
           type="submit"
           onClick={(e) => formHandler(e)}
         >
-          Sign up
+          Registrarme
         </SimpleButton>
       </Form>
       <AlertContainer>
         {formIsValid === true && (
-          <AlertSuccess>Sign up successfull!</AlertSuccess>
+          <AlertSuccess>Registro con exito!</AlertSuccess>
         )}
         {formIsValid === false && (
-          <AlertError>Please enter valid email!</AlertError>
+          <AlertError>Ingresa un email valido</AlertError>
         )}
       </AlertContainer>
     </CTAcard>

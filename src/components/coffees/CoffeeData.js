@@ -2,7 +2,7 @@ import {
   dark1,
   dark1Single,
   dark2,
-  dark2Single,
+  numero1,
   dark3,
   dark3Single,
   decaf,
@@ -32,7 +32,7 @@ const coffeeBlendsData = [
   },
   {
     listImg: dark2,
-    singleImg: dark2Single,
+    singleImg: numero1,
     blendName: "Two 14 lighthorse blend",
     to: "Two 14 lighthorse blend",
     description:

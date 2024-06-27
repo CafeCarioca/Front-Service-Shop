@@ -26,10 +26,10 @@ const Copyright = () => {
   return (
     <CopyrightSection>
       <CopyrightContainer className="centered-section">
-        <span>&copy; Copyright two 14 coffee co.</span>
+        <span>&copy; Copyright Todos los Derechos Reservados</span>
         <CopyrightRight>
-          <span>privacy</span>
-          <span>terms</span>
+          <span>Privacidad</span>
+          <span>Terminos</span>
         </CopyrightRight>
       </CopyrightContainer>
     </CopyrightSection>

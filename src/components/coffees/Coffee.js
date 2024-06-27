@@ -16,8 +16,7 @@ const SingleCoffee = styled.article`
     /* &:hover {
       cursor: pointer;
     } */
-    @media screen and (min-width: ${({ theme }) =>
-        theme.mediaScreen.xlgLaptop}) {
+    @media screen and (min-width: ${({ theme }) => theme.mediaScreen.xlgLaptop}) {
       font-size: ${({ theme }) => theme.fontSizes.small};
     }
   }
@@ -40,7 +39,7 @@ const Coffee = (props) => {
         <p>{props.blendName}</p>
       </StyledLinks>
       <StyledLinks to={props.to}>
-        <MoreInfoArrow>More info</MoreInfoArrow>
+        <MoreInfoArrow>Ver mas</MoreInfoArrow>
       </StyledLinks>
     </SingleCoffee>
   );

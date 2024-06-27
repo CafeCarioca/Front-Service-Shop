@@ -71,7 +71,7 @@ const FeaturedBlend = (props) => {
     <FeaturedSection>
       <FeaturedContainer>
         <FeaturedLeft>
-          <FeaturedTag>featured blend</FeaturedTag>
+          <FeaturedTag>Blend destacado</FeaturedTag>
           <h2>{blendName}</h2>
           <p>
             {description}
@@ -87,12 +87,12 @@ const FeaturedBlend = (props) => {
             can damage the coating. */}
           </p>
           <Buttons
-            bg={(props) => props.theme.colors.secondaryGreen}
+            bg={(props) => props.theme.colors.darkGray}
             width={"100%"}
             color={(props) => props.theme.colors.lightestGray}
             to={`/collections/coffee-blends/${blendName}`}
           >
-            View Product
+            Ver Producto
           </Buttons>
         </FeaturedLeft>
         <FeaturedRight>

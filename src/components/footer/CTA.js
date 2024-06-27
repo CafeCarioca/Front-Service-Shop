@@ -5,6 +5,7 @@ import CTAsocials from "./CTAsocials";
 import CTAcard from "./CTAcard";
 
 const CTAsection = styled.section`
+  padding: 2rem 0;
   background-color: ${({ theme }) => theme.colors.white};
 `;
 const CTAcontainer = styled.div`

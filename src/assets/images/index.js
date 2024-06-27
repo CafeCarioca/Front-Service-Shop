@@ -2,7 +2,7 @@
 import dark1 from "./coffees/dark1.JPG";
 import dark1Single from "./coffees/dark1Single.JPG";
 import dark2 from "./coffees/dark2.JPG";
-import dark2Single from "./coffees/dark2Single.JPG";
+import numero1 from "./coffees/numero1.JPG";
 import dark3 from "./coffees/dark3.JPG";
 import dark3Single from "./coffees/dark3Single.JPG";
 import decaf from "./coffees/decaf.JPG";
@@ -31,7 +31,7 @@ export {
   dark1,
   dark1Single,
   dark2,
-  dark2Single,
+  numero1,
   dark3,
   dark3Single,
   decaf,
