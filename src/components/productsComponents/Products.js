@@ -4,7 +4,7 @@ import { coffeeBlendsData, Coffee } from "../index";
 
 const ProductsSection = styled.section`
   background-color: ${({ theme }) => theme.colors.lightestGray};
-  padding: 5rem 0;
+  padding: 2rem 0;
 `;
 const ProductsContainer = styled.section``;
 const ProductsBanner = styled.section`

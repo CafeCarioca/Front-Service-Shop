@@ -92,7 +92,9 @@ const Intro = () => {
               nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.
               Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum.
             </p>
-            <button>Tienda</button>
+            <a href="/collections/coffee-blends">
+              <button>Tienda</button>
+            </a>
           </IntroRightBanner>
         </IntroRight>
       </IntroSection>

@@ -29,14 +29,13 @@ const SummaryItemTable = styled.div.attrs((props) => ({
     &.greenBold {
       font-size: 1rem;
       font-weight: 500rem;
-      color: green;
+      color: black;
       text-transform: uppercase;
     }
   }
 `;
 const RemoveListItem = styled.span`
   color: ${({ theme }) => theme.colors.darkRed};
-  text-transform: lowercase;
   &:hover {
     color: ${({ theme }) => theme.colors.lightRed};
     cursor: pointer;
@@ -78,7 +77,7 @@ const SummaryItem = ({
         </div>
         <span className="greenBold">${price * quantity}.00</span>
         <span>Qty {quantity}</span>
-        <RemoveListItem onClick={() => removeItem(id)}>REMOVE</RemoveListItem>
+        <RemoveListItem onClick={() => removeItem(id)}>Borrar</RemoveListItem>
       </SummaryItemTable>
     </SummaryItemContainer>
   );

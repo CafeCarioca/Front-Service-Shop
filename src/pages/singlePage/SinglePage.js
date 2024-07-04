@@ -52,7 +52,7 @@ const ProductContainerRight = styled.div`
 const CraftedSpan = styled.span`
   display: block;
   font-size: small;
-  color: ${({ theme }) => theme.colors.secondaryGreen};
+  color: ${({ theme }) => theme.colors.darkGray};
   margin-bottom: 1.5rem;
 `;
 const ProductInfo = styled.article`
@@ -103,7 +103,7 @@ const FormContainer = styled.div`
   align-items: center;
   margin-bottom: 1rem;
   div {
-    color: ${({ theme }) => theme.colors.secondaryGreen};
+    color: ${({ theme }) => theme.colors.darkGray};
     font-size: ${({ theme }) => theme.fontSizes.medium};
     font-weight: 600;
     width: 50%;
@@ -175,22 +175,22 @@ const SinglePage = (props) => {
     setProductDetails({ ...productDetails, quantity });
   };
 
-  // const setQuantity = (e) => {
-  //   if (
-  //     productDetails.quantity === "" ||
-  //     productDetails.quantity.length === 0
-  //   ) {
-  //     setProductDetails({
-  //       ...productDetails,
-  //     });
-  //   }
-  //   if (productDetails.quantity >= 1) {
-  //     setProductDetails({
-  //       ...productDetails,
-  //       quantity: e.target.value,
-  //     });
-  //   }
-  // };
+  //  const setQuantity = (e) => {
+  //    if (
+  //      productDetails.quantity === "" ||
+  //      productDetails.quantity.length === 0
+  //    ) {
+  //      setProductDetails({
+  //        ...productDetails,
+  //      });
+  //    }
+  //    if (productDetails.quantity >= 1) {
+  //      setProductDetails({
+  //        ...productDetails,
+  //        quantity: e.target.value,
+  //      });
+  //    }
+  //  };
 
   const [stickyClass, setStickyClass] = useState(false);
   const stickyImgToggle = () => {
@@ -306,13 +306,13 @@ const SinglePage = (props) => {
           </SelectionsContainer>
 
           <SimpleButton
-            bg={(props) => props.theme.colors.secondaryGreen}
+            bg={(props) => props.theme.colors.darkGray}
             color={(props) => props.theme.colors.white}
             type="button"
             width="100%"
             onClick={addItemToCheckout}
           >
-            Add to cart
+            Comprar
           </SimpleButton>
         </ProductContainerRight>
       </SingleProductContainer>

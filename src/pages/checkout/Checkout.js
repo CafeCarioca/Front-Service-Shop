@@ -76,7 +76,7 @@ const Checkout = ({ checkoutList }) => {
               <span>SUBTOTAL</span> <span>${itemTotals}.00</span>
             </TotalContainer>
             <SimpleButton
-              bg={(props) => props.theme.colors.secondaryGreen}
+              bg={(props) => props.theme.colors.darkGray}
               color={(props) => props.theme.colors.white}
               type="button"
               width="100%"

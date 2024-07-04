@@ -37,7 +37,7 @@ const FooterTotalContainer = styled.div`
 const ContinueShopping = styled.span`
   display: inline-block;
   margin-left: 0.3rem;
-  color: ${({ theme }) => theme.colors.secondaryGreen};
+  color: ${({ theme }) => theme.colors.mediumGray};
   &:hover {
     cursor: pointer;
     color: ${({ theme }) => theme.colors.primaryGreen};
@@ -56,7 +56,7 @@ const CheckoutSummary = (props) => {
       <WhiteOverlay className="right">
         <CheckoutTop>
           <CheckoutHeader>
-            <span>YOUR CART</span>
+            <span>Carrito</span>
             <ImCross onClick={props.closeCheckoutSummary} />
           </CheckoutHeader>
           <CheckoutItemList>
@@ -77,19 +77,19 @@ const CheckoutSummary = (props) => {
             <span>SUBTOTAL</span>
             <span>${itemTotals}.00</span>
           </FooterTotalContainer>
-          <p>Shipping and discounts calculated at checkout.</p>
+          <p>Envio y descuentos son aplicados al finalizar la compra.</p>
           <Buttons
-            bg={(props) => props.theme.colors.secondaryGreen}
+            bg={(props) => props.theme.colors.darkGray}
             color={(props) => props.theme.colors.white}
             to="check-out"
             onClick={props.closeCheckoutSummary}
           >
-            Checkout
+            Finalizar Compra
           </Buttons>
           <p>
-            or
+            o
             <ContinueShopping onClick={props.closeCheckoutSummary}>
-              Continue Shopping
+              Continuar Comprando
             </ContinueShopping>
           </p>
         </CheckoutFooter>
