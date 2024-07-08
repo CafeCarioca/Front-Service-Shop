@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Home, SinglePage, CoffeeProducts, AboutUs, Checkout } from "./pages";
-
 import {
   Navbar,
   Footer,
@@ -9,7 +8,6 @@ import {
   CheckoutSummary,
   SideNav,
 } from "./components";
-
 import { Theme, GlobalStyle } from "./UI";
 
 function App() {
@@ -19,26 +17,32 @@ function App() {
   const [checkingOut, setCheckingOut] = useState(false);
   const [checkoutList, setCheckoutList] = useState(checkoutListData);
   const [isSideNavOpen, setIsSideNavOpen] = useState(false);
+
   const openCheckoutSummary = () => {
     setCheckingOut(true);
   };
+
   const closeCheckoutSummary = () => {
     setCheckingOut(false);
   };
+
   const openSideNav = () => {
     setIsSideNavOpen(true);
   };
+
   const closeSideNav = () => {
     setIsSideNavOpen(false);
   };
+
   useEffect(() => {
     localStorage.setItem("checkoutList", JSON.stringify(checkoutList));
   }, [checkoutList]);
+
   return (
     <>
       <Theme>
         <GlobalStyle />
-        <BrowserRouter>
+        <BrowserRouter basename="/Front-Service-Shop">
           {checkingOut && (
             <CheckoutSummary
               closeCheckoutSummary={closeCheckoutSummary}
@@ -59,7 +63,6 @@ function App() {
               path="check-out"
               element={<Checkout checkoutList={checkoutList} />}
             />
-
             <Route
               path="/collections/coffee-blends/"
               element={<CoffeeProducts />}
