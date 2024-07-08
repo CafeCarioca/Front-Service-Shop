@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import MainLogo from "../../UI/Logo/Logo";
 import coffeeImage from "../../assets/images/image.png";
+import { Link } from "react-router-dom";
 const IntroSection = styled.section`
   @media screen and (min-width: ${({ theme }) => theme.mediaScreen.lgLaptop}) {
     display: flex;
@@ -92,9 +93,9 @@ const Intro = () => {
               nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.
               Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum.
             </p>
-            <a href={`${process.env.REACT_APP_BASE_URL}/collections/coffee-blends`}>
+            <Link to={`/collections/coffee-blends`}>
               <button>Tienda</button>
-            </a>
+            </Link>
           </IntroRightBanner>
         </IntroRight>
       </IntroSection>
