@@ -1,5 +1,5 @@
 {
-  "homepage": "https://carioca.github.io/tienda",
+  "homepage": "http://cafecarioca.github.io/Front-Service-Shop/",
   "name": "reminder",
   "version": "0.1.0",
   "private": true,
@@ -18,7 +18,7 @@
     "styled-components": "^5.3.5"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "set NODE_OPTIONS=--openssl-legacy-provider && react-scripts start",
     "predeploy" : "npm run build",
     "deploy" : "gh-pages -d build",
     "build": "react-scripts build",
