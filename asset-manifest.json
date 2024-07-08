@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/Front-Service-Shop/static/css/main.d498bfb3.chunk.css",
-    "main.js": "/Front-Service-Shop/static/js/main.59655487.chunk.js",
-    "main.js.map": "/Front-Service-Shop/static/js/main.59655487.chunk.js.map",
+    "main.js": "/Front-Service-Shop/static/js/main.ab48b5b6.chunk.js",
+    "main.js.map": "/Front-Service-Shop/static/js/main.ab48b5b6.chunk.js.map",
     "runtime-main.js": "/Front-Service-Shop/static/js/runtime-main.a93dca4a.js",
     "runtime-main.js.map": "/Front-Service-Shop/static/js/runtime-main.a93dca4a.js.map",
-    "static/js/2.d7b12fcf.chunk.js": "/Front-Service-Shop/static/js/2.d7b12fcf.chunk.js",
-    "static/js/2.d7b12fcf.chunk.js.map": "/Front-Service-Shop/static/js/2.d7b12fcf.chunk.js.map",
+    "static/js/2.b20f0e30.chunk.js": "/Front-Service-Shop/static/js/2.b20f0e30.chunk.js",
+    "static/js/2.b20f0e30.chunk.js.map": "/Front-Service-Shop/static/js/2.b20f0e30.chunk.js.map",
     "index.html": "/Front-Service-Shop/index.html",
-    "precache-manifest.d0a9b0e4c4780ffaf225f53a6ae64d4d.js": "/Front-Service-Shop/precache-manifest.d0a9b0e4c4780ffaf225f53a6ae64d4d.js",
+    "precache-manifest.4f9704235c31fd3b68594441458d4f9b.js": "/Front-Service-Shop/precache-manifest.4f9704235c31fd3b68594441458d4f9b.js",
     "service-worker.js": "/Front-Service-Shop/service-worker.js",
     "static/css/main.d498bfb3.chunk.css.map": "/Front-Service-Shop/static/css/main.d498bfb3.chunk.css.map",
-    "static/js/2.d7b12fcf.chunk.js.LICENSE.txt": "/Front-Service-Shop/static/js/2.d7b12fcf.chunk.js.LICENSE.txt",
+    "static/js/2.b20f0e30.chunk.js.LICENSE.txt": "/Front-Service-Shop/static/js/2.b20f0e30.chunk.js.LICENSE.txt",
     "static/media/LogoNuevo_Carioca-04.png": "/Front-Service-Shop/static/media/LogoNuevo_Carioca-04.61b0dcc1.png",
     "static/media/carmel.JPG": "/Front-Service-Shop/static/media/carmel.434274e4.JPG",
     "static/media/coffee_syrups.JPG": "/Front-Service-Shop/static/media/coffee_syrups.98334e64.JPG",
@@ -41,13 +41,12 @@
     "static/media/support.JPG": "/Front-Service-Shop/static/media/support.f5559c37.JPG",
     "static/media/supportSingle.JPG": "/Front-Service-Shop/static/media/supportSingle.c10c6471.JPG",
     "static/media/syrup pump.JPG": "/Front-Service-Shop/static/media/syrup pump.a66f3725.JPG",
-    "static/media/vanilla.JPG": "/Front-Service-Shop/static/media/vanilla.d652efba.JPG",
-    "static/media/veterans.JPG": "/Front-Service-Shop/static/media/veterans.beecf736.JPG"
+    "static/media/vanilla.JPG": "/Front-Service-Shop/static/media/vanilla.d652efba.JPG"
   },
   "entrypoints": [
     "static/js/runtime-main.a93dca4a.js",
-    "static/js/2.d7b12fcf.chunk.js",
+    "static/js/2.b20f0e30.chunk.js",
     "static/css/main.d498bfb3.chunk.css",
-    "static/js/main.59655487.chunk.js"
+    "static/js/main.ab48b5b6.chunk.js"
   ]
 }
