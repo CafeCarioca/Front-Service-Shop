@@ -92,7 +92,7 @@ const Intro = () => {
               nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.
               Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum.
             </p>
-            <a href="/collections/coffee-blends">
+            <a href={`${process.env.REACT_APP_BASE_URL}/collections/coffee-blends`}>
               <button>Tienda</button>
             </a>
           </IntroRightBanner>
