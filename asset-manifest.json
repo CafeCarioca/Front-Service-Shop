@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/Front-Service-Shop/static/css/main.d498bfb3.chunk.css",
-    "main.js": "/Front-Service-Shop/static/js/main.9a9cea64.chunk.js",
-    "main.js.map": "/Front-Service-Shop/static/js/main.9a9cea64.chunk.js.map",
+    "main.js": "/Front-Service-Shop/static/js/main.0ab722e4.chunk.js",
+    "main.js.map": "/Front-Service-Shop/static/js/main.0ab722e4.chunk.js.map",
     "runtime-main.js": "/Front-Service-Shop/static/js/runtime-main.a93dca4a.js",
     "runtime-main.js.map": "/Front-Service-Shop/static/js/runtime-main.a93dca4a.js.map",
     "static/js/2.67f0c8a1.chunk.js": "/Front-Service-Shop/static/js/2.67f0c8a1.chunk.js",
     "static/js/2.67f0c8a1.chunk.js.map": "/Front-Service-Shop/static/js/2.67f0c8a1.chunk.js.map",
     "index.html": "/Front-Service-Shop/index.html",
-    "precache-manifest.a76789c3be9868239a785ad058a0e8d9.js": "/Front-Service-Shop/precache-manifest.a76789c3be9868239a785ad058a0e8d9.js",
+    "precache-manifest.acedd1858fe7fe3a26c45db5c3d4d6a3.js": "/Front-Service-Shop/precache-manifest.acedd1858fe7fe3a26c45db5c3d4d6a3.js",
     "service-worker.js": "/Front-Service-Shop/service-worker.js",
     "static/css/main.d498bfb3.chunk.css.map": "/Front-Service-Shop/static/css/main.d498bfb3.chunk.css.map",
     "static/js/2.67f0c8a1.chunk.js.LICENSE.txt": "/Front-Service-Shop/static/js/2.67f0c8a1.chunk.js.LICENSE.txt",
@@ -37,7 +37,7 @@
     "static/media/2.jpg": "/Front-Service-Shop/static/media/2.404c93f6.jpg",
     "static/media/20.jpg": "/Front-Service-Shop/static/media/20.94773ff5.jpg",
     "static/media/20single.jpg": "/Front-Service-Shop/static/media/20single.991bd2e5.jpg",
-    "static/media/2single.jpg": "/Front-Service-Shop/static/media/2single.ad107326.jpg",
+    "static/media/2single.png": "/Front-Service-Shop/static/media/2single.919d0442.png",
     "static/media/3.jpg": "/Front-Service-Shop/static/media/3.c638df7c.jpg",
     "static/media/3single.jpg": "/Front-Service-Shop/static/media/3single.3eb3e023.jpg",
     "static/media/4.jpg": "/Front-Service-Shop/static/media/4.5efdc2ea.jpg",
@@ -86,6 +86,6 @@
     "static/js/runtime-main.a93dca4a.js",
     "static/js/2.67f0c8a1.chunk.js",
     "static/css/main.d498bfb3.chunk.css",
-    "static/js/main.9a9cea64.chunk.js"
+    "static/js/main.0ab722e4.chunk.js"
   ]
 }

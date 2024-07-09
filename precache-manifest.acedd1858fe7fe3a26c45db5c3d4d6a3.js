@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "730573af6005852961c8966f384b2f3a",
+    "revision": "08d1432c4011ef5b25e91001aa0cf94d",
     "url": "/Front-Service-Shop/index.html"
   },
   {
-    "revision": "a91b3e5cd809f1f917bf",
+    "revision": "45b221e3c325b4ffe2c9",
     "url": "/Front-Service-Shop/static/css/main.d498bfb3.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Front-Service-Shop/static/js/2.67f0c8a1.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "a91b3e5cd809f1f917bf",
-    "url": "/Front-Service-Shop/static/js/main.9a9cea64.chunk.js"
+    "revision": "45b221e3c325b4ffe2c9",
+    "url": "/Front-Service-Shop/static/js/main.0ab722e4.chunk.js"
   },
   {
     "revision": "f9fad44795944501d444",
@@ -124,8 +124,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Front-Service-Shop/static/media/20single.991bd2e5.jpg"
   },
   {
-    "revision": "ad107326b5f8f97b7f0701770b811ec4",
-    "url": "/Front-Service-Shop/static/media/2single.ad107326.jpg"
+    "revision": "919d04421af6b4f9cd6796299231d98a",
+    "url": "/Front-Service-Shop/static/media/2single.919d0442.png"
   },
   {
     "revision": "c638df7c58ab8559073805c71b6752eb",
