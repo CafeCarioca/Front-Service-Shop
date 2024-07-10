@@ -14,7 +14,6 @@ const SingleProductContainer = styled.section`
   }
 `;
 const ProductContainerLeft = styled.div`
-  /* border: 1px solid green; */
   object-fit: cover;
   @media screen and (min-width: 800px) {
     width: 55%;
@@ -114,11 +113,33 @@ const FormContainer = styled.div`
 const SinglePage = (props) => {
   const { id } = useParams();
   const coffeeList = props.coffeeList;
-  const currentCoffee = coffeeList.filter((coffee) => {
-    return coffee.blendName === id;
-  });
-  const { singleImg, description, blendName, origin, roast, taste, price } =
-    currentCoffee[0];
+  const capsulesList = props.capsulesList;
+
+  // Buscar en ambos conjuntos de datos
+  const currentCoffee = coffeeList.find((coffee) => coffee.blendName === id) || 
+                        capsulesList.find((capsule) => capsule.blendName === id);
+
+  // Proporciona valores predeterminados en caso de que currentCoffee sea undefined
+  const defaultDetails = {
+    singleImg: "",
+    description: "Descripción no disponible",
+    blendName: "Nombre no disponible",
+    origin: "Origen no disponible",
+    roast: "Tostado no disponible",
+    taste: "Sabor no disponible",
+    price: 0,
+  };
+
+  const {
+    singleImg,
+    description,
+    blendName,
+    origin,
+    roast,
+    taste,
+    price,
+  } = currentCoffee || defaultDetails;
+
   const [productDetails, setProductDetails] = useState({
     blendName,
     singleImg,
@@ -127,6 +148,17 @@ const SinglePage = (props) => {
     grams: 250,
     grind: "Filter",
   });
+
+  useEffect(() => {
+    if (currentCoffee) {
+      setProductDetails(prevDetails => ({
+        ...prevDetails,
+        blendName: currentCoffee.blendName,
+        singleImg: currentCoffee.singleImg,
+        price: currentCoffee.price,
+      }));
+    }
+  }, [currentCoffee]);
 
   const addItemToCheckout = () => {
     const currentCheckoutList = [...props.checkoutList];
@@ -146,9 +178,8 @@ const SinglePage = (props) => {
           id: Math.random() * 1000,
         },
       ]);
-    }
-    if (coffeeAlreadyChosen) {
-      currentCheckoutList.map((item, index) => {
+    } else {
+      currentCheckoutList.map((item) => {
         if (
           item.blendName === productDetails.blendName &&
           item.grind === productDetails.grind &&
@@ -161,6 +192,7 @@ const SinglePage = (props) => {
     }
     props.openCheckoutSummary();
   };
+
   const setGrams = (amount) => {
     setProductDetails({
       ...productDetails,
@@ -168,29 +200,19 @@ const SinglePage = (props) => {
     });
   };
 
-  const setGrind = (grind) => {
-    setProductDetails({ ...productDetails, grind });
-  };
-  const setQnt = (quantity = "") => {
-    setProductDetails({ ...productDetails, quantity });
+  const setGrind = (grindName) => {
+    setProductDetails({
+      ...productDetails,
+      grind: grindName,
+    });
   };
 
-  //  const setQuantity = (e) => {
-  //    if (
-  //      productDetails.quantity === "" ||
-  //      productDetails.quantity.length === 0
-  //    ) {
-  //      setProductDetails({
-  //        ...productDetails,
-  //      });
-  //    }
-  //    if (productDetails.quantity >= 1) {
-  //      setProductDetails({
-  //        ...productDetails,
-  //        quantity: e.target.value,
-  //      });
-  //    }
-  //  };
+  const setQnt = (quantity) => {
+    setProductDetails({
+      ...productDetails,
+      quantity: Number(quantity),
+    });
+  };
 
   const [stickyClass, setStickyClass] = useState(false);
   const stickyImgToggle = () => {
@@ -201,15 +223,18 @@ const SinglePage = (props) => {
       setStickyClass(false);
     }
   };
+
   useEffect(() => {
     window.addEventListener("scroll", stickyImgToggle);
     return () => {
       window.removeEventListener("scroll", stickyImgToggle);
     };
   }, [stickyClass]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
   return (
     <>
       <SingleProductContainer>
@@ -243,41 +268,33 @@ const SinglePage = (props) => {
             <Selections>
               <span>Bag size</span>
               <div>
-                {bagSizes.map((bag, index) => {
-                  return (
-                    <SingleProductButtons
-                      key={index}
-                      className={
-                        productDetails.grams === bag.amount ? "clicked" : null
-                      }
-                      onClick={() => {
-                        setGrams(bag.amount);
-                      }}
-                    >
-                      {bag.size}
-                    </SingleProductButtons>
-                  );
-                })}
+                {bagSizes.map((bag, index) => (
+                  <SingleProductButtons
+                    key={index}
+                    className={
+                      productDetails.grams === bag.amount ? "clicked" : null
+                    }
+                    onClick={() => setGrams(bag.amount)}
+                  >
+                    {bag.size}
+                  </SingleProductButtons>
+                ))}
               </div>
             </Selections>
             <Selections>
               <span>Grind</span>
               <div>
-                {grind.map((grindName, index) => {
-                  return (
-                    <SingleProductButtons
-                      key={index}
-                      className={
-                        productDetails.grind === grindName ? "clicked" : null
-                      }
-                      onClick={() => {
-                        setGrind(grindName);
-                      }}
-                    >
-                      {grindName}
-                    </SingleProductButtons>
-                  );
-                })}
+                {grind.map((grindName, index) => (
+                  <SingleProductButtons
+                    key={index}
+                    className={
+                      productDetails.grind === grindName ? "clicked" : null
+                    }
+                    onClick={() => setGrind(grindName)}
+                  >
+                    {grindName}
+                  </SingleProductButtons>
+                ))}
               </div>
             </Selections>
             <Selections>
@@ -321,44 +338,3 @@ const SinglePage = (props) => {
 };
 
 export default SinglePage;
-
-// <Selections>
-//   <span>purchase options</span>
-//   <RadioFormContainer>
-//     <div>
-//       <input
-//         type="radio"
-//         name="purchase option"
-//         id="single purchase"
-//         value={productDetails.purchaseOption}
-//         checked={
-//           productDetails.purchaseOption === "single purchase"
-//             ? true
-//             : false
-//         }
-//         onChange={(e) => {
-//           setProductDetails({
-//             ...productDetails,
-//             purchaseOption: e.target.id,
-//           });
-//         }}
-//       />
-//       <label htmlFor="single purchase">One Time Purchase</label>
-//     </div>
-//     <div>
-//       <input
-//         type="radio"
-//         name="purchase option"
-//         id="subscribe"
-//         value={productDetails.purchaseOption}
-//         onChange={(e) => {
-//           setProductDetails({
-//             ...productDetails,
-//             purchaseOption: e.target.id,
-//           });
-//         }}
-//       />
-//       <label htmlFor="subscribe">Subscribe and Save 10%</label>
-//     </div>
-//   </RadioFormContainer>
-// </Selections>

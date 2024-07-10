@@ -9,51 +9,8 @@ import {
   numero4single,
   numero5,
   numero5single,
-  numero6,
-  numero6single,
-  numero7,
-  numero7single,
-  numero8,
-  numero8single,
-  numero9,
-  numero9single,
-  numero10,
-  numero10single,
-  numero11,
-  numero11single,
-  numero12,
-  numero12single,
-  numero13,
-  numero13single,
-  numero14,
-  numero14single,
-  numero15,
-  numero15single,
-  numero16,
-  numero16single,
-  numero17,
-  numero17single,
-  numero18,
-  numero18single,
-  numero19,
-  numero19single,
-  numero20,
-  numero20single,
-  dark1,
-  dark1Single,
-  dark2,
-  dark3,
-  dark3Single,
-  decaf,
-  decafSingle,
-  disaster,
-  disasterSingle,
-  heat,
-  heatSingle,
-  pineapple,
-  pineappleSingle,
-  support,
-  supportSingle,
+  Tradicional,
+  Tradicionalsingle,
 } from "../../assets/images/index";
 const coffeeBlendsData = [
   {
@@ -113,8 +70,8 @@ const coffeeBlendsData = [
   {
     listImg: numero5,
     singleImg: numero5single,
-    blendName: "VETERAN SUPPORT BLEND",
-    to: "VETERAN SUPPORT BLEND",
+    blendName: "Gourmet",
+    to: "Gourmet",
     description: `Our Veteran Support Blend has been designed to do exactly that, support Veterans. We have partnered with Soldier On to deliver a strong, nutty blend with chocolate tones. A huge portion of the proceeds from the purchase of this coffee will go directly to Soldier On to aid their ongoing efforts to support Veterans and their Families.
 
 This is just another way that we are Helping Veterans Move Forward.
@@ -133,51 +90,25 @@ Soldier On is a not-for-profit veteran support organisation delivering a range o
     category: "coffee",
   },
   {
-    listImg: numero15,
-    singleImg: numero15single,
-    blendName: "Chocolate Blanco",
-    to: "Chocolate Blanco",
-    description: `Disaster Relief Australia provides disaster response to those affected by natural disasters, be they domestic or international.
-
-By pairing the skills and experiences of military veterans with emergency responders, medical professionals, and technology solutions, Disaster Relief Australia aims to provide the greatest service and impact possible.
-
-The Disaster Relief Blend by Two 14 Coffee Co. is a dark, heavy roast with chocolate notes - the perfect pick-me-up for exhausted emergency responders. A portion of profits will go towards the volunteer efforts of Disaster Relief Australia.`,
-    roast: "Dark",
-    origin: "Central America, South America, Africa",
-    taste: "Rich, Heavy, Chocolate",
-    price: 39.0,
-    linkTitle: "Disaster relief australia",
-    link: "https://disasterreliefaus.org/",
-    category: "capsules",
-  },
-  {
-    listImg: decaf,
-    singleImg: decafSingle,
-    blendName: "SINGLE ORIGIN DECAF",
-    to: "SINGLE ORIGIN DECAF",
-    description:
-      "Enjoy a full-flavoured coffee without the caffeine hit, with our medium-roast single-origin decaf coffee. Sourced from Columbia, our water-processed decaf packs in loads of flavour with juicy, sweet acidity and toasted cocoa notes.",
-    roast: "Medium",
-    origin: "Columbia (water processed)",
-    taste: "Juicy sweet acidity, toasted cocoa",
-    price: 39.0,
-    linkTitle: "",
-    link: "",
-  },
-  {
-    listImg: heat,
-    singleImg: heatSingle,
-    blendName: "H.E.A.T COFFEE CAPSULES",
-    to: "H.E.A.T COFFEE CAPSULES",
-    description: `Our High-Energy Anti-Tiredness (H.E.A.T) Coffee Capsules are the perfect ammunition for those in need of a quick energy infusion! Plant-based and 100% biodegradable and compostable. 
-    Nespresso® Compatible Pods.`,
+    listImg: Tradicional,
+    singleImg: Tradicionalsingle,
+    blendName: "Tradicional",
+    to: "Tradicional",
+    description: `
+    `,
     roast: "",
     origin: "",
-    taste: "Strong & Smooth",
+    taste: "",
     price: 39.0,
     linkTitle: "",
     link: "",
+    category: "coffee",
   },
+
+
+
+
+
 ];
 
 export default coffeeBlendsData;

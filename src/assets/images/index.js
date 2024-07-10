@@ -1,6 +1,6 @@
 //// cofffees /////
 import numero1 from "./coffees/1.jpg";
-import numero1single from "./coffees/1single.jpg";
+import numero1single from "./coffees/1single.png";
 import numero2 from "./coffees/2.jpg";
 import numero2single from "./coffees/2single.png";
 import numero3 from "./coffees/3.jpg";
@@ -9,36 +9,36 @@ import numero4 from "./coffees/4.jpg";
 import numero4single from "./coffees/4single.jpg";
 import numero5 from "./coffees/5.jpg";
 import numero5single from "./coffees/5single.jpg";
-import numero6 from "./coffees/6.jpg";
-import numero6single from "./coffees/6single.jpg";
-import numero7 from "./coffees/7.jpg";
-import numero7single from "./coffees/7single.jpg";
-import numero8 from "./coffees/8.jpg";
-import numero8single from "./coffees/8single.jpg";
-import numero9 from "./coffees/9.jpg";
-import numero9single from "./coffees/9single.jpg";
-import numero10 from "./coffees/10.jpg";
-import numero10single from "./coffees/10single.jpg";
-import numero11 from "./coffees/11.jpg";
-import numero11single from "./coffees/11single.jpg";
-import numero12 from "./coffees/12.jpg";
-import numero12single from "./coffees/12single.jpg";
-import numero13 from "./coffees/13.jpg";
-import numero13single from "./coffees/13single.jpg";
-import numero14 from "./coffees/14.jpg";
-import numero14single from "./coffees/14single.jpg";
-import numero15 from "./coffees/15.jpg";
-import numero15single from "./coffees/15single.jpg";
-import numero16 from "./coffees/16.jpg";
-import numero16single from "./coffees/16single.jpg";
-import numero17 from "./coffees/17.jpg";
-import numero17single from "./coffees/17single.jpg";
-import numero18 from "./coffees/18.jpg";
-import numero18single from "./coffees/18single.jpg";
-import numero19 from "./coffees/19.jpg";
-import numero19single from "./coffees/19single.jpg";
-import numero20 from "./coffees/20.jpg";
-import numero20single from "./coffees/20single.jpg";
+import Roma from "./coffees/6Roma.jpg";
+import Romasingle from "./coffees/6Romasingle.jpg";
+import Venezia from "./coffees/7Venezia.jpg";
+import Veneziasingle from "./coffees/7Veneziasingle.jpg";
+import Torino from "./coffees/8Torino.jpg";
+import Torinosingle from "./coffees/8Torinosingle.jpg";
+import Firenze from "./coffees/9Firenze.jpg";
+import Firenzesingle from "./coffees/9Firenzesingle.jpg";
+import Napoli from "./coffees/10Napoli.jpg";
+import Napolisingle from "./coffees/10Napolisingle.jpg";
+import Mocachino from "./coffees/11Mocachino.jpg";
+import Mocachinosingle from "./coffees/11Mocachinosingle.jpg";
+import Capuchino from "./coffees/12Capuchino.jpg";
+import Capuchinosingle from "./coffees/12Capuchinosingle.jpg";
+import Bayleys from "./coffees/13Bayleys.jpg";
+import Bayleyssingle from "./coffees/13Bayleyssingle.jpg";
+import Caramel from "./coffees/14Caramel.jpg";
+import Caramelsingle from "./coffees/14Caramelsingle.jpg";
+import blanco from "./coffees/15blanco.jpg";
+import blancosingle from "./coffees/15blancosingle.jpg";
+import Cremebrule from "./coffees/16Cremebrule.jpg";
+import Cremebrulesingle from "./coffees/16Cremebrulesingle.jpg";
+import Cortado from "./coffees/17Cortado.jpg";
+import Cortadosingle from "./coffees/17Cortadosingle.jpg";
+import Chocolate from "./coffees/18Chocolate.jpg";
+import Chocolatesingle from "./coffees/18Chocolatesingle.jpg";
+import Avellana from "./coffees/19Avellana.jpg";
+import Avellanasingle from "./coffees/19Avellanasingle.jpg";
+import Tradicional from "./coffees/20Tradicional.jpg";
+import Tradicionalsingle from "./coffees/20Tradicionalsingle.jpg";
 import dark1 from "./coffees/dark1.JPG";
 import dark1Single from "./coffees/dark1Single.JPG";
 import dark2 from "./coffees/dark2.JPG";
@@ -77,36 +77,36 @@ export {
   numero4single,
   numero5,
   numero5single,
-  numero6,
-  numero6single,
-  numero7,
-  numero7single,
-  numero8,
-  numero8single,
-  numero9,
-  numero9single,
-  numero10,
-  numero10single,
-  numero11,
-  numero11single,
-  numero12,
-  numero12single,
-  numero13,
-  numero13single,
-  numero14,
-  numero14single,
-  numero15,
-  numero15single,
-  numero16,
-  numero16single,
-  numero17,
-  numero17single,
-  numero18,
-  numero18single,
-  numero19,
-  numero19single,
-  numero20,
-  numero20single,
+  Roma,
+  Romasingle,
+  Venezia,
+  Veneziasingle,
+  Torino,
+  Torinosingle,
+  Firenze,
+  Firenzesingle,
+  Napoli,
+  Napolisingle,
+  Mocachino,
+  Mocachinosingle,
+  Capuchino,
+  Capuchinosingle,
+  Bayleys,
+  Bayleyssingle,
+  Caramel,
+  Caramelsingle,
+  blanco,
+  blancosingle,
+  Cremebrule,
+  Cremebrulesingle,
+  Cortado,
+  Cortadosingle,
+  Chocolate,
+  Chocolatesingle,
+  Avellana,
+  Avellanasingle,
+  Tradicional,
+  Tradicionalsingle,
   dark1,
   dark1Single,
   dark2,

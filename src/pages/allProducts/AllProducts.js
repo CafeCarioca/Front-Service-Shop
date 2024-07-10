@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Products, coffeeBlendsData } from "../../components";
+import { Products, coffeeBlendsData, CapsulesData} from "../../components";
 import { Link } from "react-scroll";
 import styled from "styled-components";
 
@@ -22,7 +22,7 @@ const ProductLinks = () => {
     <Divs>
       <Link to="coffee" smooth={true} duration={500} offset={-100}>Café</Link> | 
       <Link to="capsules" smooth={true} duration={500} offset={-100}>Capsulas</Link> | 
-      <Link to="methods" smooth={true} duration={500} offset={-100}>Metodos</Link>
+      {/* <Link to="methods" smooth={true} duration={500} offset={-100}>Metodos</Link> */}
     </Divs>
   );
 };
@@ -55,11 +55,11 @@ const CoffeeProducts = () => {
         <Products h1={h1} p={p} array={coffeeBlendsData}></Products>
       </div>
       <div id="capsules">
-        <Products h1={capsulastitle} p={pcapsules} array={coffeeBlendsData}></Products>
+        <Products h1={capsulastitle} p={pcapsules} array={CapsulesData}></Products>
       </div>
-      <div id="methods">
+      {/* <div id="methods">
         <Products h1={methods} p={pmethods} array={coffeeBlendsData}></Products>
-      </div>
+      </div> */}
     </>
   );
 };

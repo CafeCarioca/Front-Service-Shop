@@ -5,6 +5,7 @@ import {
   Navbar,
   Footer,
   coffeeBlendsData,
+  CapsulesData,
   CheckoutSummary,
   SideNav,
 } from "./components";
@@ -12,6 +13,7 @@ import { Theme, GlobalStyle } from "./UI";
 
 function App() {
   const coffeeList = coffeeBlendsData;
+  const capsulesList = CapsulesData;
   const checkoutListData =
     JSON.parse(localStorage.getItem("checkoutList")) || [];
   const [checkingOut, setCheckingOut] = useState(false);
@@ -72,6 +74,7 @@ function App() {
               element={
                 <SinglePage
                   coffeeList={coffeeList}
+                  capsulesList={capsulesList}
                   openCheckoutSummary={openCheckoutSummary}
                   checkoutList={checkoutList}
                   setCheckoutList={setCheckoutList}
