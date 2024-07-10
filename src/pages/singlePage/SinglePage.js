@@ -249,19 +249,19 @@ const SinglePage = (props) => {
 
         <ProductContainerRight>
           <h1>{blendName}</h1>
-          <CraftedSpan>Crafted by Two 14 Coffee Co.</CraftedSpan>
+          <CraftedSpan>Producido por Carioca</CraftedSpan>
 
           <ProductInfo>
             <p>{description}</p>
             <div>
-              <span>Roast:</span>
+              <span>Tostado:</span>
               {roast}
             </div>
             <div>
-              <span>Origin:</span> {origin}
+              <span>Origen:</span> {origin}
             </div>
             <div>
-              <span>Taste:</span>
+              <span>Sabores:</span>
               {taste}
             </div>
           </ProductInfo>
@@ -303,7 +303,7 @@ const SinglePage = (props) => {
             </Selections>
           )}
             <Selections>
-              <span>quantity</span>
+              <span>Cantidad</span>
               <FormContainer>
                 <form>
                   <QuantityForm
