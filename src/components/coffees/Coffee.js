@@ -25,7 +25,6 @@ const CoffeeImg = styled.img`
   border-radius: 0.5rem;
   margin-bottom: 1.5rem;
   width: 100%;
-  height: 20rem;
   object-fit: cover;
 `;
 

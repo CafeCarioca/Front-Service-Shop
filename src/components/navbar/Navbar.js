@@ -37,6 +37,7 @@ const SharedNavStyles = css`
 const NavLeft = styled.div``;
 const NavLLeft = styled.div`
   ${SharedNavStyles}
+  margin-top: 1rem;
   gap: 1.5rem;
   @media screen and (min-width: ${({ theme }) => theme.mediaScreen.lgLaptop}) {
     display: none;

@@ -147,6 +147,7 @@ const SinglePage = (props) => {
     price,
     grams: 250,
     grind: "Filter",
+    isCapsule: capsulesList.some((capsule) => capsule.blendName === id), // Determinar si es cápsula
   });
 
   useEffect(() => {
@@ -265,22 +266,25 @@ const SinglePage = (props) => {
             </div>
           </ProductInfo>
           <SelectionsContainer>
-            <Selections>
-              <span>Bag size</span>
-              <div>
-                {bagSizes.map((bag, index) => (
-                  <SingleProductButtons
-                    key={index}
-                    className={
-                      productDetails.grams === bag.amount ? "clicked" : null
-                    }
-                    onClick={() => setGrams(bag.amount)}
-                  >
-                    {bag.size}
-                  </SingleProductButtons>
-                ))}
-              </div>
-            </Selections>
+            {!productDetails.isCapsule && (
+              <Selections>
+                <span>Bag size</span>
+                <div>
+                  {bagSizes.map((bag, index) => (
+                    <SingleProductButtons
+                      key={index}
+                      className={
+                        productDetails.grams === bag.amount ? "clicked" : null
+                      }
+                      onClick={() => setGrams(bag.amount)}
+                    >
+                      {bag.size}
+                    </SingleProductButtons>
+                  ))}
+                </div>
+              </Selections>
+            )}
+            {!productDetails.isCapsule && (
             <Selections>
               <span>Grind</span>
               <div>
@@ -297,6 +301,7 @@ const SinglePage = (props) => {
                 ))}
               </div>
             </Selections>
+          )}
             <Selections>
               <span>quantity</span>
               <FormContainer>
