@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { Home, SinglePage, CoffeeProducts, AboutUs, Checkout } from "./pages";
 import {
   Navbar,
@@ -44,7 +44,7 @@ function App() {
     <>
       <Theme>
         <GlobalStyle />
-        <BrowserRouter>
+        <Router>
           {checkingOut && (
             <CheckoutSummary
               closeCheckoutSummary={closeCheckoutSummary}
@@ -83,7 +83,7 @@ function App() {
             />
           </Routes>
           <Footer />
-        </BrowserRouter>
+        </Router>
       </Theme>
     </>
   );
