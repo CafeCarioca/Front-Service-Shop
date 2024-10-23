@@ -44,7 +44,7 @@ function App() {
     <>
       <Theme>
         <GlobalStyle />
-        <BrowserRouter basename="/Front-Service-Shop">
+        <BrowserRouter>
           {checkingOut && (
             <CheckoutSummary
               closeCheckoutSummary={closeCheckoutSummary}

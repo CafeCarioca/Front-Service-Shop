@@ -5,9 +5,7 @@ const CheckoutItemContainer = styled.div`
   display: grid;
   grid-template-columns: 5rem auto 5rem;
   width: 100%;
-
-  gap: 2rem;
-  margin-bottom: 2rem;
+  gap: 1rem;
 `;
 const CheckoutImgContainer = styled.div`
   position: relative;
@@ -18,7 +16,6 @@ const CheckoutImgContainer = styled.div`
     transform: translate(50%, -50%);
     background-color: ${({ theme }) => theme.colors.mediumGray};
     color: ${({ theme }) => theme.colors.white};
-
     border-radius: 50%;
     display: grid;
     width: 1.5rem;
