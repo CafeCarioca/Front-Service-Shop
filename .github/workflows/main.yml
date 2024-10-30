@@ -5,6 +5,9 @@ on:
 jobs:
   continuous-integration:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x] 
     steps:
       # Step 1
       - uses: actions/checkout@v3
