@@ -324,17 +324,22 @@ const Wizard = ({ onCompletion }) => {
   
     const stepsCount = 4;
     const progress = (step / stepsCount) * 100;
+
+
+
+
+
     const [isMapBlurred, setIsMapBlurred] = useState(true);
     const handleEditAddress = (index) => {
-        const address = addresses[index];
-        setStreet(address.street);
-        setDoorNumber(address.doorNumber);
-        setApartment(address.apartment);
-        setDepartment(address.department);
-        setPostalCode(address.postalCode);
-        setLocation(address.location);
-        setShowPopup(true);
-        setEditIndex(index);
+      const address = addresses[index];
+      setStreet(address.street);
+      setDoorNumber(address.doorNumber);
+      setApartment(address.apartment);
+      setDepartment(address.department);
+      setPostalCode(address.postalCode);
+      setLocation(address.location);
+      setShowPopup(true);
+      setEditIndex(index);
     };
 
     const handleMapClick = () => {
@@ -370,22 +375,24 @@ const Wizard = ({ onCompletion }) => {
 
     const handleFinish = (e) => {
       e.preventDefault();
-      console.log({
-        email,
-        firstName,
-        lastName,
-        country,
-        documentType,
-        documentNumber,
-        phone,
-        termsAccepted,
-        facturaConRUT,
-        razonSocial,
-        rut,
-        recipient,
-        address: addresses[selectedAddressIndex],
-        remarks,
-      });
+      const userDetails = {
+      email,
+      firstName,
+      lastName,
+      country,
+      documentType,
+      documentNumber,
+      phone,
+      termsAccepted,
+      facturaConRUT,
+      razonSocial,
+      rut,
+      recipient,
+      address: addresses[selectedAddressIndex],
+      remarks,
+      };
+      console.log(userDetails);
+      localStorage.setItem('userDetails', JSON.stringify(userDetails));
       onCompletion(true);
     };
   
@@ -432,6 +439,28 @@ const Wizard = ({ onCompletion }) => {
             geocodeAddress();
         }
     }, [street, doorNumber, apartment, department]);
+
+    useEffect(() => {
+      const savedUserDetails = JSON.parse(localStorage.getItem('userDetails'));
+      if (savedUserDetails) {
+        setEmail(savedUserDetails.email);
+        setFirstName(savedUserDetails.firstName);
+        setLastName(savedUserDetails.lastName);
+        setCountry(savedUserDetails.country);
+        setDocumentType(savedUserDetails.documentType);
+        setDocumentNumber(savedUserDetails.documentNumber);
+        setPhone(savedUserDetails.phone);
+        setTermsAccepted(savedUserDetails.termsAccepted);
+        setFacturaConRUT(savedUserDetails.facturaConRUT);
+        setRazonSocial(savedUserDetails.razonSocial);
+        setRUT(savedUserDetails.rut);
+        setRecipient(savedUserDetails.recipient);
+        setAddresses([savedUserDetails.address]);
+        setRemarks(savedUserDetails.remarks);
+        setSelectedAddressIndex(0);
+        setStep(4); // Salta directamente al resumen
+      }
+    }, []);
   
     return (
     <LoadScript googleMapsApiKey="AIzaSyAc8LWhTfVyDkEcnOWWM2Zd01JCFpO20T4">
