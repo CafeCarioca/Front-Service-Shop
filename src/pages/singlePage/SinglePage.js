@@ -322,7 +322,7 @@ const SinglePage = (props) => {
                     }}
                   />
                 </form>
-                <div>${price}.00</div>
+                <div>${price}</div>
               </FormContainer>
             </Selections>
           </SelectionsContainer>

@@ -23,7 +23,7 @@ const coffeeBlendsData = [
     roast: "Dark",
     origin: "South America, Africa, India",
     taste: "Toffee, Dark Chocolate, Spice",
-    price: 39.0,
+    price: 1,
     category: "coffee",
   },
   {

@@ -75,7 +75,7 @@ const CheckoutSummary = (props) => {
         <CheckoutFooter>
           <FooterTotalContainer>
             <span>SUBTOTAL</span>
-            <span>${itemTotals}.00</span>
+            <span>${itemTotals}</span>
           </FooterTotalContainer>
           <p>Envio y descuentos son aplicados al finalizar la compra.</p>
           <Buttons

@@ -21,7 +21,7 @@ const GlobalStyle = createGlobalStyle`
     }
     .hoverPointerGrey{
         &:hover {
-      color: ${({ theme }) => theme.colors.darkerGray};
+      color: ${({ theme }) => theme.colors.carioca_brickred};
       cursor: pointer;
     }}
     .hoverPointer{

@@ -32,7 +32,7 @@ const CoffeeProducts = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const h1 = `CAFé`;
+  const h1 = `CAFE`;
   const p = `We craft an array of premium blends to suit any coffee lover's taste.
           When you purchase any of our coffee products, a portion of profits
           goes towards veteran charities and organisations to help veterans move

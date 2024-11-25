@@ -11,6 +11,7 @@ const sharedLinkStyles = css`
   &:active {
     text-decoration: none;
   }
+  font-family: 'Courier Prime', Courier, monospace;
 `;
 const StyledLink = styled(Link)`
   ${sharedLinkStyles}
@@ -20,9 +21,9 @@ const StyledNavLink = styled(NavLink)`
   color: ${(props) =>
     props.color
       ? (props) => props.color
-      : (props) => props.theme.colors.lightGray};
+      : (props) => props.theme.colors.carioca_black};
   &:hover {
-    color: ${({ theme }) => theme.colors.white};
+    color: ${({ theme }) => theme.colors.carioca_darkgreen};
     &:hover {
       cursor: pointer;
     }

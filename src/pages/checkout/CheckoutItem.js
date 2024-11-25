@@ -61,7 +61,7 @@ const CheckoutItem = ({
           <span>{grams === 1000 ? "1kg" : grams + "g"} </span>/ {grind}
         </Details>
       </CheckoutDetails>
-      <Price>${price * quantity}.00</Price>
+      <Price>${price * quantity}</Price>
     </CheckoutItemContainer>
   );
 };

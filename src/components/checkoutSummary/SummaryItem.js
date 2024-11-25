@@ -75,7 +75,7 @@ const SummaryItem = ({
             {grams === 1000 ? "kg" : "g"} / {grind}
           </span>
         </div>
-        <span className="greenBold">${price * quantity}.00</span>
+        <span className="greenBold">${price * quantity}</span>
         <span>Qty {quantity}</span>
         <RemoveListItem onClick={() => removeItem(id)}>Borrar</RemoveListItem>
       </SummaryItemTable>

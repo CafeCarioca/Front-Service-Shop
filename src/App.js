@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
-import { Home, SinglePage, CoffeeProducts, AboutUs, Checkout } from "./pages";
+import { Home, SinglePage, CoffeeProducts, AboutUs, Checkout, ThankYou, Failure } from "./pages";
 import {
   Navbar,
   Footer,
@@ -60,7 +60,10 @@ function App() {
           />
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="thank-you" element={<ThankYou />} />
             <Route path="about-us" element={<AboutUs />} />
+            <Route path="pay-failure" element={<Failure />} />
+
             <Route
               path="check-out"
               element={<Checkout checkoutList={checkoutList} />}

@@ -8,16 +8,16 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { BsSearch, BsPerson } from "react-icons/bs";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 import { navData } from "../index";
-import Carioca from "../../assets/images/LogoNuevo_Carioca-04.png";
-
+import Carioca from "../../assets/images/logo_carioca.svg";
+import Isologo from "../../assets/images/isologo_negro.svg";
 const Nav = styled.section`
   position: sticky;
   top: 0;
   z-index: 10;
 `;
 const NavbarSection = styled.nav`
-  background-color: ${({ theme }) => theme.colors.darkGray};
-  color: ${({ theme }) => theme.colors.lightGray};
+  background-color: ${({ theme }) => theme.colors.carioca_cremitwhite};
+  color: ${({ theme }) => theme.colors.carioca_cremitwhite};
   padding: 0.7rem 0;
 `;
 const NavContainer = styled.div`
@@ -92,7 +92,7 @@ const NavRRight = styled.div`
   align-items: center;
 `;
 const CartNum = styled.div`
-  background-color: ${({ theme }) => theme.colors.mediumGray};
+  background-color: ${({ theme }) => theme.colors.carioca_brickred};
   font-size: ${({ theme }) => theme.fontSizes.xsmall};
   border-radius: 0.2rem;
   padding: 0.35rem 0.5rem;
@@ -108,6 +108,9 @@ const NavRLSearch = styled.div`
     display: block;
   }
 `;
+
+
+
 
 const LogoImgIcon = styled.img`
   width: 100%;
@@ -147,6 +150,7 @@ const Navbar = ({ openCheckoutSummary, checkoutList, openSideNav }) => {
               <HiOutlineShoppingCart
                 className="hoverPointerGrey"
                 onClick={openCheckoutSummary}
+                color= "black"
               />
               <CartNum onClick={openCheckoutSummary}>
                 {checkoutList.length}

@@ -1,16 +1,22 @@
 import React from "react";
 import styled from "styled-components";
 import MainLogo from "../../UI/Logo/Logo";
-import coffeeImage from "../../assets/images/image.png";
+import coffeeVideo from "../../assets/images/4081313-uhd_3840_2160_24fps.mp4";  // Asegúrate de que la ruta sea correcta
 import { Link } from "react-router-dom";
+import { FaArrowDown } from "react-icons/fa"; // Asegúrate de tener instalado react-icons
+
 const IntroSection = styled.section`
   @media screen and (min-width: ${({ theme }) => theme.mediaScreen.lgLaptop}) {
     display: flex;
   }
+  min-height: 95vh; /* Asegúrate de que el contenedor ocupe toda la altura de la ventana */
+  position: relative;
 `;
+
 const IntroLeft = styled.div`
   padding: 4.5rem 0;
   width: 100%;
+
   display: grid;
   place-content: center;
   background-color: ${({ theme }) => theme.colors.primaryGreen};
@@ -20,30 +26,45 @@ const IntroLeft = styled.div`
 `;
 
 const IntroRight = styled.div`
-  background-image: linear-gradient(#1f1f1fb3, #202020ab), url(${coffeeImage});
-  background-position: center;
-  background-size: cover;
-  min-height: 15rem;
+  position: relative;
+  min-height: 85vh; /* Aumentar la altura del contenedor */
   width: 100%;
   display: grid;
   place-content: center;
-  @media screen and (min-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
-    min-height: 20rem;
-  }
-  @media screen and (min-width: ${({ theme }) => theme.mediaScreen.lgLaptop}) {
-    min-height: 85vh;
+  overflow: hidden;
+
+  video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 120%; /* Aumentar la altura del video */
+    width: auto;
+    height: auto;
+    z-index: 1;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
   }
 `;
+
 const IntroRightBanner = styled.div`
+  position: relative;
   margin: 0 auto;
   padding: 2rem 0;
   width: 90%;
+  z-index: 2; // Asegúrate de que el texto esté por encima del video
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   h2 {
     text-transform: uppercase;
     font-size: ${({ theme }) => theme.fontSizes.xbig};
     font-weight: 900;
     font-family: ${({ theme }) => theme.fonts[3]};
-    color: ${({ theme }) => theme.colors.white};
+    color: ${({ theme }) => theme.colors.carioca_cremitwhite};
+    opacity: 60%;
     margin-bottom: 2rem;
     @media screen and (min-width: ${({ theme }) => theme.mediaScreen.xlgLaptop}) {
       font-size: ${({ theme }) => theme.fontSizes.xlarge};
@@ -60,9 +81,9 @@ const IntroRightBanner = styled.div`
     }
   }
   button {
-    background-color: ${({ theme }) => theme.colors.darkGray};
+    background-color: ${({ theme }) => theme.colors.carioca_black};
     color: ${({ theme }) => theme.colors.white};
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 2.5rem;
     border: none;
     border-radius: 0.2rem;
     width: 100%;
@@ -73,7 +94,7 @@ const IntroRightBanner = styled.div`
     font-family: ${({ theme }) => theme.fonts[1]};
     cursor: pointer;
     &:hover {
-      background-color: ${({ theme }) => theme.colors.mediumGray};
+      background-color: ${({ theme }) => theme.colors.carioca_brickred};
     }
   }
   @media screen and (min-width: ${({ theme }) => theme.mediaScreen.lgLaptop}) {
@@ -81,11 +102,37 @@ const IntroRightBanner = styled.div`
   }
 `;
 
+const ScrollButton = styled.button`
+  position: absolute;
+  bottom: 20px; /* Ajusta la distancia del botón desde el fondo */
+  left: 50%;
+  transform: translateX(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 1;
+  font-size: 2rem; /* Tamaño de la flecha */
+  color: ${({ theme }) => theme.colors.white}; /* Color de la flecha */
+  transition: transform 0.3s;
+
+  &:hover {
+    transform: translateX(-50%) translateY(5px); /* Efecto al pasar el cursor */
+  }
+`;
+
 const Intro = () => {
+  const scrollToNextSection = () => {
+    window.scrollBy({ top: window.innerHeight * 0.95, behavior: "smooth" });
+  };
+
   return (
     <>
       <IntroSection>
         <IntroRight>
+          <video autoPlay loop muted>
+            <source src={coffeeVideo} type="video/mp4" />
+            Tu navegador no soporta el elemento de video.
+          </video>
           <IntroRightBanner>
             <h2>Desde 1916</h2>
             <p>
@@ -94,9 +141,12 @@ const Intro = () => {
               Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum.
             </p>
             <Link to={`/collections/coffee-blends`}>
-              <button>Tienda</button>
+              <button>Comprar</button>
             </Link>
           </IntroRightBanner>
+          <ScrollButton onClick={scrollToNextSection}>
+            <FaArrowDown />
+          </ScrollButton>
         </IntroRight>
       </IntroSection>
     </>

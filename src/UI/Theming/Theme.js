@@ -13,7 +13,15 @@ const theme = {
     lightGray: "rgba(231,229,228,1)",
     darkerGray: "#979797",
     mediumGray: "#525252",
-    darkGray: "#141414",
+    darkGray: "#27231f",
+
+    //Paleta de colores nueva
+    carioca_darkgreen: "#273617",
+    carioca_lightgreen: "#606c37",
+    carioca_cremitwhite: "#fcfbe0",
+    carioca_brickred: "#58000a",
+    carioca_black: "#27231f" 
+
   },
   fonts: ["Roboto Mono", "Courier Prime", "Averia Libre", "Inter"],
   fontSizes: {

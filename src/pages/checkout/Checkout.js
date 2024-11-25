@@ -4,6 +4,7 @@ import Wizard from "../../components/checkoutSummary/Wizard";
 import { CheckoutItem } from "../index";
 import { SimpleButton } from "../../UI/Buttons/Buttons";
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
+import { API_ENDPOINTS } from "../../apiConfig";
 import axios from 'axios';
 
 const CheckoutSection = styled.section`
@@ -99,7 +100,7 @@ const Checkout = ({ checkoutList }) => {
 
   const handlePayment = async () => {
     try {
-      const apiUrl = 'https://5hjzm8qivl.execute-api.us-east-1.amazonaws.com/Stage1/';
+      const apiUrl = API_ENDPOINTS.CREATE_PREFERENCE;
   
       // Construye el cuerpo de la solicitud
       const requestBody = {
@@ -120,16 +121,55 @@ const Checkout = ({ checkoutList }) => {
         },
       });
 
-      const parsedBody = JSON.parse(response.data.body);
+      //const parsedBody = JSON.parse(response.data.body);
   
       // Maneja la respuesta
       console.log('Response data:', response.data);
-      setPreferenceId(parsedBody.id);
-      console.log('PreferenceId:', parsedBody.id);
+      setPreferenceId(response.data.id);
+      console.log('PreferenceId:', response.data.id);
     } catch (error) {
       console.error("Error al obtener el preferenceId:", error);
     }
   };
+
+  const createOrder = async () => {
+    try {
+      const userDetails = JSON.parse(localStorage.getItem('userDetails'));
+      const checkoutList = JSON.parse(localStorage.getItem('checkoutList'));
+
+      const orderBody = {
+        order: {
+          preferenceId: preferenceId,
+          userDetails: userDetails,
+          products: checkoutList
+        }
+      };
+
+      console.log('Order body:', orderBody);
+
+      const orderApiUrl = API_ENDPOINTS.CREATE_ORDER;
+      
+      const response = await axios.post(orderApiUrl, orderBody, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      console.log('Order created:', response.data);
+    } catch (error) {
+      console.error("Error al crear la orden:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (preferenceId) {
+      // Aquí puedes manejar algún tipo de lógica adicional si es necesario
+      // por ejemplo, mostrar un mensaje de éxito o redirigir al usuario.
+      localStorage.setItem('preferenceId', preferenceId);
+      createOrder();
+    }
+  }, [preferenceId]);
+
 
   return (
     <CheckoutSection>
@@ -150,7 +190,7 @@ const Checkout = ({ checkoutList }) => {
           {checkoutList.length > 0 && (
             <CheckoutFooter>
               <TotalContainer>
-                <span>Importe total</span> <span>${itemTotals}.00</span>
+                <span>Importe total</span> <span>${itemTotals}</span>
               </TotalContainer>
               {!preferenceId && (
                 <SimpleButton
@@ -158,7 +198,7 @@ const Checkout = ({ checkoutList }) => {
                   color={(props) => props.theme.colors.white}
                   type="button"
                   width="100%"
-                  //disabled={!wizardComplete}
+                  disabled={!wizardComplete}
                   onClick={handlePayment}
                 >
                   Generar Pago
