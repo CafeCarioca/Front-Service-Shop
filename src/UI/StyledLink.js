@@ -11,7 +11,7 @@ const sharedLinkStyles = css`
   &:active {
     text-decoration: none;
   }
-  font-family: 'Courier Prime', Courier, monospace;
+  font-family: ${({ theme })  => theme.fonts[3]};
 `;
 const StyledLink = styled(Link)`
   ${sharedLinkStyles}

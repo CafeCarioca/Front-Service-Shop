@@ -10,10 +10,15 @@ import axios from 'axios';
 const CheckoutSection = styled.section`
   background-color: ${({ theme }) => theme.colors.lightestGray};
   min-height: 90vh;
-  padding: 3rem 0;
+  padding: 2rem 1rem;
   display: grid;
-  grid-template-columns: 2fr 2.5fr;  // Ajusta la proporción según tus necesidades
+  grid-template-columns: 1fr;
   gap: 1rem;
+
+  @media screen and (min-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
+    grid-template-columns: 2fr 2.5fr; // Ajusta la proporción según tus necesidades
+    padding: 3rem 2rem;
+  }
 `;
 
 const CheckoutContainer = styled.div`
@@ -22,14 +27,17 @@ const CheckoutContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%;
   align-items: center;
   h1 {
-    margin-bottom: 3rem;
+    margin-bottom: 1.5rem;
     text-align: center;
   }
-  @media screen and (min-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
+
+  @media screen and (max-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
     width: 80%;  // Ajusta el ancho para que ocupe más espacio horizontalmente
+    h1 {
+      margin-bottom: 2rem;
+    }
   }
 `;
 
@@ -37,14 +45,14 @@ const CheckoutItemsContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
-  
+
   @media screen and (min-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
     grid-template-columns: 1fr 1fr;  // Dos columnas en pantallas más grandes
   }
 `;
 
 const CheckoutFooter = styled.div`
-  width: 100%;
+  width: 80%;
   text-align: center;
   display: grid;
   place-items: center;
@@ -52,7 +60,7 @@ const CheckoutFooter = styled.div`
 
 const H1 = styled.h1`
   text-align: left;
-  font-size: 1.2rem;
+  font-size: 1rem;
   margin-bottom: 0.5rem;
   color: ${({ theme }) => theme.colors.darkGray};
   font-family: ${({ theme }) => theme.fonts[0]};
@@ -60,7 +68,10 @@ const H1 = styled.h1`
   font-weight: 600;
   letter-spacing: 1px;
   line-height: 1.5rem;
-  margin-left: 0;
+
+  @media screen and (min-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
+    font-size: 1rem;
+  }
 `;
 
 const TotalContainer = styled.div`
@@ -70,12 +81,27 @@ const TotalContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 1.5rem 3rem;
+  padding: 1rem 2rem;
   margin-bottom: 1rem;
+
   span {
-    font-size: ${({ theme }) => theme.fontSizes.xmedium};
+    font-size: ${({ theme }) => theme.fontSizes.medium};
     font-weight: 600;
     display: inline-block;
+  }
+
+  @media screen and (min-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
+    padding: 1.5rem 3rem;
+    span {
+      font-size: ${({ theme }) => theme.fontSizes.xmedium};
+    }
+  }
+
+  @media screen and (max-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
+    padding: 1.5rem 3rem;
+    span {
+      font-size: ${({ theme }) => theme.fontSizes.xmedium};
+    }
   }
 `;
 
@@ -85,11 +111,9 @@ const Checkout = ({ checkoutList }) => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    initMercadoPago('APP_USR-9c44ae9b-8651-40ea-9dbf-8a4561c46895',
-      {
-        locale: 'es-UY',
-      }
-    );
+    initMercadoPago('APP_USR-9c44ae9b-8651-40ea-9dbf-8a4561c46895', {
+      locale: 'es-UY',
+    });
   }, []);
   
   const itemTotals = checkoutList.reduce(
@@ -102,7 +126,6 @@ const Checkout = ({ checkoutList }) => {
     try {
       const apiUrl = API_ENDPOINTS.CREATE_PREFERENCE;
   
-      // Construye el cuerpo de la solicitud
       const requestBody = {
         items: checkoutList.map(item => ({
           title: item.blendName,
@@ -111,19 +134,14 @@ const Checkout = ({ checkoutList }) => {
         })),
       };
   
-      // Imprime el cuerpo de la solicitud antes de enviarlo
       console.log('Request Body:', JSON.stringify(requestBody, null, 2));
   
-      // Envía la solicitud POST
       const response = await axios.post(apiUrl, requestBody, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
 
-      //const parsedBody = JSON.parse(response.data.body);
-  
-      // Maneja la respuesta
       console.log('Response data:', response.data);
       setPreferenceId(response.data.id);
       console.log('PreferenceId:', response.data.id);
@@ -163,13 +181,10 @@ const Checkout = ({ checkoutList }) => {
 
   useEffect(() => {
     if (preferenceId) {
-      // Aquí puedes manejar algún tipo de lógica adicional si es necesario
-      // por ejemplo, mostrar un mensaje de éxito o redirigir al usuario.
       localStorage.setItem('preferenceId', preferenceId);
       createOrder();
     }
   }, [preferenceId]);
-
 
   return (
     <CheckoutSection>

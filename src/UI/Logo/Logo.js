@@ -15,7 +15,7 @@ const IntroContainer = styled.div`
 `;
 const IntroLeft = styled.div``;
 const LogoMainText = styled.h1`
-  font-family: ${({ theme }) => theme.fonts[2]};
+  font-family: ${({ theme }) => theme.fonts[1]};
   font-size: ${({ theme }) => theme.fontSizes.big};
   margin-bottom: 0.5rem;
   @media screen and (min-width: ${({ theme }) => theme.mediaScreen.laptop768}) {

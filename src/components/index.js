@@ -14,6 +14,7 @@ import Backdrop from "./checkoutSummary/Backdrop";
 import WhiteOverlay from "./checkoutSummary/WhiteOverlay";
 import SideNav from "./sideNav/SideNav";
 import navData from "./navbar/navData";
+import TrustmaryWidget from "./footer/TrustmaryWidget";
 export {
   Navbar,
   Header,
@@ -31,4 +32,5 @@ export {
   WhiteOverlay,
   SideNav,
   navData,
+  TrustmaryWidget,
 };

@@ -37,14 +37,14 @@ const IntroRight = styled.div`
     position: absolute;
     top: 50%;
     left: 50%;
-    min-width: 100%;
-    min-height: 120%; /* Aumentar la altura del video */
-    width: auto;
-    height: auto;
+    width: 100%;
+    height: 100%;
     z-index: 1;
     transform: translate(-50%, -50%);
-    object-fit: cover;
-  }
+    object-fit: cover; /* Hace que el video siempre cubra todo el contenedor */
+}
+
+
 `;
 
 const IntroRightBanner = styled.div`
@@ -72,10 +72,11 @@ const IntroRightBanner = styled.div`
     }
   }
   p {
-    font-family: ${({ theme }) => theme.fonts[1]};
-    font-size: ${({ theme }) => theme.fontSizes.small};
+    font-family: ${({ theme }) => theme.fonts[2]};
+    font-size: ${({ theme }) => theme.fontSizes.xmedium};
     color: ${({ theme }) => theme.colors.darkerGray};
-    line-height: 1.7rem;
+    letter-spacing: ${({ theme }) => theme.letterspace.small};
+    line-height: 1.5rem;
     @media screen and (min-width: ${({ theme }) => theme.mediaScreen.xlgLaptop}) {
       font-size: ${({ theme }) => theme.fontSizes.xmedium};
     }
@@ -91,8 +92,10 @@ const IntroRightBanner = styled.div`
     height: 3rem;
     margin-top: 2rem;
     font-size: ${({ theme }) => theme.fontSizes.xmedium};
-    font-family: ${({ theme }) => theme.fonts[1]};
+    font-family: ${({ theme }) => theme.fonts[2]};
+   
     cursor: pointer;
+    transition: background-color 1s;
     &:hover {
       background-color: ${({ theme }) => theme.colors.carioca_brickred};
     }
@@ -136,9 +139,7 @@ const Intro = () => {
           <IntroRightBanner>
             <h2>Desde 1916</h2>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-              nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.
-              Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum.
+              Más de un siglo de pasión por el café, combinando calidad, tradición y momentos únicos. Te invitamos a ser parte de esta historia.
             </p>
             <Link to={`/collections/coffee-blends`}>
               <button>Comprar</button>

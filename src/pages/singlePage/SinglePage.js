@@ -115,11 +115,9 @@ const SinglePage = (props) => {
   const coffeeList = props.coffeeList;
   const capsulesList = props.capsulesList;
 
-  // Buscar en ambos conjuntos de datos
   const currentCoffee = coffeeList.find((coffee) => coffee.blendName === id) || 
                         capsulesList.find((capsule) => capsule.blendName === id);
 
-  // Proporciona valores predeterminados en caso de que currentCoffee sea undefined
   const defaultDetails = {
     singleImg: "",
     description: "Descripción no disponible",
@@ -127,7 +125,7 @@ const SinglePage = (props) => {
     origin: "Origen no disponible",
     roast: "Tostado no disponible",
     taste: "Sabor no disponible",
-    price: 0,
+    prices: {}, // Asegurar que esté definido
   };
 
   const {
@@ -137,17 +135,21 @@ const SinglePage = (props) => {
     origin,
     roast,
     taste,
-    price,
+    prices = {},
+    price, // Asegúrate de que 'prices' esté definido como un objeto vacío si no está presente
   } = currentCoffee || defaultDetails;
-
+  
+  const isCapsule = capsulesList.some((capsule) => capsule.blendName === id);
+  const initialPrice = isCapsule ? price : (prices[250] || 0);
+  
   const [productDetails, setProductDetails] = useState({
     blendName,
     singleImg,
     quantity: 1,
-    price,
-    grams: 250,
-    grind: "Filter",
-    isCapsule: capsulesList.some((capsule) => capsule.blendName === id), // Determinar si es cápsula
+    price: initialPrice, // Usar precio inicial basado en si es cápsula o café
+    grams: isCapsule ? null : 250, // No se necesita gramaje para cápsulas
+    grind: isCapsule ? null : "Filter", // No se necesita tipo de molienda para cápsulas
+    isCapsule,
   });
 
   useEffect(() => {
@@ -156,10 +158,10 @@ const SinglePage = (props) => {
         ...prevDetails,
         blendName: currentCoffee.blendName,
         singleImg: currentCoffee.singleImg,
-        price: currentCoffee.price,
+        price: isCapsule ? currentCoffee.price : (prices[250] || 0),
       }));
     }
-  }, [currentCoffee]);
+  }, [currentCoffee, isCapsule, prices]);
 
   const addItemToCheckout = () => {
     const currentCheckoutList = [...props.checkoutList];
@@ -195,10 +197,11 @@ const SinglePage = (props) => {
   };
 
   const setGrams = (amount) => {
-    setProductDetails({
-      ...productDetails,
+    setProductDetails((prevDetails) => ({
+      ...prevDetails,
       grams: amount,
-    });
+      price: prices[amount] || prevDetails.price, // Ajusta el precio según el tamaño seleccionado
+    }));
   };
 
   const setGrind = (grindName) => {
@@ -236,6 +239,8 @@ const SinglePage = (props) => {
     window.scrollTo(0, 0);
   }, []);
 
+  const totalPrice = (productDetails.price * productDetails.quantity).toFixed(2);
+
   return (
     <>
       <SingleProductContainer>
@@ -268,7 +273,7 @@ const SinglePage = (props) => {
           <SelectionsContainer>
             {!productDetails.isCapsule && (
               <Selections>
-                <span>Bag size</span>
+                <span>Presentaciones:</span>
                 <div>
                   {bagSizes.map((bag, index) => (
                     <SingleProductButtons
@@ -286,7 +291,7 @@ const SinglePage = (props) => {
             )}
             {!productDetails.isCapsule && (
             <Selections>
-              <span>Grind</span>
+              <span>Tipo de Molienda:</span>
               <div>
                 {grind.map((grindName, index) => (
                   <SingleProductButtons
@@ -322,7 +327,7 @@ const SinglePage = (props) => {
                     }}
                   />
                 </form>
-                <div>${price}</div>
+                <div>${totalPrice}</div> {/* Muestra el precio total */}
               </FormContainer>
             </Selections>
           </SelectionsContainer>

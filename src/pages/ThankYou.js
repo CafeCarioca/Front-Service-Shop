@@ -12,10 +12,19 @@ const ThankYouContainer = styled.div`
   height: 100vh;
   text-align: center;
   background-color: ${({ theme }) => theme.colors.lightestGray};
+  padding: 1rem;
+
+  @media screen and (min-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
+    padding: 2rem;
+  }
+
+  @media screen and (min-width: ${({ theme }) => theme.mediaScreen.lgLaptop}) {
+    padding: 3rem;
+  }
 `;
 
 const H1 = styled.h1`
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: ${({ theme }) => theme.colors.darkGray};
   margin-bottom: 1rem;
   font-family: ${({ theme }) => theme.fonts[0]};
@@ -23,18 +32,37 @@ const H1 = styled.h1`
   font-weight: 600;
   letter-spacing: 1px;
   line-height: 1.5rem;
+
+  @media screen and (min-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
+    font-size: 2rem;
+    line-height: 2rem;
+  }
+
+  @media screen and (min-width: ${({ theme }) => theme.mediaScreen.lgLaptop}) {
+    font-size: 2.5rem;
+    line-height: 2.5rem;
+  }
 `;
 
 const P = styled.p`
-  font-size: 1rem;
+  font-size: 0.875rem;
   color: ${({ theme }) => theme.colors.mediumGray};
   font-family: ${({ theme }) => theme.fonts[1]};
+  margin-bottom: 1rem;
+
+  @media screen and (min-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
+    font-size: 1rem;
+  }
+
+  @media screen and (min-width: ${({ theme }) => theme.mediaScreen.lgLaptop}) {
+    font-size: 1.125rem;
+  }
 `;
 
 const Button = styled(Link)`
   display: inline-block;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
   color: ${({ theme }) => theme.colors.white};
   background-color: ${({ theme }) => theme.colors.darkGray};
   border: none;
@@ -47,25 +75,51 @@ const Button = styled(Link)`
   &:hover {
     background-color: ${({ theme }) => theme.colors.mediumGray};
   }
+
+  @media screen and (min-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+  }
+
+  @media screen and (min-width: ${({ theme }) => theme.mediaScreen.lgLaptop}) {
+    font-size: 1.125rem;
+    padding: 1rem 2rem;
+  }
 `;
+
+// Función para enviar el email de confirmación de la orden
+const sendOrderEmail = async (orderId) => {
+  try {
+    const apiUrl = API_ENDPOINTS.SEND_ORDER_EMAIL;
+    const response = await axios.post(`${apiUrl}`, { orderId });
+    console.log(response.data);
+    if (response.status === 200) {
+      console.log('Email enviado con éxito');
+    }
+  } catch (error) {
+    console.error('Error al enviar el email de confirmación:', error);
+  }
+};
 
 const ThankYou = () => {
   useEffect(() => {
-    const preferenceId = localStorage.getItem('preferenceId'); // Obtener el preference_id del localStorage
-    const apiUrl = API_ENDPOINTS.CHANGESTATUSBYPREFID
+    const preferenceId = localStorage.getItem('preferenceId');
+    const apiUrl = API_ENDPOINTS.CHANGESTATUSBYPREFID;
     if (preferenceId) {
-      // Llama a la API para cambiar el estado de la orden
       const changeOrderStatus = async () => {
         try {
-          const response = await axios.put(`${apiUrl}/${preferenceId}`); // Cambia la URL a la de tu API
-          console.log(response.data); // Maneja la respuesta si es necesario
+          const response = await axios.put(`${apiUrl}/${preferenceId}`);
+          console.log(response.data);
           if (response.status === 200) {
             localStorage.removeItem('preferenceId');
-         }
+            const orderID = response.data.orderId;
+            console.log("Response.data", response.data);
+            console.log('Estado de la orden cambiado con éxito:', orderID);
+            sendOrderEmail(orderID);
+          }
         } catch (error) {
           console.error('Error al cambiar el estado de la orden:', error);
-          // Manejo de errores aquí si es necesario
-        } 
+        }
       };
 
       changeOrderStatus();

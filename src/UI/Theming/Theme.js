@@ -45,6 +45,12 @@ const theme = {
     tablet640: "640px",
     laptop768: "768px",
   },
+
+  letterspace: {
+    small: "0.15rem",
+    medium: "0.2rem",
+    big: "0.3rem",
+  },
 };
 
 const Theme = ({ children }) => {

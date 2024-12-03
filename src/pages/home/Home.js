@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { TrustmaryWidget } from "../../components/index";
 import {
   Navbar,
   Intro,
@@ -17,6 +18,7 @@ const Home = () => {
       <Intro />
       <FeaturedBlend />
       <Coffees />
+      <TrustmaryWidget/>
     </>
   );
 };

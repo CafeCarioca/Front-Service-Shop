@@ -1,16 +1,20 @@
 export const bagSizes = [
-  { size: "1kg", amount: 1000 },
-  { size: "500g", amount: 500 },
   { size: "250g", amount: 250 },
+  { size: "500g", amount: 500 },
+  { size: "1kg", amount: 1000 },
+  { size: "2kg", amount: 2000 },
+  { size: "5kg", amount: 5000 },
+
 ];
 export const grind = [
-  "Whole Beans",
+  "Grano",
   "Chemex",
-  "Commercial",
-  "Domestic",
-  "Filter",
-  "Plunger",
-  "Stovetop",
-  "Turkish",
+  "Comercial",
+  "Filtro",
+  "Prensa Francesa",
+  "Goteo",
+  "Cezve",
   "V60",
+  "Espresso",
+  "Ibric",
 ];

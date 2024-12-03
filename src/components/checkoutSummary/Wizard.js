@@ -10,6 +10,15 @@ const WizardContainer = styled.div`
   width: 100%;
   max-width: 500px;
   margin-bottom: 1rem;
+
+  @media screen and (max-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
+    margin-left: 0;
+    
+  }
+
+  @media screen and (max-width: ${({ theme }) => theme.mediaScreen.lgLaptop}) {
+    margin-left: 0;
+  }
 `;
 
 const AddressCard = styled.div`
@@ -70,6 +79,10 @@ const ProgressBarContainer = styled.div`
   border-radius: 5px;
   margin-bottom: 1rem;
   margin-left: 10rem;
+
+  @media screen and (max-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
+    margin-left: 0;
+  }
 `;
 
 const ProgressBar = styled.div`
@@ -111,6 +124,15 @@ const WizardStep = styled.div`
   &:last-child {
     margin-bottom: 0;
   }
+
+  @media screen and (max-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
+    margin-left: 0;
+  }
+
+  @media screen and (max-width: ${({ theme }) => theme.mediaScreen.lgLaptop}) {
+    margin-left: 0;
+  }
+  
 `;
 
 const WizardLabel = styled.label`
@@ -219,6 +241,10 @@ const InlineContainer = styled.div`
   display: flex;
   gap: 0.5rem;
   width: 100%;
+
+  @media screen and (max-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
+    flex-direction: row;
+  }
 `;
 
 const PopupContainer = styled.div`
@@ -232,6 +258,10 @@ const PopupContainer = styled.div`
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
   padding: 1rem;
   z-index: 100;
+
+  @media screen and (max-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
+    width: 80%;
+  }
 `;
 
 const Overlay = styled.div`
@@ -262,6 +292,8 @@ const MapContainer = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.darkerGray};
   border-radius: 0.2rem;
   margin-bottom: 1rem;
+
+  
 `;
 
 const MapOverlay = styled.div`
@@ -321,11 +353,18 @@ const Wizard = ({ onCompletion }) => {
     const [remarks, setRemarks] = useState("");
     
     const [showPopup, setShowPopup] = useState(false);
-  
-    const stepsCount = 4;
+    const [deliveryType, setDeliveryType] = useState("");
+    const stepsCount = 5;
     const progress = (step / stepsCount) * 100;
 
-
+    const handleDeliveryChoice = (choice) => {
+      setDeliveryType(choice);
+      if (choice === "takeaway") {
+        setStep(5);
+      } else {
+        setStep(4); // Continúa a la selección de dirección
+      }
+    };
 
 
 
@@ -387,6 +426,7 @@ const Wizard = ({ onCompletion }) => {
       facturaConRUT,
       razonSocial,
       rut,
+      deliveryType,
       recipient,
       address: addresses[selectedAddressIndex],
       remarks,
@@ -458,305 +498,342 @@ const Wizard = ({ onCompletion }) => {
         setAddresses([savedUserDetails.address]);
         setRemarks(savedUserDetails.remarks);
         setSelectedAddressIndex(0);
-        setStep(4); // Salta directamente al resumen
+        setDeliveryType(savedUserDetails.deliveryType);
+        setStep(5); // Salta directamente al resumen
       }
     }, []);
   
     return (
-    <LoadScript googleMapsApiKey="AIzaSyAc8LWhTfVyDkEcnOWWM2Zd01JCFpO20T4">
-      <WizardContainer>
-        <ProgressBarContainer>
-          <ProgressBar width={progress} />
-        </ProgressBarContainer>
+      <LoadScript googleMapsApiKey="AIzaSyAc8LWhTfVyDkEcnOWWM2Zd01JCFpO20T4">
+        <WizardContainer>
+          <ProgressBarContainer>
+            <ProgressBar width={progress} />
+          </ProgressBarContainer>
+    
+          <WizardStep active={step === 1}>
+            <H3>Ingresa tu email</H3>
+            <form onSubmit={handleEmailSubmit}>
+              <WizardInput
+                type="email"
+                placeholder="Email"
+                width="100%"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <ButtonContainer>
+                <WizardButton type="submit">Siguiente</WizardButton>
+              </ButtonContainer>
+            </form>
+          </WizardStep>
+    
+          <WizardStep active={step === 2}>
+            <H3>DATOS DE FACTURACIÓN</H3>
+            <form onSubmit={handleBillingSubmit}>
+              <InlineContainer>
+                <WizardInput
+                  type="text"
+                  placeholder="Nombre"
+                  width="100%"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  required
+                />
+                <WizardInput
+                  type="text"
+                  placeholder="Apellido"
+                  width="100%"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  required
+                />
+              </InlineContainer>
+              <InlineContainer>
+                <WizardInput
+                  type="text"
+                  placeholder="Pais de Origen"
+                  width="100%"
+                  value={country}
+                  onChange={(e) => setCountry(e.target.value)}
+                  required
+                />
+                <WizardSelect
+                  width="100%"
+                  value={documentType}
+                  onChange={(e) => setDocumentType(e.target.value)}
+                  required
+                >
+                  <option value="">Tipo de Documento</option>
+                  <option value="ci">CI</option>
+                  <option value="passport">Pasaporte</option>
+                </WizardSelect>
+              </InlineContainer>
+              <WizardInput
+                type="text"
+                placeholder="Documento"
+                width="100%"
+                value={documentNumber}
+                onChange={(e) => setDocumentNumber(e.target.value)}
+                required
+              />
+              <WizardInput
+                type="text"
+                placeholder="Numero de Telefono"
+                width="100%"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required
+              />
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.5rem', marginBottom: '0.5rem' }}>
+                ¿Factura con RUT?
+                <input
+                  type="checkbox"
+                  checked={facturaConRUT}
+                  onChange={(e) => setFacturaConRUT(e.target.checked)}
+                />
+              </label>
+              {facturaConRUT && (
+                <>
+                  <WizardInput
+                    type="text"
+                    placeholder="Razón Social"
+                    width="100%"
+                    value={razonSocial}
+                    onChange={(e) => setRazonSocial(e.target.value)}
+                    required
+                  />
+                  <WizardInput
+                    type="text"
+                    placeholder="RUT"
+                    width="100%"
+                    value={rut}
+                    onChange={(e) => setRUT(e.target.value)}
+                    required
+                  />
+                </>
+              )}
+              <hr />
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.5rem' }}>
+                <input
+                  type="checkbox"
+                  checked={termsAccepted}
+                  onChange={(e) => setTermsAccepted(e.target.checked)}
+                  required
+                />
+                Acepto términos y condiciones
+              </label>
+              <ButtonContainer>
+                <WizardButton type="button" onClick={() => setStep(1)}>Atrás</WizardButton>
+                <WizardButton type="submit">Siguiente</WizardButton>
+              </ButtonContainer>
+            </form>
+          </WizardStep>
   
-        <WizardStep active={step === 1}>
-          <H3>Ingresa tu email</H3>
-          <form onSubmit={handleEmailSubmit}>
-            <WizardInput
-              type="email"
-              placeholder="Email"
-              width="100%"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+          <WizardStep active={step === 3}>
+            <H3>SELECCIONA EL TIPO DE ENTREGA</H3>
             <ButtonContainer>
-              <WizardButton type="submit">Siguiente</WizardButton>
+              <WizardButton type="button" onClick={() => handleDeliveryChoice('delivery')}>
+                Envio a domicilio
+              </WizardButton>
+              <WizardButton type="button" onClick={() => handleDeliveryChoice('takeaway')}>
+                Retirar en Local
+              </WizardButton>
             </ButtonContainer>
-          </form>
-        </WizardStep>
-  
-        <WizardStep active={step === 2}>
-          <H3>DATOS DE FACTURACIÓN</H3>
-          <form onSubmit={handleBillingSubmit}>
-            <InlineContainer>
+          </WizardStep>
+    
+          <WizardStep active={step === 4}>
+            <H3>DATOS DE ENVÍO</H3>
+            <form onSubmit={handleShippingSubmit}>
               <WizardInput
                 type="text"
-                placeholder="Nombre"
+                placeholder="Nombre del destinatario"
                 width="100%"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
+                value={recipient}
+                onChange={(e) => setRecipient(e.target.value)}
                 required
               />
-              <WizardInput
-                type="text"
-                placeholder="Apellido"
-                width="100%"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                required
-              />
-            </InlineContainer>
-            <InlineContainer>
-              <WizardInput
-                type="text"
-                placeholder="Pais de Origen"
-                width="100%"
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
-                required
-              />
-              <WizardSelect
-                width="100%"
-                value={documentType}
-                onChange={(e) => setDocumentType(e.target.value)}
-                required
+              <H4>Direcciones de Envío</H4>
+              <WizardButton
+                type="button"
+                onClick={() => {
+                  setStreet("");
+                  setDoorNumber("");
+                  setApartment("");
+                  setDepartment("");
+                  setPostalCode("");
+                  setLocation({ lat: -34.9011, lng: -56.1645 });
+                  setShowPopup(true);
+                }}
               >
-                <option value="">Tipo de Documento</option>
-                <option value="ci">CI</option>
-                <option value="passport">Pasaporte</option>
-              </WizardSelect>
-            </InlineContainer>
-            <WizardInput
-              type="text"
-              placeholder="Documento"
-              width="100%"
-              value={documentNumber}
-              onChange={(e) => setDocumentNumber(e.target.value)}
-              required
-            />
-            <WizardInput
-              type="text"
-              placeholder="Numero de Telefono"
-              width="100%"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              required
-            />
-            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.5rem', marginBottom: '0.5rem' }}>
-              ¿Factura con RUT?
-              <input
-                type="checkbox"
-                checked={facturaConRUT}
-                onChange={(e) => setFacturaConRUT(e.target.checked)}
-              />
-            </label>
-            {facturaConRUT && (
-              <>
-                <WizardInput
-                  type="text"
-                  placeholder="Razón Social"
-                  width="100%"
-                  value={razonSocial}
-                  onChange={(e) => setRazonSocial(e.target.value)}
-                  required
-                />
-                <WizardInput
-                  type="text"
-                  placeholder="RUT"
-                  width="100%"
-                  value={rut}
-                  onChange={(e) => setRUT(e.target.value)}
-                  required
-                />
-              </>
-            )}
-            <hr />
-            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.5rem' }}>
-              <input
-                type="checkbox"
-                checked={termsAccepted}
-                onChange={(e) => setTermsAccepted(e.target.checked)}
-                required
-              />
-              Acepto términos y condiciones
-            </label>
-            <ButtonContainer>
-              <WizardButton type="button" onClick={() => setStep(1)}>Atrás</WizardButton>
-              <WizardButton type="submit">Siguiente</WizardButton>
-            </ButtonContainer>
-          </form>
-        </WizardStep>
-  
-        <WizardStep active={step === 3}>
-          <H3>DATOS DE ENVÍO</H3>
-          <form onSubmit={handleShippingSubmit}>
-            <WizardInput
-                          type="text"
-                          placeholder="Nombre del destinatario"
-                          width="100%"
-                          value={recipient}
-                          onChange={(e) => setRecipient(e.target.value)}
-                          required
-                        />
-                        <H4>Direcciones de Envío</H4>
-                          <WizardButton
-                            type="button"
-                            onClick={() => {
-                              setStreet("");
-                              setDoorNumber("");
-                              setApartment("");
-                              setDepartment("");
-                              setPostalCode("");
-                              setLocation({ lat: -34.9011, lng: -56.1645 });
-                              setShowPopup(true);
-                            }}
-                          >
-                            Agregar Dirección
-                          </WizardButton>
-                        {addresses.map((address, index) => (
-                          <AddressSummary key={index}>
-                            <div>
-                              {address.street} {address.doorNumber}, {address.apartment && `${address.apartment}, `} {address.department}, {address.postalCode}
-                            </div>
-                            <div>
-                              <IconButton onClick={() => handleEditAddress(index)}><FaEdit /></IconButton>
-                              <IconButton onClick={() => handleDeleteAddress(index)}><FaTrash /></IconButton>
-                            </div>
-                          </AddressSummary>
-                        ))}
-                        <ButtonContainer>
-                          <WizardButton type="button" onClick={() => setStep(2)}>Atrás</WizardButton>
-                          <WizardButton type="submit" disabled={addresses.length === 0}>Siguiente</WizardButton>
-                        </ButtonContainer>
-                      </form>
-                    </WizardStep>
-            
-                    <WizardStep active={step === 4}>
-                    <H3>RESUMEN</H3>
-                    <SummaryItem>
-                      <H4>Email:</H4> <SummaryText>{email}</SummaryText>
-                    </SummaryItem>
-                    <SummaryItem>
-                      <H4>Nombre:</H4> <SummaryText>{firstName} {lastName}</SummaryText>
-                    </SummaryItem>
-                    <SummaryItem>
-                      <H4>País de Origen:</H4> <SummaryText>{country}</SummaryText>
-                    </SummaryItem>
-                    <SummaryItem>
-                      <H4>Documento:</H4> <SummaryText>{documentType} - {documentNumber}</SummaryText>
-                    </SummaryItem>
-                    <SummaryItem>
-                      <H4>Teléfono:</H4> <SummaryText>{phone}</SummaryText>
-                    </SummaryItem>
-                    {facturaConRUT && (
-                      <>
-                        <SummaryItem>
-                          <H4>Razón Social:</H4> <SummaryText>{razonSocial}</SummaryText>
-                        </SummaryItem>
-                        <SummaryItem>
-                          <H4>RUT:</H4> <SummaryText>{rut}</SummaryText>
-                        </SummaryItem>
-                      </>
-                    )}
-                    <SummaryItem>
-                      <H4>Destinatario:</H4> <SummaryText>{recipient}</SummaryText>
-                    </SummaryItem>
-                    {addresses[selectedAddressIndex] && (
-                      <SummaryItem>
-                        <H4>Dirección de Envío:</H4> <SummaryText>{addresses[selectedAddressIndex].street} {addresses[selectedAddressIndex].doorNumber}, {addresses[selectedAddressIndex].apartment && `${addresses[selectedAddressIndex].apartment}, `} {addresses[selectedAddressIndex].department}, {addresses[selectedAddressIndex].postalCode}</SummaryText>
-                      </SummaryItem>
-                    )}
-                    <SummaryItem>
-                      <H4>Observaciones:</H4> <SummaryText>{remarks}</SummaryText>
-                    </SummaryItem>
-                    <ButtonContainer>
-                      <WizardButton type="button" onClick={() => setStep(3)}>Atrás</WizardButton>
-                      <WizardButton type="button" onClick={handleFinish}>Finalizar</WizardButton>
-                    </ButtonContainer>
-                  </WizardStep>
-                  </WizardContainer>
-            
-                  {showPopup && (
-                    <>
-                      <Overlay onClick={() => setShowPopup(false)} />
-                      <PopupContainer>
-                        <H3>{editIndex !== null ? "Editar Dirección" : "Agregar Dirección"}</H3>
-                        <form onSubmit={handleAddressPopupSubmit}>
-                          <WizardInput
-                            type="text"
-                            placeholder="Calle"
-                            width="100%"
-                            value={street}
-                            onChange={(e) => setStreet(e.target.value)}
-                            required
-                          />
-                          <InlineContainer>
-                            <WizardInput
-                              type="text"
-                              placeholder="Número de puerta"
-                              width="100%"
-                              value={doorNumber}
-                              onChange={(e) => setDoorNumber(e.target.value)}
-                              required
-                            />
-                            <WizardInput
-                              type="text"
-                              placeholder="Apartamento"
-                              width="100%"
-                              value={apartment}
-                              onChange={(e) => setApartment(e.target.value)}
-                            />
-                          </InlineContainer>
-                          <InlineContainer>
-                            <WizardInput
-                              type="text"
-                              placeholder="Departamento"
-                              width="100%"
-                              value={department}
-                              onChange={(e) => setDepartment(e.target.value)}
-                              required
-                            />
-                            <WizardInput
-                              type="text"
-                              placeholder="Código Postal"
-                              width="100%"
-                              value={postalCode}
-                              onChange={(e) => setPostalCode(e.target.value)}
-                              required
-                            />
-                          </InlineContainer>
-                          <MapContainer>
-                            <MapOverlay isBlurred={isMapBlurred} onClick={handleMapClick}>
-                              {isMapBlurred ? 'Haga clic para interactuar con el mapa' : ''}
-                            </MapOverlay>
-                            <GoogleMapStyled
-                              center={location}
-                              zoom={15}
-                              onClick={(e) => setLocation({ lat: e.latLng.lat(), lng: e.latLng.lng() })}
-                              mapContainerStyle={{ width: "100%", height: "100%" }}
-                            >
-                              <Marker position={location} />
-                            </GoogleMapStyled>
-                          </MapContainer>
+                Agregar Dirección
+              </WizardButton>
+                  {addresses.map((address, index) => (
+                  <AddressSummary key={index}>
+                    <div>
+                      {address?.street || "Calle no especificada"} {address?.doorNumber || ""}
+                      {address?.apartment && `${address.apartment}, `}
+                      {address?.department || "Departamento no especificado"}
+                      {address?.postalCode || "Código postal no especificado"}
+                    </div>
+                    <div>
+                      <IconButton onClick={() => handleEditAddress(index)}><FaEdit /></IconButton>
+                      <IconButton onClick={() => handleDeleteAddress(index)}><FaTrash /></IconButton>
+                    </div>
+                  </AddressSummary>
+                ))}
+              <ButtonContainer>
+                <WizardButton type="button" onClick={() => setStep(3)}>Atrás</WizardButton>
+                <WizardButton type="button" disabled={addresses.length === 0} onClick={() => setStep(5)}>Siguiente</WizardButton>
+              </ButtonContainer>
+            </form>
+          </WizardStep>
+          
+          <WizardStep active={step === 5}>
+          <H3>RESUMEN</H3>
+          <SummaryItem>
+            <H4>Email:</H4> <SummaryText>{email}</SummaryText>
+          </SummaryItem>
+          <SummaryItem>
+            <H4>Nombre:</H4> <SummaryText>{firstName} {lastName}</SummaryText>
+          </SummaryItem>
+          <SummaryItem>
+            <H4>País de Origen:</H4> <SummaryText>{country}</SummaryText>
+          </SummaryItem>
+          <SummaryItem>
+            <H4>Documento:</H4> <SummaryText>{documentType} - {documentNumber}</SummaryText>
+          </SummaryItem>
+          <SummaryItem>
+            <H4>Teléfono:</H4> <SummaryText>{phone}</SummaryText>
+          </SummaryItem>
+          {facturaConRUT && (
+            <>
+              <SummaryItem>
+                <H4>Razón Social:</H4> <SummaryText>{razonSocial}</SummaryText>
+              </SummaryItem>
+              <SummaryItem>
+                <H4>RUT:</H4> <SummaryText>{rut}</SummaryText>
+              </SummaryItem>
+            </>
+          )}
 
-                          <WizardInput
-                            type="text"
-                            placeholder="Observaciones"
-                            width="100%"
-                            value={remarks}
-                            onChange={(e) => setRemarks(e.target.value)}
-                          />
-                          <ButtonContainer>
-                            <WizardButton type="button" onClick={() => setShowPopup(false)}>Cancelar</WizardButton>
-                            <WizardButton type="submit">Guardar</WizardButton>
-                          </ButtonContainer>
-                        </form>
-                      </PopupContainer>
-                    </>
-                  )}
-                </LoadScript>
-              );
-            };
-            
-            export default Wizard;
+          {/* Tipo de Envío */}
+          <SummaryItem>
+            <H4>Tipo de Envío:</H4>
+            <SummaryText>
+              {deliveryType === 'takeaway' ? 'Para retirar' : 'Entrega a domicilio'}
+            </SummaryText>
+          </SummaryItem>
+
+          {/* Mostrar destinatario solo si es entrega a domicilio */}
+          {deliveryType === 'delivery' && (
+            <>
+              <SummaryItem>
+                <H4>Destinatario:</H4> <SummaryText>{recipient}</SummaryText>
+              </SummaryItem>
+              {addresses[selectedAddressIndex] && (
+                <SummaryItem>
+                  <H4>Dirección de Envío:</H4>
+                  <SummaryText>
+                    {addresses[selectedAddressIndex].street} {addresses[selectedAddressIndex].doorNumber},
+                    {addresses[selectedAddressIndex].apartment && ` ${addresses[selectedAddressIndex].apartment}, `}
+                    {addresses[selectedAddressIndex].department}, {addresses[selectedAddressIndex].postalCode}
+                  </SummaryText>
+                </SummaryItem>
+              )}
+            </>
+          )}
+
+          <SummaryItem>
+            <H4>Observaciones:</H4> <SummaryText>{remarks}</SummaryText>
+          </SummaryItem>
+          <ButtonContainer>
+            <WizardButton type="button" onClick={() => setStep(deliveryType === 'takeaway' ? 3 : 4)}>Atrás</WizardButton>
+            <WizardButton type="button" onClick={handleFinish}>Finalizar</WizardButton>
+          </ButtonContainer>
+        </WizardStep>
+
+        </WizardContainer>
+        
+        {showPopup && (
+          <>
+            <Overlay onClick={() => setShowPopup(false)} />
+            <PopupContainer>
+              <H3>{editIndex !== null ? "Editar Dirección" : "Agregar Dirección"}</H3>
+              <form onSubmit={handleAddressPopupSubmit}>
+                <WizardInput
+                  type="text"
+                  placeholder="Calle"
+                  width="100%"
+                  value={street}
+                  onChange={(e) => setStreet(e.target.value)}
+                  required
+                />
+                <InlineContainer>
+                  <WizardInput
+                    type="text"
+                    placeholder="Número de puerta"
+                    width="100%"
+                    value={doorNumber}
+                    onChange={(e) => setDoorNumber(e.target.value)}
+                    required
+                  />
+                  <WizardInput
+                    type="text"
+                    placeholder="Apartamento"
+                    width="100%"
+                    value={apartment}
+                    onChange={(e) => setApartment(e.target.value)}
+                  />
+                </InlineContainer>
+                <InlineContainer>
+                  <WizardInput
+                    type="text"
+                    placeholder="Departamento"
+                    width="100%"
+                    value={department}
+                    onChange={(e) => setDepartment(e.target.value)}
+                    required
+                  />
+                  <WizardInput
+                    type="text"
+                    placeholder="Código Postal"
+                    width="100%"
+                    value={postalCode}
+                    onChange={(e) => setPostalCode(e.target.value)}
+                    required
+                  />
+                </InlineContainer>
+                <MapContainer>
+                  <MapOverlay isBlurred={isMapBlurred} onClick={handleMapClick}>
+                    {isMapBlurred ? 'Haga clic para interactuar con el mapa' : ''}
+                  </MapOverlay>
+                  <GoogleMapStyled
+                    center={location}
+                    zoom={15}
+                    onClick={(e) => setLocation({ lat: e.latLng.lat(), lng: e.latLng.lng() })}
+                    mapContainerStyle={{ width: "100%", height: "100%" }}
+                  >
+                    <Marker position={location} />
+                  </GoogleMapStyled>
+                </MapContainer>
+  
+                <WizardInput
+                  type="text"
+                  placeholder="Observaciones"
+                  width="100%"
+                  value={remarks}
+                  onChange={(e) => setRemarks(e.target.value)}
+                />
+                <ButtonContainer>
+                  <WizardButton type="button" onClick={() => setShowPopup(false)}>Cancelar</WizardButton>
+                  <WizardButton type="submit">Guardar</WizardButton>
+                </ButtonContainer>
+              </form>
+            </PopupContainer>
+          </>
+        )}
+      </LoadScript>
+    );
+  };
+  
+  export default Wizard;

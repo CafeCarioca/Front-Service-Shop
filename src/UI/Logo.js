@@ -24,7 +24,7 @@ const LogoGreenContainer = styled(Link)`
   border-radius: 0.25rem;
 `;
 const LeftLogoSpan = styled.div`
-  font-family: ${({ theme }) => theme.fonts[2]};
+  font-family: ${({ theme }) => theme.fonts[1]};
   margin-right: 0.5rem;
   color: ${({ theme }) => theme.colors.white};
 `;

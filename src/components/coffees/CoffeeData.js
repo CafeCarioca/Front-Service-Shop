@@ -23,7 +23,13 @@ const coffeeBlendsData = [
     roast: "Dark",
     origin: "South America, Africa, India",
     taste: "Toffee, Dark Chocolate, Spice",
-    price: 1,
+    prices: {
+      250: 1,
+      500: 70,
+      1000: 130,
+      2000: 250,
+      5000: 600
+    },
     category: "coffee",
   },
   {
@@ -36,7 +42,13 @@ const coffeeBlendsData = [
     roast: "Dark",
     origin: "Central America, South America, India",
     taste: "Caramel, Milk Chocolate, Hazelnut",
-    price: 39.0,
+    prices: {
+      250: 1,
+      500: 70,
+      1000: 130,
+      2000: 250,
+      5000: 600
+    },
     category: "coffee",
   },
   {
@@ -49,7 +61,13 @@ const coffeeBlendsData = [
     roast: "Medium / Dark",
     origin: "South America, Africa, India",
     taste: "Rich, Bold, Spicy",
-    price: 39.0,
+    prices: {
+      250: 1,
+      500: 70,
+      1000: 130,
+      2000: 250,
+      5000: 600
+    },
     category: "coffee",
   },
   {
@@ -62,7 +80,13 @@ const coffeeBlendsData = [
     roast: "Medium",
     origin: "Central America, South America, Africa",
     taste: "Sweet, Nutty, Caramel tones",
-    price: 39.0,
+    prices: {
+      250: 1,
+      500: 70,
+      1000: 130,
+      2000: 250,
+      5000: 600
+    },
     linkTitle: "The Pineapple Express",
     link: "https://tpe-vc.com/",
     category: "coffee",
@@ -84,7 +108,13 @@ Soldier On is a not-for-profit veteran support organisation delivering a range o
     roast: "Dark",
     origin: "Central & South America, India, Africa",
     taste: "Strong, Nutty, Dark Chocolate",
-    price: 39.0,
+    prices: {
+      250: 1,
+      500: 70,
+      1000: 130,
+      2000: 250,
+      5000: 600
+    },
     linkTitle: "Soldier On",
     link: "https://soldieron.org.au/",
     category: "coffee",
@@ -99,7 +129,13 @@ Soldier On is a not-for-profit veteran support organisation delivering a range o
     roast: "",
     origin: "",
     taste: "",
-    price: 39.0,
+    prices: {
+      250: 1,
+      500: 70,
+      1000: 130,
+      2000: 250,
+      5000: 600
+    },
     linkTitle: "",
     link: "",
     category: "coffee",

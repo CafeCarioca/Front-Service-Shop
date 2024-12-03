@@ -37,16 +37,21 @@ const SharedNavStyles = css`
 const NavLeft = styled.div``;
 const NavLLeft = styled.div`
   ${SharedNavStyles}
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   gap: 1.5rem;
   @media screen and (min-width: ${({ theme }) => theme.mediaScreen.lgLaptop}) {
     display: none;
   }
+  
 `;
 const NavLRight = styled.div`
   display: none;
   @media screen and (min-width: ${({ theme }) => theme.mediaScreen.lgLaptop}) {
     display: block;
+  }
+
+  &:hover {
+    cursor: pointer;
   }
 `;
 const NavCenter = styled.div`
@@ -60,6 +65,7 @@ const NavCLeft = styled.div`
   @media screen and (min-width: ${({ theme }) => theme.mediaScreen.lgLaptop}) {
     display: none;
   }
+ 
 `;
 const NavList = styled.ul`
   display: none;
@@ -123,15 +129,15 @@ const Navbar = ({ openCheckoutSummary, checkoutList, openSideNav }) => {
         <NavContainer>
           <NavLeft>
             <NavLLeft>
-              <GiHamburgerMenu className="hoverPointer" onClick={openSideNav} />
+              <GiHamburgerMenu className="hoverPointer" onClick={openSideNav} color="black"/>
             </NavLLeft>
             <NavLRight>
-              <LogoImgIcon src={Carioca} alt="Carioca Logo" />
+              <LogoImgIcon src={Carioca} alt="Carioca Logo" onClick={() => window.location.href = '/'} />
             </NavLRight>
           </NavLeft>
           <NavCenter>
             <NavCLeft>
-              <LogoImgIcon src={Carioca} alt="Carioca Logo" />  
+              <LogoImgIcon src={Carioca} alt="Carioca Logo" onClick={() => window.location.href = '/'} />  
             </NavCLeft>
 
             <NavList>
@@ -139,7 +145,7 @@ const Navbar = ({ openCheckoutSummary, checkoutList, openSideNav }) => {
                 const { to, title } = navItem;
                 return (
                   <li key={index}>
-                    <StyledNavLinks to={to}>{title}</StyledNavLinks>
+                    <StyledNavLinks to={to} style={{ color: 'black' }}>{title}</StyledNavLinks>
                   </li>
                 );
               })}

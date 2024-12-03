@@ -9,7 +9,7 @@ const StyledProductButton = styled.button.attrs((props) => ({
   padding: 0.3rem 0.7rem;
   border: 1.2px solid ${({ theme }) => theme.colors.darkerGray};
   border-radius: 1rem;
-  font-family: ${({ theme }) => theme.fonts[0]};
+  font-family: ${({ theme }) => theme.fonts[1]};
   margin: 0 1rem 1rem 0;
   &:hover {
     border: 1.2px solid ${({ theme }) => theme.colors.mediumGray};
