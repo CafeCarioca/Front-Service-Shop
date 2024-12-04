@@ -88,43 +88,43 @@ const Button = styled(Link)`
 `;
 
 // Función para enviar el email de confirmación de la orden
-const sendOrderEmail = async (orderId) => {
-  try {
-    const apiUrl = API_ENDPOINTS.SEND_ORDER_EMAIL;
-    const response = await axios.post(`${apiUrl}`, { orderId });
-    console.log(response.data);
-    if (response.status === 200) {
-      console.log('Email enviado con éxito');
-    }
-  } catch (error) {
-    console.error('Error al enviar el email de confirmación:', error);
-  }
-};
+// const sendOrderEmail = async (orderId) => {
+//   try {
+//     const apiUrl = API_ENDPOINTS.SEND_ORDER_EMAIL;
+//     const response = await axios.post(`${apiUrl}`, { orderId });
+//     console.log(response.data);
+//     if (response.status === 200) {
+//       console.log('Email enviado con éxito');
+//     }
+//   } catch (error) {
+//     console.error('Error al enviar el email de confirmación:', error);
+//   }
+// };
 
 const ThankYou = () => {
-  useEffect(() => {
-    const preferenceId = localStorage.getItem('preferenceId');
-    const apiUrl = API_ENDPOINTS.CHANGESTATUSBYPREFID;
-    if (preferenceId) {
-      const changeOrderStatus = async () => {
-        try {
-          const response = await axios.put(`${apiUrl}/${preferenceId}`);
-          console.log(response.data);
-          if (response.status === 200) {
-            localStorage.removeItem('preferenceId');
-            const orderID = response.data.orderId;
-            console.log("Response.data", response.data);
-            console.log('Estado de la orden cambiado con éxito:', orderID);
-            sendOrderEmail(orderID);
-          }
-        } catch (error) {
-          console.error('Error al cambiar el estado de la orden:', error);
-        }
-      };
+  // useEffect(() => {
+  //   const preferenceId = localStorage.getItem('preferenceId');
+  //   const apiUrl = API_ENDPOINTS.CHANGESTATUSBYPREFID;
+  //   if (preferenceId) {
+  //     const changeOrderStatus = async () => {
+  //       try {
+  //         const response = await axios.put(`${apiUrl}/${preferenceId}`);
+  //         console.log(response.data);
+  //         if (response.status === 200) {
+  //           localStorage.removeItem('preferenceId');
+  //           const orderID = response.data.orderId;
+  //           console.log("Response.data", response.data);
+  //           console.log('Estado de la orden cambiado con éxito:', orderID);
+  //           sendOrderEmail(orderID);
+  //         }
+  //       } catch (error) {
+  //         console.error('Error al cambiar el estado de la orden:', error);
+  //       }
+  //     };
 
-      changeOrderStatus();
-    }
-  }, []);
+  //     changeOrderStatus();
+  //   }
+  // }, []);
 
   return (
     <ThankYouContainer>

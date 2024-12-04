@@ -23,7 +23,8 @@ const CheckoutSection = styled.section`
 
 const CheckoutContainer = styled.div`
   width: 100%;
-  margin: 0 auto;
+  margin: 10px auto;
+  margin-left: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -108,6 +109,7 @@ const TotalContainer = styled.div`
 const Checkout = ({ checkoutList }) => {
   const [wizardComplete, setWizardComplete] = useState(false);
   const [preferenceId, setPreferenceId] = useState(null);
+  const [external_reference, setExternalReference] = useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -122,11 +124,48 @@ const Checkout = ({ checkoutList }) => {
     0
   );
 
+  const createOrder = async () => {
+    try {
+      const userDetails = JSON.parse(localStorage.getItem('userDetails'));
+      const checkoutList = JSON.parse(localStorage.getItem('checkoutList'));
+
+      const externalReference = `order-${Date.now()}`; // Ejemplo: un timestamp único
+      setExternalReference(externalReference);
+      localStorage.setItem('externalReference', externalReference);
+
+      const orderBody = {
+        order: {
+          external_reference: externalReference,
+          userDetails: userDetails,
+          products: checkoutList
+        }
+      };
+
+      console.log('Order body:', orderBody);
+
+      const orderApiUrl = API_ENDPOINTS.CREATE_ORDER;
+      
+      const response = await axios.post(orderApiUrl, orderBody, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      console.log('Order created:', response.data);
+    } catch (error) {
+      console.error("Error al crear la orden:", error);
+    }
+  };
+
   const handlePayment = async () => {
     try {
+      createOrder();
+      const externalReference = localStorage.getItem('externalReference');
+      setExternalReference(externalReference);
       const apiUrl = API_ENDPOINTS.CREATE_PREFERENCE;
   
       const requestBody = {
+        external_reference: externalReference,
         items: checkoutList.map(item => ({
           title: item.blendName,
           unit_price: Number(item.price),
@@ -150,39 +189,9 @@ const Checkout = ({ checkoutList }) => {
     }
   };
 
-  const createOrder = async () => {
-    try {
-      const userDetails = JSON.parse(localStorage.getItem('userDetails'));
-      const checkoutList = JSON.parse(localStorage.getItem('checkoutList'));
-
-      const orderBody = {
-        order: {
-          preferenceId: preferenceId,
-          userDetails: userDetails,
-          products: checkoutList
-        }
-      };
-
-      console.log('Order body:', orderBody);
-
-      const orderApiUrl = API_ENDPOINTS.CREATE_ORDER;
-      
-      const response = await axios.post(orderApiUrl, orderBody, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      console.log('Order created:', response.data);
-    } catch (error) {
-      console.error("Error al crear la orden:", error);
-    }
-  };
-
   useEffect(() => {
     if (preferenceId) {
       localStorage.setItem('preferenceId', preferenceId);
-      createOrder();
     }
   }, [preferenceId]);
 
