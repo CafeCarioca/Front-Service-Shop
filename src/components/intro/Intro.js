@@ -9,8 +9,11 @@ const IntroSection = styled.section`
   @media screen and (min-width: ${({ theme }) => theme.mediaScreen.lgLaptop}) {
     display: flex;
   }
-  min-height: 95vh; /* Asegúrate de que el contenedor ocupe toda la altura de la ventana */
+  min-height: 90vh; /* Asegúrate de que el contenedor ocupe toda la altura de la ventana */
   position: relative;
+
+  width: 100;
+  overflow-x: hidden;
 `;
 
 const IntroLeft = styled.div`
@@ -32,6 +35,8 @@ const IntroRight = styled.div`
   display: grid;
   place-content: center;
   overflow: hidden;
+  box-sizing: border-box;
+  overflow-x: hidden;
 
   video {
     position: absolute;
@@ -42,6 +47,7 @@ const IntroRight = styled.div`
     z-index: 1;
     transform: translate(-50%, -50%);
     object-fit: cover; /* Hace que el video siempre cubra todo el contenedor */
+    overflow-x: hidden;
 }
 
 

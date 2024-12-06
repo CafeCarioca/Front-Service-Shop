@@ -26,8 +26,8 @@ const AboutUs = () => {
   return (
     <AboutUsSection>
       <AboutUsContainer>
-        <h1>Nosotros</h1>
-        <p>
+        <h1>PROXIMAMENTE...</h1>
+        {/* <p>
           lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut
           ultricies purus. Donec euismod, nunc id scelerisque ultricies, nunc
           ligula ultricies purus, in scelerisque justo libero at elit. Nullam
@@ -50,7 +50,7 @@ const AboutUs = () => {
           ultricies purus. Donec euismod, nunc id scelerisque ultricies, nunc
           ligula ultricies purus, in scelerisque justo libero at elit. Nullam
           sit amet justo nec purus ultricies ultrices. Nullam sit amet justo nec
-        </p>
+        </p> */}
       </AboutUsContainer>
     </AboutUsSection>
   );

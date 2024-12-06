@@ -386,11 +386,10 @@ const Wizard = ({ onCompletion }) => {
     };
   
     const handleDeleteAddress = (index) => {
-        const updatedAddresses = addresses.filter((_, i) => i !== index);
-        setAddresses(updatedAddresses);
-        setSelectedAddressIndex(null);
+      const updatedAddresses = addresses.filter((_, i) => i !== index);
+      setAddresses(updatedAddresses);
+      setSelectedAddressIndex(null);
     };
-    
     const handleEmailSubmit = (e) => {
       e.preventDefault();
       const emailExists = true;
@@ -622,10 +621,8 @@ const Wizard = ({ onCompletion }) => {
                 />
                 Acepto términos y condiciones
               </label>
-              <ButtonContainer>
                 <WizardButton type="button" onClick={() => setStep(1)}>Atrás</WizardButton>
                 <WizardButton type="submit">Siguiente</WizardButton>
-              </ButtonContainer>
             </form>
           </WizardStep>
   
@@ -659,7 +656,7 @@ const Wizard = ({ onCompletion }) => {
                   setStreet("");
                   setDoorNumber("");
                   setApartment("");
-                  setDepartment("");
+                  setDepartment("Montevideo");
                   setPostalCode("");
                   setLocation({ lat: -34.9011, lng: -56.1645 });
                   setShowPopup(true);
@@ -676,8 +673,12 @@ const Wizard = ({ onCompletion }) => {
                       {address?.postalCode || "Código postal no especificado"}
                     </div>
                     <div>
-                      <IconButton onClick={() => handleEditAddress(index)}><FaEdit /></IconButton>
-                      <IconButton onClick={() => handleDeleteAddress(index)}><FaTrash /></IconButton>
+                      <IconButton onClick={() => handleEditAddress(index)}>
+                        <FaEdit />
+                      </IconButton>
+                      <IconButton onClick={() => handleDeleteAddress(index)}>
+                        <FaTrash />
+                      </IconButton>
                     </div>
                   </AddressSummary>
                 ))}
@@ -788,10 +789,11 @@ const Wizard = ({ onCompletion }) => {
                 <InlineContainer>
                   <WizardInput
                     type="text"
-                    placeholder="Departamento"
+                    placeholder="Montevideo"
                     width="100%"
-                    value={department}
+                    value="Montevideo"
                     onChange={(e) => setDepartment(e.target.value)}
+                    readOnly
                     required
                   />
                   <WizardInput

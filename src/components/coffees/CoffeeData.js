@@ -25,8 +25,8 @@ const coffeeBlendsData = [
     taste: "Toffee, Dark Chocolate, Spice",
     prices: {
       250: 1,
-      500: 70,
-      1000: 130,
+      500: 480,
+      1000: 960,
       2000: 250,
       5000: 600
     },
@@ -40,12 +40,12 @@ const coffeeBlendsData = [
     description:
       "Sweet and smooth, with notes of caramel, hazelnuts and port wine. This is the perfect coffee to enjoy with or without milk. ",
     roast: "Dark",
-    origin: "Central America, South America, India",
+    origin: "Brasil",
     taste: "Caramel, Milk Chocolate, Hazelnut",
     prices: {
       250: 1,
-      500: 70,
-      1000: 130,
+      500: 575,
+      1000: 1150,
       2000: 250,
       5000: 600
     },
@@ -127,12 +127,12 @@ Soldier On is a not-for-profit veteran support organisation delivering a range o
     description: `
     `,
     roast: "",
-    origin: "",
+    origin: "Brasil",
     taste: "",
     prices: {
-      250: 1,
-      500: 70,
-      1000: 130,
+      250: 250,
+      500: 480,
+      1000: 915,
       2000: 250,
       5000: 600
     },

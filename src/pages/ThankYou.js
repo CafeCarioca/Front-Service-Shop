@@ -102,29 +102,10 @@ const Button = styled(Link)`
 // };
 
 const ThankYou = () => {
-  // useEffect(() => {
-  //   const preferenceId = localStorage.getItem('preferenceId');
-  //   const apiUrl = API_ENDPOINTS.CHANGESTATUSBYPREFID;
-  //   if (preferenceId) {
-  //     const changeOrderStatus = async () => {
-  //       try {
-  //         const response = await axios.put(`${apiUrl}/${preferenceId}`);
-  //         console.log(response.data);
-  //         if (response.status === 200) {
-  //           localStorage.removeItem('preferenceId');
-  //           const orderID = response.data.orderId;
-  //           console.log("Response.data", response.data);
-  //           console.log('Estado de la orden cambiado con éxito:', orderID);
-  //           sendOrderEmail(orderID);
-  //         }
-  //       } catch (error) {
-  //         console.error('Error al cambiar el estado de la orden:', error);
-  //       }
-  //     };
-
-  //     changeOrderStatus();
-  //   }
-  // }, []);
+  useEffect(() => {
+    // Borra inmediatamente el 'checkoutList' cuando el componente se monta
+    localStorage.removeItem('checkoutList');
+  }, []);
 
   return (
     <ThankYouContainer>

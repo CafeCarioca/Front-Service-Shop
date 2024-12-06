@@ -79,9 +79,11 @@ const TotalContainer = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.darkerGray};
   border-left: none;
   border-right: none;
+  text-align: left;
   width: 100%;
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
   padding: 1rem 2rem;
   margin-bottom: 1rem;
 
@@ -104,6 +106,25 @@ const TotalContainer = styled.div`
       font-size: ${({ theme }) => theme.fontSizes.xmedium};
     }
   }
+  
+`;
+
+const CostDetail = styled.div`
+  display: flex;
+  justify-content: space-between;
+  font-size: ${({ fontSize }) => fontSize || '10px'};
+  margin-bottom: 8px;
+
+  span {
+    font-weight: ${({ isBold }) => (isBold ? 'bold' : 'normal')};
+    font-family: 'Courier New', Courier, monospace;
+  }
+
+  &:last-child {
+    border-top: 1px solid #ddd;
+    padding-top: 12px;
+    margin-top: 12px;
+  }
 `;
 
 const Checkout = ({ checkoutList }) => {
@@ -118,11 +139,17 @@ const Checkout = ({ checkoutList }) => {
     });
   }, []);
   
+  // Calcular el total de los items
   const itemTotals = checkoutList.reduce(
-    (accumulator, currValue) =>
-      accumulator + +(currValue.price * currValue.quantity),
+    (accumulator, currValue) => accumulator + +(currValue.price * currValue.quantity),
     0
   );
+
+  // Calcular el costo de envío
+  const shippingCost = itemTotals >= 1000 ? 0 : 80;
+
+  // Calcular el total final (importe total + costo de envío)
+  const totalWithShipping = itemTotals + shippingCost;
 
   const createOrder = async () => {
     try {
@@ -144,14 +171,18 @@ const Checkout = ({ checkoutList }) => {
       console.log('Order body:', orderBody);
 
       const orderApiUrl = API_ENDPOINTS.CREATE_ORDER;
+      const APitoke = process.env.REACT_APP_API_TOKEN;
+      console.log('API Token:', APitoke);
       
       const response = await axios.post(orderApiUrl, orderBody, {
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.REACT_APP_API_TOKEN}`,
         },
       });
 
       console.log('Order created:', response.data);
+      localStorage.removeItem('checkoutList');
     } catch (error) {
       console.error("Error al crear la orden:", error);
     }
@@ -164,13 +195,25 @@ const Checkout = ({ checkoutList }) => {
       setExternalReference(externalReference);
       const apiUrl = API_ENDPOINTS.CREATE_PREFERENCE;
   
+      const items = checkoutList.map(item => ({
+        title: item.blendName,
+        unit_price: Number(item.price),
+        quantity: Number(item.quantity),
+      }));
+  
+      // Si hay un costo de envío, lo agregamos como un ítem adicional
+      if (shippingCost > 0) {
+        items.push({
+          title: "Costo de envío",
+          unit_price: shippingCost,
+          quantity: 1,  // Solo se agrega una vez
+        });
+      }
+  
+      // Cuerpo de la solicitud para crear la preferencia en Mercado Pago
       const requestBody = {
         external_reference: externalReference,
-        items: checkoutList.map(item => ({
-          title: item.blendName,
-          unit_price: Number(item.price),
-          quantity: Number(item.quantity),
-        })),
+        items: items,  // Aquí agregamos tanto los productos como el costo de envío
       };
   
       console.log('Request Body:', JSON.stringify(requestBody, null, 2));
@@ -178,6 +221,7 @@ const Checkout = ({ checkoutList }) => {
       const response = await axios.post(apiUrl, requestBody, {
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.REACT_APP_API_TOKEN}`,
         },
       });
 
@@ -214,7 +258,18 @@ const Checkout = ({ checkoutList }) => {
           {checkoutList.length > 0 && (
             <CheckoutFooter>
               <TotalContainer>
-                <span>Importe total</span> <span>${itemTotals}</span>
+                <CostDetail fontSize='5px'>
+                  <span>Subtotal (productos): </span>
+                  <span>${itemTotals}</span>
+                </CostDetail>
+                <CostDetail>
+                  <span>Costo de envío: </span>
+                  <span>${shippingCost}</span>
+                </CostDetail>
+                <CostDetail fontSize='18px' isBold>
+                  <span>Total: </span>
+                  <span>${totalWithShipping}</span>
+                </CostDetail>
               </TotalContainer>
               {!preferenceId && (
                 <SimpleButton

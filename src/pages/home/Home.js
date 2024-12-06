@@ -7,6 +7,7 @@ import {
   Coffees,
   HelpingVets,
   Footer,
+  Header,
 } from "../../components/index";
 
 const Home = () => {
@@ -15,6 +16,7 @@ const Home = () => {
   }, []);
   return (
     <>
+      <Header />
       <Intro />
       <FeaturedBlend />
       <Coffees />
