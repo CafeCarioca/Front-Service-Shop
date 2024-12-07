@@ -9,34 +9,34 @@ import numero4 from "./coffees/4.jpg";
 import numero4single from "./coffees/4single.jpg";
 import numero5 from "./coffees/5.jpg";
 import numero5single from "./coffees/5single.jpg";
-import Roma from "./coffees/6Roma.jpg";
-import Romasingle from "./coffees/6Romasingle.jpg";
-import Venezia from "./coffees/7Venezia.jpg";
-import Veneziasingle from "./coffees/7Veneziasingle.jpg";
-import Torino from "./coffees/8Torino.jpg";
-import Torinosingle from "./coffees/8Torinosingle.jpg";
-import Firenze from "./coffees/9Firenze.jpg";
-import Firenzesingle from "./coffees/9Firenzesingle.jpg";
-import Napoli from "./coffees/10Napoli.jpg";
-import Napolisingle from "./coffees/10Napolisingle.jpg";
-import Mocachino from "./coffees/11Mocachino.jpg";
-import Mocachinosingle from "./coffees/11Mocachinosingle.jpg";
-import Capuchino from "./coffees/12Capuchino.jpg";
-import Capuchinosingle from "./coffees/12Capuchinosingle.jpg";
-import Bayleys from "./coffees/13Bayleys.jpg";
-import Bayleyssingle from "./coffees/13Bayleyssingle.jpg";
+import Roma from "./coffees/6Roma.png";
+import Romasingle from "./coffees/6Roma.png";
+import Venezia from "./coffees/7Venezia.png";
+import Veneziasingle from "./coffees/7Venezia.png";
+import Torino from "./coffees/8Torino.png";
+import Torinosingle from "./coffees/8Torino.png";
+import Firenze from "./coffees/9Firenze.png";
+import Firenzesingle from "./coffees/9Firenze.png";
+import Napoli from "./coffees/10Napoli.png";
+import Napolisingle from "./coffees/10Napoli.png";
+import Mocachino from "./coffees/11Mocachino.png";
+import Mocachinosingle from "./coffees/11Mocachino.png";
+import Capuchino from "./coffees/12Capuchino.png";
+import Capuchinosingle from "./coffees/12Capuchino.png";
+import Bayleys from "./coffees/13Bayleys.png";
+import Bayleyssingle from "./coffees/13Bayleys.png";
 import Caramel from "./coffees/14Caramel.jpg";
 import Caramelsingle from "./coffees/14Caramelsingle.jpg";
-import blanco from "./coffees/15blanco.jpg";
-import blancosingle from "./coffees/15blancosingle.jpg";
-import Cremebrule from "./coffees/16Cremebrule.jpg";
-import Cremebrulesingle from "./coffees/16Cremebrulesingle.jpg";
-import Cortado from "./coffees/17Cortado.jpg";
-import Cortadosingle from "./coffees/17Cortadosingle.jpg";
+import blanco from "./coffees/15blanco.png";
+import blancosingle from "./coffees/15blanco.png";
+import Cremebrule from "./coffees/16Cremebrule.png";
+import Cremebrulesingle from "./coffees/16Cremebrule.png";
+import Cortado from "./coffees/17Cortado.png";
+import Cortadosingle from "./coffees/17Cortado.png";
 import Chocolate from "./coffees/18Chocolate.jpg";
 import Chocolatesingle from "./coffees/18Chocolatesingle.jpg";
-import Avellana from "./coffees/19Avellana.jpg";
-import Avellanasingle from "./coffees/19Avellanasingle.jpg";
+import Avellana from "./coffees/19Avellana.png";
+import Avellanasingle from "./coffees/19Avellana.png";
 import Tradicional from "./coffees/20Tradicional.jpg";
 import Tradicionalsingle from "./coffees/20Tradicionalsingle.jpg";
 import Capuchinocaramel from "./coffees/21Capuchinocaramel.png";
@@ -48,10 +48,6 @@ import dark3 from "./coffees/dark3.JPG";
 import dark3Single from "./coffees/dark3Single.JPG";
 import decaf from "./coffees/decaf.JPG";
 import decafSingle from "./coffees/decafSingle.JPG";
-import disaster from "./coffees/disaster.JPG";
-import disasterSingle from "./coffees/disasterSingle.JPG";
-import heat from "./coffees/heat.JPG";
-import heatSingle from "./coffees/heatSingle.JPG";
 import pineapple from "./coffees/pineapple.JPG";
 import pineappleSingle from "./coffees/pineappleSingle.JPG";
 import support from "./coffees/support.JPG";
@@ -116,12 +112,6 @@ export {
   dark2,
   dark3,
   dark3Single,
-  decaf,
-  decafSingle,
-  disaster,
-  disasterSingle,
-  heat,
-  heatSingle,
   pineapple,
   pineappleSingle,
   support,

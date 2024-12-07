@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import MainLogo from "../../UI/Logo/Logo";
 import coffeeVideo from "../../assets/images/4081313-uhd_3840_2160_24fps.mp4";  // Asegúrate de que la ruta sea correcta
+import imagefondo from "../../assets/images/image.png";
 import { Link } from "react-router-dom";
 import { FaArrowDown } from "react-icons/fa"; // Asegúrate de tener instalado react-icons
 
@@ -38,7 +39,7 @@ const IntroRight = styled.div`
   box-sizing: border-box;
   overflow-x: hidden;
 
-  video {
+  img {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -70,7 +71,7 @@ const IntroRightBanner = styled.div`
     font-weight: 900;
     font-family: ${({ theme }) => theme.fonts[3]};
     color: ${({ theme }) => theme.colors.carioca_cremitwhite};
-    opacity: 60%;
+    opacity: 90%;
     margin-bottom: 2rem;
     @media screen and (min-width: ${({ theme }) => theme.mediaScreen.xlgLaptop}) {
       font-size: ${({ theme }) => theme.fontSizes.xlarge};
@@ -80,7 +81,7 @@ const IntroRightBanner = styled.div`
   p {
     font-family: ${({ theme }) => theme.fonts[2]};
     font-size: ${({ theme }) => theme.fontSizes.xmedium};
-    color: ${({ theme }) => theme.colors.darkerGray};
+    color: ${({ theme }) => theme.colors.white};
     letter-spacing: ${({ theme }) => theme.letterspace.small};
     line-height: 1.5rem;
     @media screen and (min-width: ${({ theme }) => theme.mediaScreen.xlgLaptop}) {
@@ -138,14 +139,16 @@ const Intro = () => {
     <>
       <IntroSection>
         <IntroRight>
-          <video autoPlay loop muted>
+          {/* <video autoPlay loop muted>
             <source src={coffeeVideo} type="video/mp4" />
             Tu navegador no soporta el elemento de video.
-          </video>
+          </video> */}
+          <img src={imagefondo} alt="Carioca Logo" />
+          
           <IntroRightBanner>
             <h2>Desde 1916</h2>
             <p>
-              Más de un siglo de pasión por el café, combinando calidad, tradición y momentos únicos. Te invitamos a ser parte de esta historia.
+              Más de un siglo de pasión por el café, combinando calidad, tradición y momentos únicos. Te invitamos a ser parte de nuestra historia.
             </p>
             <Link to={`/collections/coffee-blends`}>
               <button>Comprar</button>

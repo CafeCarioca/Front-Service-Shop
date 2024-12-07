@@ -33,15 +33,10 @@ const CoffeeProducts = () => {
   }, []);
 
   const h1 = `CAFE`;
-  const p = `We craft an array of premium blends to suit any coffee lover's taste.
-          When you purchase any of our coffee products, a portion of profits
-          goes towards veteran charities and organisations to help veterans move
-          forward.`;
+  const p = `Nuestro café, tu tradición.
+Desde 1916, Carioca ha llevado el arte del café a tu mesa con mezclas únicas y cuidadosamente elaboradas. Disfruta de la calidad y el sabor que nos caracteriza en cada grano.`;
   const capsulastitle = `Capsulas`;
-  const pcapsules = `We craft an array of premium blends to suit any coffee lover's taste.
-          When you purchase any of our coffee products, a portion of profits
-          goes towards veteran charities and organisations to help veterans move
-          forward.`;
+  const pcapsules = `Seleccionamos una variedad de cápsulas premium diseñadas para satisfacer los paladares más exigentes. En Carioca nos apasiona llevar calidad y tradición a tu taza.`;
   const methods = "Metodos de preparacion";
   const pmethods = `We craft an array of premium blends to suit any coffee lover's taste.
           When you purchase any of our coffee products, a portion of profits

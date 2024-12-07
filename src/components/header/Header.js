@@ -24,6 +24,14 @@ const HeaderContainer = styled.header`
   font-size: ${({ theme }) => theme.fontSizes.xsmall};
   overflow: hidden;
   white-space: nowrap;
+
+  @media screen and (max-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
+    font-size: ${({ theme }) => theme.fontSizes.xmedium};
+  }
+
+  @media screen and (max-width: ${({ theme }) => theme.mediaScreen.mobile}) {
+    font-size: ${({ theme }) => theme.fontSizes.xxxlarge};
+  }
 `;
 
 const RotatingText = styled.div`

@@ -66,7 +66,7 @@ const FeaturedImg = styled.img`
   }
 `;
 const FeaturedBlend = (props) => {
-  const { description, singleImg, blendName } = coffeeBlendsData[0];
+  const { description, singleImg, blendName } = coffeeBlendsData[4];
   return (
     <FeaturedSection>
       <FeaturedContainer>

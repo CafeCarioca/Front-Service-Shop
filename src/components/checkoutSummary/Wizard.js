@@ -184,7 +184,7 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   width: 100%;
-  gap: 0.5rem;
+  gap: 1rem;
 `;
 
 const WizardButton = styled.button`
@@ -621,8 +621,10 @@ const Wizard = ({ onCompletion }) => {
                 />
                 Acepto términos y condiciones
               </label>
+              <ButtonContainer>
                 <WizardButton type="button" onClick={() => setStep(1)}>Atrás</WizardButton>
                 <WizardButton type="submit">Siguiente</WizardButton>
+              </ButtonContainer>
             </form>
           </WizardStep>
   

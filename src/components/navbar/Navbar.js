@@ -120,7 +120,7 @@ const NavRLSearch = styled.div`
 
 const LogoImgIcon = styled.img`
   width: 100%;
-  max-width: 10rem;
+  max-width: 12rem;
 `;
 const Navbar = ({ openCheckoutSummary, checkoutList, openSideNav }) => {
   return (
