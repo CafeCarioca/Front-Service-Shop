@@ -171,8 +171,8 @@ const Checkout = ({ checkoutList }) => {
       console.log('Order body:', orderBody);
 
       const orderApiUrl = API_ENDPOINTS.CREATE_ORDER;
+      console.log('Order API URL:', orderApiUrl);
       const APitoke = process.env.REACT_APP_API_TOKEN;
-      console.log('API Token:', APitoke);
       
       const response = await axios.post(orderApiUrl, orderBody, {
         headers: {

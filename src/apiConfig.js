@@ -1,5 +1,4 @@
-const API_BASE_URL = process.env.REACT_APP_API_URL;
-
+const API_BASE_URL = "https://cafecarioca.com.uy/api";
 export const API_ENDPOINTS = {
   CREATE_ORDER: `${API_BASE_URL}/orders/create_order`,
   CREATE_PREFERENCE: `${API_BASE_URL}/payments/create_preference`,
