@@ -39,6 +39,8 @@ import Avellana from "./coffees/19Avellana.jpg";
 import Avellanasingle from "./coffees/19Avellanasingle.jpg";
 import Tradicional from "./coffees/20Tradicional.jpg";
 import Tradicionalsingle from "./coffees/20Tradicionalsingle.jpg";
+import Capuchinocaramel from "./coffees/21Capuchinocaramel.png";
+import Capuchinocaramelsingle from "./coffees/21Capuchinocaramelsingle.png";
 import dark1 from "./coffees/dark1.JPG";
 import dark1Single from "./coffees/dark1Single.JPG";
 import dark2 from "./coffees/dark2.JPG";
@@ -67,6 +69,8 @@ import vanilla from "./collections/vanilla.JPG";
 import irishCream from "./collections/irish cream.JPG";
 
 export {
+  Capuchinocaramel,
+  Capuchinocaramelsingle,
   numero1,
   numero1single,
   numero2,

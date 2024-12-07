@@ -19,16 +19,16 @@ const coffeeBlendsData = [
     blendName: "Extra Fuerte",
     to: "Extra Fuerte",
     description:
-      "Bold and intense, with notes of dark chocolate and Brazil nuts. This coffee cuts fantastically well through milk and finishes with a long toffee sweetness. Not for the faint of heart.",
-    roast: "Dark",
-    origin: "South America, Africa, India",
-    taste: "Toffee, Dark Chocolate, Spice",
+      "Combinación exacta de granos, 75% arábica y 25% robusta. Fiel a nuestro estilo artesanal, lo que colmará sus expectativas de saborear un producto con identidad propia. Fuerte, de buen cuerpo y aroma inconfundible. Éstas bondades surgen de la importacion de partidas de calidad superior, siguiendo paso a paso la ruta de los fundadores de nuestro café.",
+    roast: "Torrefacto", //nodefinido
+    origin: "Brasil, Africa, India",  //nodefinido
+    taste: "Toffee, Dark Chocolate, Spice", //nodefinido
     prices: {
-      250: 1,
-      500: 480,
-      1000: 960,
-      2000: 250,
-      5000: 600
+      250: 1, //nodefinido
+      500: 517, 
+      1000: 960, //nodefinido
+      2000: 250, //nodefinido
+      5000: 600 //nodefinido
     },
     category: "coffee",
   },
@@ -38,16 +38,16 @@ const coffeeBlendsData = [
     blendName: "Fuerte",
     to: "Fuerte",
     description:
-      "Sweet and smooth, with notes of caramel, hazelnuts and port wine. This is the perfect coffee to enjoy with or without milk. ",
-    roast: "Dark",
-    origin: "Brasil",
-    taste: "Caramel, Milk Chocolate, Hazelnut",
+      "Nuestra mezcla exclusiva contiene la mitad de granos de café 100% torrefactos y la mitad de granos de café 100% tostados para una experiencia se sabor única. Mezclar granos torrefactos y tostados puede proporcionar un equilibrio entre los sabores fuertes y cítricos que suelen encontrarse en los granos torrefactos y la suavidad y dulzura que se asocian con los granos tostados. ¡Espero que disfrutes de tu café ",
+    roast: "Torrefacto, Tostado medio", //nodefinido
+    origin: "Brasil", //nodefinido
+    taste: "Caramel, Milk Chocolate, Hazelnut", //nodefinido
     prices: {
-      250: 1,
-      500: 575,
-      1000: 1150,
-      2000: 250,
-      5000: 600
+      250: 1, //nodefinido
+      500: 619,
+      1000: 1150, //nodefinido
+      2000: 2197, 
+      5000: 5490 
     },
     category: "coffee",
   },
@@ -57,16 +57,16 @@ const coffeeBlendsData = [
     blendName: "Selecto",
     to: "Selecto",
     description:
-      "Our newest blend of coffee has been made with the same level of love that a soldier has for their rifle. Premium by name and by nature, get ready to enjoy the rich, bold flavour that has become synonymous with Two 14 blends. Without my premium blend I am nothing. Without me, my premium blend is nothing. Try it now!",
-    roast: "Medium / Dark",
-    origin: "South America, Africa, India",
-    taste: "Rich, Bold, Spicy",
+      "Desarrollado en tiempos modernos, comenzando la tendencia de cafés tostados diferenciados, entramos a la sutileza de nuestros productos de Alta Gama. Asi lo detectamosen sus características por la mezcla de tres tipos de granos 75% Arábicos y 25% Robusta, logrando un perfecto aroma, buena presencia en boca dada por notas de chocolate, aceitunas negras y el toque jsuto de acidez. Recomendado para acompañar postres",
+    roast: "Medium / Dark", //nodefinido
+    origin: "South America, Africa, India", //nodefinido
+    taste: "Rich, Bold, Spicy", //nodefinido
     prices: {
-      250: 1,
-      500: 70,
-      1000: 130,
-      2000: 250,
-      5000: 600
+      250: 1, //nodefinido
+      500: 617,
+      1000: 130, //nodefinido
+      2000: 2411,
+      5000: 6028
     },
     category: "coffee",
   },
@@ -76,19 +76,17 @@ const coffeeBlendsData = [
     blendName: "Supremo",
     to: "Supremo",
     description:
-      "Premium Coffee for Premium Diggers. We've partnered with the team at The Pineapple Express to craft a memorable blend worthy of what it represents. Made up of ethically sourced coffee from Africa as well as Central and South America, this coffee is surely one you will remember. Drink it black to experience the sweet, nutty, caramel tones or add milk for a perfectly mild latte.A portion of the profits will be used to support veteran mental health and ongoing charitable efforts by The Pineapple Express",
-    roast: "Medium",
-    origin: "Central America, South America, Africa",
-    taste: "Sweet, Nutty, Caramel tones",
+      "Inmerso en la constante perfeccion de nuestros cafés de Alta Gama, los deleitamos con esta mezcla de dos granos Arábicos, uno de ellos tradicional Bebida Río, y un toque de café de altura denominado Bebida Dura. Las características dan como resultado su nombre, siendo bajo en cafeína y acidez. Para todo momento, especialmente para Espress en sobremesa ",
+    roast: "Medium", //nodefinido
+    origin: "Central America, South America, Africa", //nodefinido
+    taste: "Sweet, Nutty, Caramel tones", //nodefinido
     prices: {
-      250: 1,
-      500: 70,
-      1000: 130,
-      2000: 250,
-      5000: 600
+      250: 1, //nodefinido
+      500: 958,
+      1000: 0, //nodefinido
+      2000: 3423,
+      5000: 8558
     },
-    linkTitle: "The Pineapple Express",
-    link: "https://tpe-vc.com/",
     category: "coffee",
   },
   {
@@ -96,27 +94,17 @@ const coffeeBlendsData = [
     singleImg: numero5single,
     blendName: "Gourmet",
     to: "Gourmet",
-    description: `Our Veteran Support Blend has been designed to do exactly that, support Veterans. We have partnered with Soldier On to deliver a strong, nutty blend with chocolate tones. A huge portion of the proceeds from the purchase of this coffee will go directly to Soldier On to aid their ongoing efforts to support Veterans and their Families.
-
-This is just another way that we are Helping Veterans Move Forward.
-
-----
-
-Soldier On is a not-for-profit veteran support organisation delivering a range of services to enable serving and ex-serving veterans and their families to thrive.
-
-`,
-    roast: "Dark",
-    origin: "Central & South America, India, Africa",
-    taste: "Strong, Nutty, Dark Chocolate",
+    description: `Café varietal que no presenta mezcla con ningun otro grano. Con sólo uno, es capáz de dar todos los atributos de este complejo producto. Gourmet Carioca es ideal para beber sin agregados de azúcar o edulcorante. Recomendado para tomar en preparacion espress a toda hora.`,
+    roast: "Dark", //nodefinido
+    origin: "Central & South America, India, Africa",   //nodefinido
+    taste: "Strong, Nutty, Dark Chocolate", //nodefinido
     prices: {
-      250: 1,
-      500: 70,
-      1000: 130,
-      2000: 250,
-      5000: 600
+      250: 1, //nodefinido
+      500: 1.109,
+      1000: 130, //nodefinido
+      2000: 3.940,
+      5000: 9.849
     },
-    linkTitle: "Soldier On",
-    link: "https://soldieron.org.au/",
     category: "coffee",
   },
   {
@@ -124,17 +112,17 @@ Soldier On is a not-for-profit veteran support organisation delivering a range o
     singleImg: Tradicionalsingle,
     blendName: "Tradicional",
     to: "Tradicional",
-    description: `
-    `,
-    roast: "",
-    origin: "Brasil",
-    taste: "",
+    description: `Combinación exacta de granos, 75% arábica y 25% robusta. Fiel a nuestro estilo artesanal, lo que colmará sus expectativas de saborear un producto con identidad propia. Fuerte, de buen cuerpo y aroma inconfundible. Éstas bondades surgen de la importacion de partidas de calidad superior, siguiendo paso a paso la ruta de los fundadores de nuestro café.`,
+    roast: "", //nodefinido
+    origin: "Brasil", //nodefinido
+    taste: "", //nodefinido
     prices: {
-      250: 250,
-      500: 480,
-      1000: 915,
-      2000: 250,
-      5000: 600
+      100: 114,
+      250: 272,
+      500: 517,
+      1000: 985,
+      2000: 1830,
+      5000: 4576
     },
     linkTitle: "",
     link: "",
