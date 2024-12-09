@@ -131,9 +131,16 @@ const Checkout = ({ checkoutList }) => {
   const [wizardComplete, setWizardComplete] = useState(false);
   const [preferenceId, setPreferenceId] = useState(null);
   const [external_reference, setExternalReference] = useState(null);
+  const [deliveryType, setDeliveryType] = useState('delivery');
 
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    const userDetails = JSON.parse(localStorage.getItem('userDetails'));
+    if (userDetails && userDetails.deliveryType) {
+      setDeliveryType(userDetails.deliveryType); // Establecer el tipo de entrega
+    }
+    
     initMercadoPago('APP_USR-9c44ae9b-8651-40ea-9dbf-8a4561c46895', {
       locale: 'es-UY',
     });
@@ -146,7 +153,7 @@ const Checkout = ({ checkoutList }) => {
   );
 
   // Calcular el costo de envío
-  const shippingCost = itemTotals >= 1000 ? 0 : 80;
+  const shippingCost = deliveryType === 'takeaway' ? 0 : (itemTotals >= 1000 ? 0 : 80);
 
   // Calcular el total final (importe total + costo de envío)
   const totalWithShipping = itemTotals + shippingCost;
@@ -238,6 +245,17 @@ const Checkout = ({ checkoutList }) => {
       localStorage.setItem('preferenceId', preferenceId);
     }
   }, [preferenceId]);
+
+  useEffect(() => {
+    if (wizardComplete) {
+      const userDetails = JSON.parse(localStorage.getItem('userDetails'));
+      if (userDetails && userDetails.deliveryType) {
+        setDeliveryType(userDetails.deliveryType); // Establecer el tipo de entrega
+      }
+      const shippingCost = deliveryType === 'takeaway' ? 0 : (itemTotals >= 1000 ? 0 : 80);
+
+    }
+  }, [wizardComplete]);
 
   return (
     <CheckoutSection>

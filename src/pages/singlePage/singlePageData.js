@@ -12,6 +12,7 @@ export const grind = [
   "Comercial",
   "Filtro",
   "Prensa Francesa",
+  "Italiana",
   "Goteo",
   "Cezve",
   "V60",

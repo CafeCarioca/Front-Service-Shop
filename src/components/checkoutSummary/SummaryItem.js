@@ -76,7 +76,7 @@ const SummaryItem = ({
           </span>
         </div>
         <span className="greenBold">${price * quantity}</span>
-        <span>Qty {quantity}</span>
+        <span>Cantidad: {quantity}</span>
         <RemoveListItem onClick={() => removeItem(id)}>Borrar</RemoveListItem>
       </SummaryItemTable>
     </SummaryItemContainer>

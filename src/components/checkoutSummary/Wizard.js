@@ -432,6 +432,16 @@ const Wizard = ({ onCompletion }) => {
       };
       console.log(userDetails);
       localStorage.setItem('userDetails', JSON.stringify(userDetails));
+
+      const isMobile = window.innerWidth <= 768; // Puedes ajustar este valor según tus necesidades
+
+      // Desplazarse hacia abajo si es un dispositivo móvil
+      if (isMobile) {
+        window.scrollBy({
+          top: 300, // Desplazarse 300 píxeles hacia abajo
+          behavior: 'smooth' // Desplazamiento suave
+        });
+      }
       onCompletion(true);
     };
   
