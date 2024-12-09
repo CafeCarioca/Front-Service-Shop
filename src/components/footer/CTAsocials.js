@@ -33,14 +33,14 @@ const CTAsocials = (props) => {
           <FaInstagram />
         </a>
         <a
-          href="https://www.tiktok.com/@two14coffeeco"
+          href="https://www.tiktok.com/@cafecarioca"
           target="_blank"
           rel="noopener noreferrer"
         >
           <SiTiktok />
         </a>
         <a
-          href="https://www.facebook.com/Two14CoffeeCo/"
+          href="https://www.facebook.com/cafeelcarioca"
           target="_blank"
           rel="noopener noreferrer"
         >

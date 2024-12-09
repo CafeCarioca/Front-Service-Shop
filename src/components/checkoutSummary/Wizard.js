@@ -648,6 +648,11 @@ const Wizard = ({ onCompletion }) => {
                 Retirar en Local
               </WizardButton>
             </ButtonContainer>
+
+            <ButtonContainer>
+                <WizardButton type="button" onClick={() => setStep(2)}>Atrás</WizardButton>
+            </ButtonContainer>
+
           </WizardStep>
     
           <WizardStep active={step === 4}>

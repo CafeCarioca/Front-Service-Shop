@@ -92,14 +92,11 @@ const Selections = styled.div`
     display: block;
   }
 `;
-const QuantityForm = styled.input`
-  padding: 0.5rem;
-  width: 100%;
-`;
 const FormContainer = styled.div`
   display: flex;
   gap: 1rem;
-  align-items: center;
+  align-items: center; // Esto ya alinea los elementos verticalmente
+  justify-content: space-between; // Ajusta los elementos dentro del contenedor
   margin-bottom: 1rem;
   div {
     color: ${({ theme }) => theme.colors.darkGray};
@@ -107,7 +104,32 @@ const FormContainer = styled.div`
     font-weight: 600;
     width: 50%;
     font-family: ${({ theme }) => theme.fonts[3]};
+    text-align: center; // Para centrar el texto dentro de los divs
   }
+
+  button {
+    background: ${({ theme }) => theme.colors.darkGray};
+    color: ${({ theme }) => theme.colors.white};
+    border: none;
+    padding: 0; // Remueve el padding inferior y añade padding consistente
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: ${({ theme }) => theme.fontSizes.medium};
+    font-family: ${({ theme }) => theme.fonts[3]};
+    &:hover {
+      cursor: pointer;
+    }
+  }
+`;
+
+const QuantityForm = styled.input`
+  padding: 0.5rem;
+  width: 100%;
+  text-align: center; // Centra el texto del input
+  box-sizing: border-box; // Asegura que el padding no afecte el tamaño total
 `;
 
 const SinglePage = (props) => {
@@ -310,23 +332,26 @@ const SinglePage = (props) => {
             <Selections>
               <span>Cantidad</span>
               <FormContainer>
-                <form>
-                  <QuantityForm
-                    type="number"
-                    min="1"
-                    defaultValue="1"
-                    onChange={(e) => {
-                      let val = e.target.value;
-                      if (val === "") {
-                        setQnt(1);
-                        val = "";
-                      }
-                      if (val && val !== "") {
-                        setQnt(val);
-                      }
-                    }}
-                  />
-                </form>
+              <FormContainer>
+                <button
+                  type="button"
+                  onClick={() => setQnt(Math.max(productDetails.quantity - 1, 1))} // Evita que baje de 1
+                >
+                -
+              </button>
+              <QuantityForm
+                type="text"
+                value={productDetails.quantity}
+                onChange={(e) => {
+                  const val = e.target.value.replace(/\D/, ""); // Evita caracteres no numéricos
+                  setQnt(val ? parseInt(val, 10) : 1);
+                }}
+              />
+              <button type="button" onClick={() => setQnt(productDetails.quantity + 1)}>
+                +
+              </button>
+              </FormContainer>
+            
                 <div>${totalPrice}</div> {/* Muestra el precio total */}
               </FormContainer>
             </Selections>

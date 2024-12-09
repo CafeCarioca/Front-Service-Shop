@@ -38,7 +38,7 @@ const coffeeBlendsData = [
     blendName: "Fuerte",
     to: "Fuerte",
     description:
-      "Nuestra mezcla exclusiva contiene la mitad de granos de café 100% torrefactos y la mitad de granos de café 100% tostados para una experiencia se sabor única. Mezclar granos torrefactos y tostados puede proporcionar un equilibrio entre los sabores fuertes y cítricos que suelen encontrarse en los granos torrefactos y la suavidad y dulzura que se asocian con los granos tostados. ¡Espero que disfrutes de tu café ",
+      "Nuestra mezcla exclusiva contiene la mitad de granos de café 100% torrefactos y la mitad de granos de café 100% tostados para una experiencia de sabor única. Mezclar granos torrefactos y tostados puede proporcionar un equilibrio entre los sabores fuertes y cítricos que suelen encontrarse en los granos torrefactos y la suavidad y dulzura que se asocian con los granos tostados. ¡Espero que disfrutes de tu café ",
     roast: "Torrefacto, Tostado medio",
     origin: "Brasil", 
     taste: "*", 
@@ -57,7 +57,7 @@ const coffeeBlendsData = [
     blendName: "Selecto",
     to: "Selecto",
     description:
-      "Desarrollado en tiempos modernos, comenzando la tendencia de cafés tostados diferenciados, entramos a la sutileza de nuestros productos de Alta Gama. Asi lo detectamosen sus características por la mezcla de tres tipos de granos 75% Arábicos y 25% Robusta, logrando un perfecto aroma, buena presencia en boca dada por notas de chocolate, aceitunas negras y el toque jsuto de acidez. Recomendado para acompañar postres",
+      "Desarrollado en tiempos modernos, comenzando la tendencia de cafés tostados diferenciados, entramos a la sutileza de nuestros productos de Alta Gama. Asi lo detectamos en sus características por la mezcla de tres tipos de granos 75% Arábicos y 25% Robusta, logrando un perfecto aroma, buena presencia en boca dada por notas de chocolate, aceitunas negras y el toque jsuto de acidez. Recomendado para acompañar postres",
     roast: "75% Tostado Medio 25% Tostado alto", 
     origin: "Brasil",
     taste: "*", 
@@ -76,7 +76,7 @@ const coffeeBlendsData = [
     blendName: "Supremo",
     to: "Supremo",
     description:
-      "Inmerso en la constante perfeccion de nuestros cafés de Alta Gama, los deleitamos con esta mezcla de dos granos Arábicos, uno de ellos tradicional Bebida Río, y un toque de café de altura denominado Bebida Dura. Las características dan como resultado su nombre, siendo bajo en cafeína y acidez. Para todo momento, especialmente para Espress en sobremesa ",
+      "Inmerso en la constante perfección de nuestros cafés de Alta Gama, los deleitamos con esta mezcla de dos granos Arábicos, uno de ellos tradicional Bebida Río, y un toque de café de altura denominado Bebida Dura. Las características dan como resultado su nombre, siendo bajo en cafeína y acidez. Para todo momento, especialmente para Espress en sobremesa ",
     roast: "Tostado Medio", 
     origin: "Brasil", 
     taste: "*", 

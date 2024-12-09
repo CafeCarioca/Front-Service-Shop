@@ -50,6 +50,11 @@ const CheckoutSummary = (props) => {
       accumulator + +(currValue.price * currValue.quantity),
     0
   );
+  const handleContinueShopping = () => {
+    props.closeCheckoutSummary();
+    window.location.href = "/#/collections/coffee-blends";
+  };
+
   return (
     <>
       <Backdrop onClick={props.closeCheckoutSummary}></Backdrop>
@@ -88,7 +93,7 @@ const CheckoutSummary = (props) => {
           </Buttons>
           <p>
             o
-            <ContinueShopping onClick={props.closeCheckoutSummary}>
+            <ContinueShopping onClick={handleContinueShopping}>
               Continuar Comprando
             </ContinueShopping>
           </p>
