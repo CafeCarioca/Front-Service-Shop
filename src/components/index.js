@@ -15,6 +15,8 @@ import WhiteOverlay from "./checkoutSummary/WhiteOverlay";
 import SideNav from "./sideNav/SideNav";
 import navData from "./navbar/navData";
 import TrustmaryWidget from "./footer/TrustmaryWidget";
+import ReviewsCarousel from "./footer/ReviewsCarousel";
+
 export {
   Navbar,
   Header,
@@ -32,5 +34,5 @@ export {
   WhiteOverlay,
   SideNav,
   navData,
-  TrustmaryWidget,
+  ReviewsCarousel,
 };
