@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled, { css } from "styled-components";
+import axios from "axios";
 import Buttons from "../../UI/Buttons/Buttons";
-import featuredCoffee from "../../assets/images/featuredCoffee.JPG";
-import coffeeBlendsData from "../coffees/CoffeeData";
+import { API_ENDPOINTS } from "../../apiConfig";
 
 const FeaturedSection = styled.section`
   padding: 2rem 0;
@@ -12,6 +12,7 @@ const FeaturedSection = styled.section`
     padding: 4rem 0;
   }
 `;
+
 const FeaturedContainer = styled.section`
   width: 90%;
   margin: 0 auto;
@@ -20,10 +21,12 @@ const FeaturedContainer = styled.section`
     gap: 3rem;
   }
 `;
+
 const SharedLRCss = css`
   max-width: 600px;
   margin: 0 auto;
 `;
+
 const FeaturedLeft = styled.section`
   font-family: ${({ theme }) => theme.fonts[1]};
   ${SharedLRCss}
@@ -32,7 +35,7 @@ const FeaturedLeft = styled.section`
     font-size: ${({ theme }) => theme.fontSizes.medium};
     color: ${({ theme }) => theme.colors.darkGray};
     margin: 1.5rem 0 2rem 0;
-    @media screen and (min-width: ${({ theme }) =>  theme.mediaScreen.xlgLaptop}) {
+    @media screen and (min-width: ${({ theme }) => theme.mediaScreen.xlgLaptop}) {
       font-size: ${({ theme }) => theme.fontSizes.xxbig};
     }
   }
@@ -43,6 +46,7 @@ const FeaturedLeft = styled.section`
     margin-bottom: 5rem;
   }
 `;
+
 const FeaturedTag = styled.span`
   font-family: ${({ theme }) => theme.fonts[1]};
   background-color: ${({ theme }) => theme.colors.mediumGray};
@@ -55,6 +59,7 @@ const FeaturedTag = styled.span`
 const FeaturedRight = styled.section`
   ${SharedLRCss}
 `;
+
 const FeaturedImg = styled.img`
   object-fit: cover;
   width: 100%;
@@ -65,38 +70,50 @@ const FeaturedImg = styled.img`
     margin-top: 0;
   }
 `;
+
 const FeaturedBlend = (props) => {
-  const { description, singleImg, blendName } = coffeeBlendsData[4];
+  const dayOfWeek = new Date().getDay();
+  const id = dayOfWeek >= 1 && dayOfWeek <= 5 ? dayOfWeek : 4; // Default to 1 if not Monday-Friday
+  const apiUrl = `${API_ENDPOINTS.GET_PRODUCT}/${id}`;
+  const [product, setProduct] = useState(null);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get(apiUrl);
+        setProduct(response.data);
+      } catch (error) {
+        console.error("Error fetching the product data:", error);
+      }
+    };
+
+    fetchProduct();
+  }, []);
+
+  if (!product) {
+    return <div>Loading...</div>;
+  }
+
+  const { description, secondary_image_url, name } = product;
+
   return (
     <FeaturedSection>
       <FeaturedContainer>
         <FeaturedLeft>
           <FeaturedTag>Blend destacado</FeaturedTag>
-          <h2>{blendName}</h2>
-          <p>
-            {description}
-            {/* Lightweight and durable, our Two 14 Coffee Co branded Enamel Mug is
-            a must-have!
-            <br /> Material: Metal with an enamel layer and sublimation coating.
-            <br /> Dimensions: height 3.14″ (8 cm), diameter 3.25″ (8.5 cm)
-            <br />
-            White coating with a silver rim
-            <br /> <b> NOT dishwasher or microwave safe</b>
-            <br /> Hand-wash only <br />
-            <b>Attention!</b> Don't heat liquids or food directly in the mug—it
-            can damage the coating. */}
-          </p>
+          <h2>{name}</h2>
+          <p>{description}</p>
           <Buttons
             bg={(props) => props.theme.colors.darkGray}
             width={"100%"}
             color={(props) => props.theme.colors.lightestGray}
-            to={`/collections/coffee-blends/${blendName}`}
+            to={`/collections/coffee-blends/${name}`}
           >
             Ver Producto
           </Buttons>
         </FeaturedLeft>
         <FeaturedRight>
-          <FeaturedImg src={singleImg} alt="Featured coffee" />
+          <FeaturedImg src={secondary_image_url} alt="Featured coffee" />
         </FeaturedRight>
       </FeaturedContainer>
     </FeaturedSection>

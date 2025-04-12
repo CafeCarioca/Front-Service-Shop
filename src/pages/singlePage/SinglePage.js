@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { bagSizes, grind } from "./singlePageData";
 import styled from "styled-components";
 import { SingleProductButtons, SimpleButton } from "../../UI";
+import { bagSizes, grind } from "./singlePageData";
+import { API_ENDPOINTS } from  "../../apiConfig"; 
 
 const SingleProductContainer = styled.section`
   width: 90%;
@@ -13,6 +14,7 @@ const SingleProductContainer = styled.section`
     gap: 2rem;
   }
 `;
+
 const ProductContainerLeft = styled.div`
   object-fit: cover;
   @media screen and (min-width: 800px) {
@@ -20,6 +22,7 @@ const ProductContainerLeft = styled.div`
     display: flex;
   }
 `;
+
 const CoffeeImg = styled.img.attrs((props) => ({
   className: props.className,
 }))`
@@ -37,6 +40,7 @@ const CoffeeImg = styled.img.attrs((props) => ({
     z-index: -10;
   }
 `;
+
 const ProductContainerRight = styled.div`
   padding: 0 2rem;
   margin-top: 2rem;
@@ -48,12 +52,14 @@ const ProductContainerRight = styled.div`
     width: 45%;
   }
 `;
+
 const CraftedSpan = styled.span`
   display: block;
   font-size: small;
   color: ${({ theme }) => theme.colors.darkGray};
   margin-bottom: 1.5rem;
 `;
+
 const ProductInfo = styled.article`
   font-family: ${({ theme }) => theme.fonts[1]};
   color: ${({ theme }) => theme.colors.mediumGray};
@@ -81,10 +87,12 @@ const ProductInfo = styled.article`
     }
   }
 `;
+
 const SelectionsContainer = styled.div`
   margin-top: 1rem;
   font-family: ${({ theme }) => theme.fonts[1]};
 `;
+
 const Selections = styled.div`
   span {
     text-transform: uppercase;
@@ -92,11 +100,12 @@ const Selections = styled.div`
     display: block;
   }
 `;
+
 const FormContainer = styled.div`
   display: flex;
   gap: 1rem;
-  align-items: center; // Esto ya alinea los elementos verticalmente
-  justify-content: space-between; // Ajusta los elementos dentro del contenedor
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 1rem;
   div {
     color: ${({ theme }) => theme.colors.darkGray};
@@ -104,14 +113,12 @@ const FormContainer = styled.div`
     font-weight: 600;
     width: 50%;
     font-family: ${({ theme }) => theme.fonts[3]};
-    text-align: center; // Para centrar el texto dentro de los divs
+    text-align: center;
   }
-
   button {
     background: ${({ theme }) => theme.colors.darkGray};
     color: ${({ theme }) => theme.colors.white};
     border: none;
-    padding: 0; // Remueve el padding inferior y añade padding consistente
     width: 2rem;
     height: 2rem;
     display: flex;
@@ -128,62 +135,64 @@ const FormContainer = styled.div`
 const QuantityForm = styled.input`
   padding: 0.5rem;
   width: 100%;
-  text-align: center; // Centra el texto del input
-  box-sizing: border-box; // Asegura que el padding no afecte el tamaño total
+  text-align: center;
+  box-sizing: border-box;
 `;
 
 const SinglePage = (props) => {
   const { id } = useParams();
-  const coffeeList = props.coffeeList;
-  const capsulesList = props.capsulesList;
-
-  const currentCoffee = coffeeList.find((coffee) => coffee.blendName === id) || 
-                        capsulesList.find((capsule) => capsule.blendName === id);
-
-  const defaultDetails = {
-    singleImg: "",
-    description: "Descripción no disponible",
-    blendName: "Nombre no disponible",
-    origin: "Origen no disponible",
-    roast: "Tostado no disponible",
-    taste: "Sabor no disponible",
-    prices: {}, // Asegurar que esté definido
-  };
-
-  const {
-    singleImg,
-    description,
-    blendName,
-    origin,
-    roast,
-    taste,
-    prices = {},
-    price, // Asegúrate de que 'prices' esté definido como un objeto vacío si no está presente
-  } = currentCoffee || defaultDetails;
-  
-  const isCapsule = capsulesList.some((capsule) => capsule.blendName === id);
-  const initialPrice = isCapsule ? price : (prices[250] || 0);
-  
-  const [productDetails, setProductDetails] = useState({
-    blendName,
-    singleImg,
-    quantity: 1,
-    price: initialPrice, // Usar precio inicial basado en si es cápsula o café
-    grams: isCapsule ? null : 250, // No se necesita gramaje para cápsulas
-    grind: isCapsule ? null : "Filter", // No se necesita tipo de molienda para cápsulas
-    isCapsule,
-  });
+  const [productDetails, setProductDetails] = useState(null);
+  const [stickyClass, setStickyClass] = useState(false);
 
   useEffect(() => {
-    if (currentCoffee) {
-      setProductDetails(prevDetails => ({
-        ...prevDetails,
-        blendName: currentCoffee.blendName,
-        singleImg: currentCoffee.singleImg,
-        price: isCapsule ? currentCoffee.price : (prices[250] || 0),
-      }));
-    }
-  }, [currentCoffee, isCapsule, prices]);
+    const fetchProductData = async () => {
+      try {
+        const response = await fetch(`${API_ENDPOINTS.GET_PRODUCT_BY_NAME}/${id}`);
+        const data = await response.json();
+
+        const isCapsule = data.category === "capsules";
+
+        setProductDetails({
+          blendName: data.name,
+          singleImg: `${data.secondary_image_url}`,
+          description: data.description,
+          origin: data.origin,
+          roast: data.toasted,
+          taste: data.flavors,
+          quantity: 1,
+          isCapsule,
+          grams: isCapsule ? null : 250,
+          grind: isCapsule ? null : "Molido",
+          price: isCapsule
+            ? parseFloat(data.price)
+            : parseFloat(data.presentations.find(p => p.weight === "250")?.price || 0),
+          prices: isCapsule
+            ? {}
+            : Object.fromEntries(data.presentations.map(p => [parseInt(p.weight), parseFloat(p.price)])),
+        });
+      } catch (error) {
+        console.error("Error al obtener los datos del producto:", error);
+      }
+    };
+
+    fetchProductData();
+  }, [id]);
+
+  const setGrams = (amount) => {
+    setProductDetails((prev) => ({
+      ...prev,
+      grams: amount,
+      price: prev.prices[amount] || prev.price,
+    }));
+  };
+
+  const setGrind = (grindName) => {
+    setProductDetails((prev) => ({ ...prev, grind: grindName }));
+  };
+
+  const setQnt = (quantity) => {
+    setProductDetails((prev) => ({ ...prev, quantity: Number(quantity) }));
+  };
 
   const addItemToCheckout = () => {
     const currentCheckoutList = [...props.checkoutList];
@@ -218,100 +227,77 @@ const SinglePage = (props) => {
     props.openCheckoutSummary();
   };
 
-  const setGrams = (amount) => {
-    setProductDetails((prevDetails) => ({
-      ...prevDetails,
-      grams: amount,
-      price: prices[amount] || prevDetails.price, // Ajusta el precio según el tamaño seleccionado
-    }));
-  };
-
-  const setGrind = (grindName) => {
-    setProductDetails({
-      ...productDetails,
-      grind: grindName,
-    });
-  };
-
-  const setQnt = (quantity) => {
-    setProductDetails({
-      ...productDetails,
-      quantity: Number(quantity),
-    });
-  };
-
-  const [stickyClass, setStickyClass] = useState(false);
   const stickyImgToggle = () => {
     let windowHeight = window.scrollY;
-    if (windowHeight > 50) {
-      setStickyClass(true);
-    } else {
-      setStickyClass(false);
-    }
+    setStickyClass(windowHeight > 50);
   };
 
   useEffect(() => {
     window.addEventListener("scroll", stickyImgToggle);
-    return () => {
-      window.removeEventListener("scroll", stickyImgToggle);
-    };
-  }, [stickyClass]);
+    return () => window.removeEventListener("scroll", stickyImgToggle);
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  if (!productDetails) return <p>Cargando...</p>;
+
   const totalPrice = (productDetails.price * productDetails.quantity).toFixed(2);
 
   return (
-    <>
-      <SingleProductContainer>
-        <ProductContainerLeft>
-          <CoffeeImg
-            src={singleImg}
-            alt={blendName}
-            className={stickyClass && "sticky"}
-          />
-        </ProductContainerLeft>
+    <SingleProductContainer>
+      <ProductContainerLeft>
+        <CoffeeImg
+          src={productDetails.singleImg}
+          alt={productDetails.blendName}
+          className={stickyClass ? "sticky" : ""}
+        />
+      </ProductContainerLeft>
 
-        <ProductContainerRight>
-          <h1>{blendName}</h1>
-          <CraftedSpan>Producido por Carioca</CraftedSpan>
+      <ProductContainerRight>
+        <h1>{productDetails.blendName}</h1>
+        <CraftedSpan>Producido por Carioca</CraftedSpan>
 
-          <ProductInfo>
-            <p>{description}</p>
-            <div>
-              <span>Tostado:</span>
-              {roast}
-            </div>
-            <div>
-              <span>Origen:</span> {origin}
-            </div>
-            <div>
-              <span>Sabores:</span>
-              {taste}
-            </div>
-          </ProductInfo>
-          <SelectionsContainer>
-            {!productDetails.isCapsule && (
-              <Selections>
-                <span>Presentaciones:</span>
-                <div>
-                  {bagSizes.map((bag, index) => (
-                    <SingleProductButtons
-                      key={index}
-                      className={
-                        productDetails.grams === bag.amount ? "clicked" : null
-                      }
-                      onClick={() => setGrams(bag.amount)}
-                    >
-                      {bag.size}
-                    </SingleProductButtons>
-                  ))}
-                </div>
-              </Selections>
-            )}
-            {!productDetails.isCapsule && (
+        <ProductInfo>
+          <p>{productDetails.description}</p>
+          <div>
+            <span>Tostado:</span>
+            {productDetails.roast}
+          </div>
+          <div>
+            <span>Origen:</span> {productDetails.origin}
+          </div>
+          <div>
+            <span>Sabores:</span>
+            {productDetails.taste}
+          </div>
+        </ProductInfo>
+
+        <SelectionsContainer>
+          {!productDetails.isCapsule && (
+            <Selections>
+              <span>Presentaciones:</span>
+              <div>
+              {bagSizes
+                .filter((bag) => productDetails.prices[bag.amount])
+                .map((bag, index) => (
+                  <SingleProductButtons
+                    key={index}
+                    className={
+                      productDetails.grams === bag.amount ? "clicked" : null
+                    }
+                    onClick={() => setGrams(bag.amount)}
+                  >
+                    {bag.size}
+                  </SingleProductButtons>
+              ))}
+              
+              </div>
+            </Selections>
+          )}
+
+          {!productDetails.isCapsule && (
             <Selections>
               <span>Tipo de Molienda:</span>
               <div>
@@ -329,46 +315,48 @@ const SinglePage = (props) => {
               </div>
             </Selections>
           )}
-            <Selections>
-              <span>Cantidad</span>
-              <FormContainer>
+
+          <Selections>
+            <span>Cantidad</span>
+            <FormContainer>
               <FormContainer>
                 <button
                   type="button"
-                  onClick={() => setQnt(Math.max(productDetails.quantity - 1, 1))} // Evita que baje de 1
+                  onClick={() => setQnt(Math.max(productDetails.quantity - 1, 1))}
                 >
-                -
-              </button>
-              <QuantityForm
-                type="text"
-                value={productDetails.quantity}
-                onChange={(e) => {
-                  const val = e.target.value.replace(/\D/, ""); // Evita caracteres no numéricos
-                  setQnt(val ? parseInt(val, 10) : 1);
-                }}
-              />
-              <button type="button" onClick={() => setQnt(productDetails.quantity + 1)}>
-                +
-              </button>
+                  -
+                </button>
+                <QuantityForm
+                  type="text"
+                  value={productDetails.quantity}
+                  onChange={(e) => {
+                    const val = e.target.value.replace(/\D/, "");
+                    setQnt(val ? parseInt(val, 10) : 1);
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setQnt(productDetails.quantity + 1)}
+                >
+                  +
+                </button>
               </FormContainer>
-            
-                <div>${totalPrice}</div> {/* Muestra el precio total */}
-              </FormContainer>
-            </Selections>
-          </SelectionsContainer>
+              <div>${totalPrice}</div>
+            </FormContainer>
+          </Selections>
+        </SelectionsContainer>
 
-          <SimpleButton
-            bg={(props) => props.theme.colors.darkGray}
-            color={(props) => props.theme.colors.white}
-            type="button"
-            width="100%"
-            onClick={addItemToCheckout}
-          >
-            Comprar
-          </SimpleButton>
-        </ProductContainerRight>
-      </SingleProductContainer>
-    </>
+        <SimpleButton
+          bg={(props) => props.theme.colors.darkGray}
+          color={(props) => props.theme.colors.white}
+          type="button"
+          width="100%"
+          onClick={addItemToCheckout}
+        >
+          Comprar
+        </SimpleButton>
+      </ProductContainerRight>
+    </SingleProductContainer>
   );
 };
 
