@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
-import { Products, coffeeBlendsData, CapsulesData} from "../../components";
-import { Link } from "react-scroll";
+import React, { useEffect, useState } from "react";
+import { Products } from "../../components";
+import { Link as ScrollLink } from "react-scroll"; // ⚠️ Usamos react-scroll, no react-router-dom
 import styled from "styled-components";
+import { API_ENDPOINTS } from "../../apiConfig"; // ⚠️ Ajustá la ruta si es diferente
 
 const ProductLinks = () => {
   const Divs = styled.div`
@@ -20,41 +21,63 @@ const ProductLinks = () => {
   `;
   return (
     <Divs>
-      <Link to="coffee" smooth={true} duration={500} offset={-100}>Café</Link> | 
-      <Link to="capsules" smooth={true} duration={500} offset={-100}>Capsulas</Link> | 
-      {/* <Link to="methods" smooth={true} duration={500} offset={-100}>Metodos</Link> */}
+      <ScrollLink to="coffee" smooth={true} duration={500} offset={-100}>Café</ScrollLink> | 
+      <ScrollLink to="capsules" smooth={true} duration={500} offset={-100}>Capsulas</ScrollLink>
     </Divs>
   );
 };
 
 const CoffeeProducts = () => {
+  const [coffeeBlendsData, setCoffeeBlendsData] = useState([]);
+  const [capsulesData, setCapsulesData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch(API_ENDPOINTS.PRODUCTS);
+        const data = await res.json();
+
+        const coffee = data.filter(p => p.category === "coffee");
+        const capsules = data.filter(p => p.category === "capsules");
+
+        setCoffeeBlendsData(coffee);
+        setCapsulesData(capsules);
+      } catch (err) {
+        console.error("Error al cargar productos:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
   }, []);
 
   const h1 = `CAFE`;
   const p = `Nuestro café, tu tradición.
 Desde 1916, Carioca ha llevado el arte del café a tu mesa con mezclas únicas y cuidadosamente elaboradas. Disfruta de la calidad y el sabor que nos caracteriza en cada grano.`;
+
   const capsulastitle = `Capsulas`;
   const pcapsules = `Seleccionamos una variedad de cápsulas premium diseñadas para satisfacer los paladares más exigentes. En Carioca nos apasiona llevar calidad y tradición a tu taza.`;
-  const methods = "Metodos de preparacion";
-  const pmethods = `We craft an array of premium blends to suit any coffee lover's taste.
-          When you purchase any of our coffee products, a portion of profits
-          goes towards veteran charities and organisations to help veterans move
-          forward.`;
 
   return (
     <>
       <ProductLinks />
-      <div id="coffee">
-        <Products h1={h1} p={p} array={coffeeBlendsData}></Products>
-      </div>
-      <div id="capsules">
-        <Products h1={capsulastitle} p={pcapsules} array={CapsulesData}></Products>
-      </div>
-      {/* <div id="methods">
-        <Products h1={methods} p={pmethods} array={coffeeBlendsData}></Products>
-      </div> */}
+
+      {loading ? (
+        <p style={{ textAlign: "center" }}>Cargando productos...</p>
+      ) : (
+        <>
+          <div id="coffee">
+            <Products h1={h1} p={p} array={coffeeBlendsData} />
+          </div>
+          <div id="capsules">
+            <Products h1={capsulastitle} p={pcapsules} array={capsulesData} />
+          </div>
+        </>
+      )}
     </>
   );
 };
