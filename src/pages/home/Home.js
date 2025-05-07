@@ -1,13 +1,10 @@
 import React, { useEffect } from "react";
-import { TrustmaryWidget } from "../../components/index";
 import {
-  Navbar,
   Intro,
   FeaturedBlend,
   Coffees,
-  HelpingVets,
-  Footer,
   Header,
+  ReviewsCarousel,
 } from "../../components/index";
 
 const Home = () => {
@@ -20,7 +17,7 @@ const Home = () => {
       <Intro />
       <FeaturedBlend />
       <Coffees />
-      <TrustmaryWidget/>
+      <ReviewsCarousel />
     </>
   );
 };

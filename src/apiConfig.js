@@ -5,7 +5,8 @@ export const API_ENDPOINTS = {
   CHANGESTATUSBYPREFID: `${API_BASE_URL}/orders/change_order_status`,
   GET_ORDER: `${API_BASE_URL}/orders/get_order`,
   SEND_ORDER_EMAIL: `${API_BASE_URL}/emails/sendorderemail`,
-  PRODUCTS: `${API_BASE_URL}/products`,
+  GET_PRODUCT: `${API_BASE_URL}/products`,
+  GET_PRODUCT_BY_NAME: `${API_BASE_URL}/products/name`,
 
   // Agrega más endpoints según necesites
 };
