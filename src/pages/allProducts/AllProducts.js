@@ -37,7 +37,7 @@ const CoffeeProducts = () => {
 
     const fetchProducts = async () => {
       try {
-        const res = await fetch(API_ENDPOINTS.PRODUCTS);
+        const res = await fetch(API_ENDPOINTS.GET_PRODUCT);
         const data = await res.json();
 
         const coffee = data.filter(p => p.category === "coffee");
