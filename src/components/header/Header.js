@@ -16,7 +16,7 @@ const HeaderSection = styled.section`
 
 const HeaderContainer = styled.header`
   text-align: center;
-  font-family: ${({ theme }) => theme.fonts[2]};
+  font-family: ${({ theme }) => theme.fonts[1]};
   padding: 0.5rem 0;
   color: ${({ theme }) => theme.colors.white};
   width: 100%;

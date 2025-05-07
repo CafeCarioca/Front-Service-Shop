@@ -79,7 +79,7 @@ const IntroRightBanner = styled.div`
     }
   }
   p {
-    font-family: ${({ theme }) => theme.fonts[2]};
+    font-family: ${({ theme }) => theme.fonts[1]};
     font-size: ${({ theme }) => theme.fontSizes.xmedium};
     color: ${({ theme }) => theme.colors.white};
     letter-spacing: ${({ theme }) => theme.letterspace.small};
@@ -99,7 +99,7 @@ const IntroRightBanner = styled.div`
     height: 3rem;
     margin-top: 2rem;
     font-size: ${({ theme }) => theme.fontSizes.xmedium};
-    font-family: ${({ theme }) => theme.fonts[2]};
+    font-family: ${({ theme }) => theme.fonts[1]};
    
     cursor: pointer;
     transition: background-color 1s;
@@ -130,6 +130,37 @@ const ScrollButton = styled.button`
   }
 `;
 
+const Badge = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  border: 8px solid white;
+  border-radius: 9999px;
+  padding: 1rem 5rem;
+  font-weight: bold;
+  color: white;
+  background-color: transparent;
+  font-size: 1.5rem;
+  letter-spacing: 0.06rem;
+  font-family: ${({ theme }) => theme.fonts[1]};
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3); /* leve glow para resaltar sobre fondo */
+  margin-bottom: 2.5rem;
+  .dot {
+    font-size: 1.8rem;
+    line-height: 1;
+  }
+
+  @media screen and (min-width: ${({ theme }) => theme.mediaScreen.xlgLaptop}) {
+    font-size: 1.8rem;
+    padding: 1.2rem 6rem;
+    border: 10px solid white;
+  }
+`;
+
+
+
+
 const Intro = () => {
   const scrollToNextSection = () => {
     window.scrollBy({ top: window.innerHeight * 0.95, behavior: "smooth" });
@@ -145,8 +176,12 @@ const Intro = () => {
           </video> */}
           <img src={imagefondo} alt="Carioca Logo" />
           
-          <IntroRightBanner>
-            <h2>Desde 1916</h2>
+            <IntroRightBanner>
+            <Badge>
+            <span>DESDE 1916</span>
+            <span className="dot">·</span>
+            <span>Montevideo, Uruguay</span>
+            </Badge>
             <p>
               Más de un siglo de pasión por el café, combinando calidad, tradición y momentos únicos. Te invitamos a ser parte de nuestra historia.
             </p>

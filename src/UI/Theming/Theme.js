@@ -14,6 +14,7 @@ const theme = {
     darkerGray: "#979797",
     mediumGray: "#525252",
     darkGray: "#27231f",
+    black: "#000",
 
     //Paleta de colores nueva
     carioca_darkgreen: "#273617",

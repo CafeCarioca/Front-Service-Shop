@@ -8,7 +8,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { BsSearch, BsPerson } from "react-icons/bs";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 import { navData } from "../index";
-import Carioca from "../../assets/images/logo_carioca.svg";
+import Carioca from "../../assets/images/CAFE-CARIOCA-pg2.JPG";
 import Isologo from "../../assets/images/isologo_negro.svg";
 const Nav = styled.section`
   position: sticky;
@@ -16,12 +16,15 @@ const Nav = styled.section`
   z-index: 10;
 `;
 const NavbarSection = styled.nav`
-  background-color: ${({ theme }) => theme.colors.carioca_cremitwhite};
-  color: ${({ theme }) => theme.colors.carioca_cremitwhite};
+  background-color: ${({ theme }) => theme.colors.black};
+  color: ${({ theme }) => theme.colors.black};
   padding: 0.7rem 0;
+  height: 70px; /* <- ajustá según el diseño */
+  display: flex;
+  align-items: center;
 `;
 const NavContainer = styled.div`
-  width: 90%;
+  width: 95%;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -34,7 +37,10 @@ const NavContainer = styled.div`
 const SharedNavStyles = css`
   display: flex;
 `;
-const NavLeft = styled.div``;
+const NavLeft = styled.div`
+display: flex;
+  align-items: center; /* Alinea verticalmente */
+  gap: 1rem;`;
 const NavLLeft = styled.div`
   ${SharedNavStyles}
   margin-top: 0.5rem;
@@ -119,8 +125,8 @@ const NavRLSearch = styled.div`
 
 
 const LogoImgIcon = styled.img`
-  width: 100%;
-  max-width: 12rem;
+  max-height: 60px; /* Esto evita que la imagen estire el navbar */
+  width: auto;
 `;
 const Navbar = ({ openCheckoutSummary, checkoutList, openSideNav }) => {
   return (
@@ -129,7 +135,7 @@ const Navbar = ({ openCheckoutSummary, checkoutList, openSideNav }) => {
         <NavContainer>
           <NavLeft>
             <NavLLeft>
-              <GiHamburgerMenu className="hoverPointer" onClick={openSideNav} color="black"/>
+              <GiHamburgerMenu className="hoverPointer" onClick={openSideNav} color="white"/>
             </NavLLeft>
             <NavLRight>
               <LogoImgIcon src={Carioca} alt="Carioca Logo" onClick={() => window.location.href = '/'} />
@@ -145,7 +151,7 @@ const Navbar = ({ openCheckoutSummary, checkoutList, openSideNav }) => {
                 const { to, title } = navItem;
                 return (
                   <li key={index}>
-                    <StyledNavLinks to={to} style={{ color: 'black' }}>{title}</StyledNavLinks>
+                    <StyledNavLinks to={to} style={{ color: 'white' }}>{title}</StyledNavLinks>
                   </li>
                 );
               })}
@@ -156,7 +162,7 @@ const Navbar = ({ openCheckoutSummary, checkoutList, openSideNav }) => {
               <HiOutlineShoppingCart
                 className="hoverPointerGrey"
                 onClick={openCheckoutSummary}
-                color= "black"
+                color= "white"
               />
               <CartNum onClick={openCheckoutSummary}>
                 {checkoutList.length}

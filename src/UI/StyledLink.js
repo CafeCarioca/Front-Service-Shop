@@ -21,9 +21,9 @@ const StyledNavLink = styled(NavLink)`
   color: ${(props) =>
     props.color
       ? (props) => props.color
-      : (props) => props.theme.colors.carioca_black};
+      : (props) => props.theme.colors.lightGray};
   &:hover {
-    color: ${({ theme }) => theme.colors.carioca_darkgreen};
+    color: ${({ theme }) => theme.colors.carioca_brickred};
     &:hover {
       cursor: pointer;
     }
