@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-
+import { API_ENDPOINTS } from  "../../apiConfig";
 // --- Styled Components ---
 const CarouselContainer = styled.div`
   width: 90%;
@@ -98,7 +98,7 @@ const ReviewsCarousel = () => {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:3000/googleapi')
+    fetch(API_ENDPOINTS.GOOGLE_REVIEWS)
       .then((res) => res.json())
       .then((data) => {
         if (data.reviews) {
