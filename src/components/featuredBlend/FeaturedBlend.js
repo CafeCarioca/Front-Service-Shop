@@ -1,119 +1,104 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Buttons from "../../UI/Buttons/Buttons";
-import coffeeBlendsData from "../coffees/CoffeeData";
 import featuredCoffee from "../../assets/images/featuredCoffee.JPG";
+import coffeeBlendsData from "../coffees/CoffeeData";
 
 const FeaturedSection = styled.section`
-  /* En móviles, la sección se apila (columna). En pantallas grandes, en fila */
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-
-  @media screen and (min-width: ${({ theme }) => theme.mediaScreen.lgLaptop}) {
-    flex-direction: row;
-    height: 600px; /* Altura fija en pantallas grandes */
+  padding: 2rem 0;
+  background-color: ${({ theme }) => theme.colors.lightestGray};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.darkerGray};
+  @media screen and (min-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
+    padding: 4rem 0;
   }
 `;
-
-/* Lado izquierdo con fondo café oscuro */
-const FeaturedLeft = styled.div`
-  background-color: #27231f; /* Café oscuro */
-  color: #fff;
-  padding: 2rem;
-
-  /* En pantallas grandes, ocupa la mitad del ancho y el 100% de la altura */
+const FeaturedContainer = styled.section`
+  width: 90%;
+  margin: 0 auto;
   @media screen and (min-width: ${({ theme }) => theme.mediaScreen.lgLaptop}) {
-    flex: 1;
-    height: 100%;
-    display: flex; 
-    align-items: stretch; /* Para que el contenedor interno llene la altura */
+    display: flex;
+    gap: 3rem;
   }
 `;
-
-/* Contenedor interno para distribuir elementos verticalmente */
-const FeaturedLeftContent = styled.div`
-  flex: 1; /* Se expande para llenar el alto disponible */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly; /* Distribución uniforme a lo largo del eje vertical */
+const SharedLRCss = css`
+  max-width: 600px;
+  margin: 0 auto;
 `;
-
+const FeaturedLeft = styled.section`
+  font-family: ${({ theme }) => theme.fonts[1]};
+  ${SharedLRCss}
+  h2 {
+    font-family: ${({ theme }) => theme.fonts[3]};
+    font-size: ${({ theme }) => theme.fontSizes.medium};
+    color: ${({ theme }) => theme.colors.darkGray};
+    margin: 1.5rem 0 2rem 0;
+    @media screen and (min-width: ${({ theme }) =>  theme.mediaScreen.xlgLaptop}) {
+      font-size: ${({ theme }) => theme.fontSizes.xxbig};
+    }
+  }
+  p {
+    color: ${({ theme }) => theme.colors.mediumGray};
+    font-size: ${({ theme }) => theme.fontSizes.xsmall};
+    line-height: 1.3rem;
+    margin-bottom: 5rem;
+  }
+`;
 const FeaturedTag = styled.span`
-  display: inline-block;
-  background-color: #444;
-  color: #fff;
-  padding: 0.3rem 0.6rem;
+  font-family: ${({ theme }) => theme.fonts[1]};
+  background-color: ${({ theme }) => theme.colors.mediumGray};
+  color: ${({ theme }) => theme.colors.lightestGray};
+  padding: 0.3rem;
   text-transform: uppercase;
   border-radius: 0.2rem;
-  /* Asegura que no se expanda horizontalmente en un contenedor flex */
-  align-self: flex-start; 
-  width: auto;
 `;
 
-const Title = styled.h2`
-  margin: 0; /* Quitamos márgenes para que la distribución sea más pareja */
-  color: #fff;
-  font-family: ${({ theme }) => theme.fonts[3]};
-  font-size: ${({ theme }) => theme.fontSizes.medium};
-
-  @media screen and (min-width: ${({ theme }) => theme.mediaScreen.xlgLaptop}) {
-    font-size: ${({ theme }) => theme.fontSizes.xxbig};
-  }
+const FeaturedRight = styled.section`
+  ${SharedLRCss}
 `;
-
-const Description = styled.p`
-  margin: 0;
-  font-family: ${({ theme }) => theme.fonts[1]};
-  font-size: ${({ theme }) => theme.fontSizes.xsmall};
-  line-height: 1.3rem;
-  color: #ccc;
-`;
-
-const FeaturedRight = styled.div`
-  /* Lado derecho para la imagen */
-  @media screen and (min-width: ${({ theme }) => theme.mediaScreen.lgLaptop}) {
-    flex: 1;
-    height: 100%;
-  }
-`;
-
 const FeaturedImg = styled.img`
-  /* Ocupa todo el ancho y alto disponibles, sin deformarse */
+  object-fit: cover;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  display: block;
+  border-radius: 0.5rem;
+  margin-top: 3rem;
+  @media screen and (min-width: ${({ theme }) => theme.mediaScreen.lgLaptop}) {
+    margin-top: 0;
+  }
 `;
-
-const FeaturedBlend = () => {
+const FeaturedBlend = (props) => {
   const { description, singleImg, blendName } = coffeeBlendsData[4];
-
   return (
     <FeaturedSection>
-      <FeaturedLeft>
-        {/* Contenedor interno para espaciar elementos verticalmente */}
-        <FeaturedLeftContent>
+      <FeaturedContainer>
+        <FeaturedLeft>
           <FeaturedTag>Blend destacado</FeaturedTag>
-          <Title>{blendName}</Title>
-          <Description>{description}</Description>
+          <h2>{blendName}</h2>
+          <p>
+            {description}
+            {/* Lightweight and durable, our Two 14 Coffee Co branded Enamel Mug is
+            a must-have!
+            <br /> Material: Metal with an enamel layer and sublimation coating.
+            <br /> Dimensions: height 3.14″ (8 cm), diameter 3.25″ (8.5 cm)
+            <br />
+            White coating with a silver rim
+            <br /> <b> NOT dishwasher or microwave safe</b>
+            <br /> Hand-wash only <br />
+            <b>Attention!</b> Don't heat liquids or food directly in the mug—it
+            can damage the coating. */}
+          </p>
           <Buttons
-            bg={(props) => props.theme.colors.lightestGray}
+            bg={(props) => props.theme.colors.darkGray}
             width={"100%"}
-            color={(props) => props.theme.colors.darkGray}
+            color={(props) => props.theme.colors.lightestGray}
             to={`/collections/coffee-blends/${blendName}`}
           >
             Ver Producto
           </Buttons>
-        </FeaturedLeftContent>
-      </FeaturedLeft>
-
-      <FeaturedRight>
-        <FeaturedImg
-          src={singleImg || featuredCoffee}
-          alt="Featured coffee"
-        />
-      </FeaturedRight>
+        </FeaturedLeft>
+        <FeaturedRight>
+          <FeaturedImg src={singleImg} alt="Featured coffee" />
+        </FeaturedRight>
+      </FeaturedContainer>
     </FeaturedSection>
   );
 };
