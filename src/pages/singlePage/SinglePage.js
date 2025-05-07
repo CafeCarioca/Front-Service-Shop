@@ -151,6 +151,8 @@ const SinglePage = (props) => {
         const data = await response.json();
 
         const isCapsule = data.category === "capsules";
+        const firstPresentation = data.presentations[0];
+
 
         setProductDetails({
           blendName: data.name,
@@ -161,11 +163,11 @@ const SinglePage = (props) => {
           taste: data.flavors,
           quantity: 1,
           isCapsule,
-          grams: isCapsule ? null : 250,
+          grams: isCapsule ? null : parseInt(firstPresentation?.weight),
           grind: isCapsule ? null : "Molido",
           price: isCapsule
             ? parseFloat(data.price)
-            : parseFloat(data.presentations.find(p => p.weight === "250")?.price || 0),
+            : parseFloat(firstPresentation?.price || 0),
           prices: isCapsule
             ? {}
             : Object.fromEntries(data.presentations.map(p => [parseInt(p.weight), parseFloat(p.price)])),

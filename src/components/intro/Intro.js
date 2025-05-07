@@ -174,7 +174,7 @@ const Intro = () => {
             <source src={coffeeVideo} type="video/mp4" />
             Tu navegador no soporta el elemento de video.
           </video> */}
-          <img src={imagefondo} alt="Carioca Logo" />
+          <img src={"https://bucketcarioca.s3.us-east-1.amazonaws.com/Images/image.png.png"} alt="Carioca Logo" />
           
             <IntroRightBanner>
             <Badge>
