@@ -44,7 +44,7 @@ const Header = (props) => {
     <HeaderSection>
       <HeaderContainer>
         <RotatingText>
-          Envio gratuito en pedidos superiores a $1000 | Entregas en 24/48 horas | 
+          Envio gratis en pedidos superiores a $1000 | Entregas en 24/48 horas | 
         </RotatingText>
       </HeaderContainer>
     </HeaderSection>

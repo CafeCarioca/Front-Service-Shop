@@ -134,21 +134,29 @@ const Badge = styled.div`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 1rem;
   border: 8px solid white;
   border-radius: 9999px;
-  padding: 1rem 5rem;
+  padding: 0.8rem 2rem;
   font-weight: bold;
   color: white;
   background-color: transparent;
-  font-size: 1.5rem;
+  font-size: 1rem;
   letter-spacing: 0.06rem;
   font-family: ${({ theme }) => theme.fonts[1]};
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3); /* leve glow para resaltar sobre fondo */
-  margin-bottom: 2.5rem;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  margin-bottom: 2rem;
+  max-width: 95%;
+  text-align: center;
+
   .dot {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     line-height: 1;
+  }
+
+  @media screen and (min-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
+    font-size: 1.3rem;
+    padding: 1rem 4rem;
   }
 
   @media screen and (min-width: ${({ theme }) => theme.mediaScreen.xlgLaptop}) {
@@ -157,6 +165,7 @@ const Badge = styled.div`
     border: 10px solid white;
   }
 `;
+
 
 
 
