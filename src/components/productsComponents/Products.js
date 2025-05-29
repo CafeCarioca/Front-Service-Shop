@@ -65,6 +65,7 @@ const Products = ({ h1, p, array }) => {
             to={product.name}                       // Si querés scroll o `/product/${product.id}` para navegar
             price={product.price}
             origin={product.origin}
+            category={product.category}
           />
         ))}
       </ProductImgsContainer>

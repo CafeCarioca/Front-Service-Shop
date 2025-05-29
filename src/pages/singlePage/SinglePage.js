@@ -1,9 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { SingleProductButtons, SimpleButton } from "../../UI";
 import { bagSizes, grind } from "./singlePageData";
 import { API_ENDPOINTS } from  "../../apiConfig"; 
+
+const BackButton = styled.button`
+  margin-bottom: 1rem;
+  background: ${({ theme }) => theme.colors.darkGray};
+  color: ${({ theme }) => theme.colors.white};
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-family: ${({ theme }) => theme.fonts[0]};
+  &:hover {
+    opacity: 0.9;
+  }
+  @media screen and (min-width: 800px) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+  }
+`;
 
 const SingleProductContainer = styled.section`
   width: 90%;
@@ -12,14 +32,20 @@ const SingleProductContainer = styled.section`
   @media screen and (min-width: 800px) {
     display: flex;
     gap: 2rem;
+    min-height: 100vh;
   }
 `;
 
 const ProductContainerLeft = styled.div`
   object-fit: cover;
+  position: relative;
   @media screen and (min-width: 800px) {
     width: 55%;
     display: flex;
+    position: sticky;
+    top: 2rem;
+    height: fit-content;
+    max-height: 600px;
   }
 `;
 
@@ -28,9 +54,11 @@ const CoffeeImg = styled.img.attrs((props) => ({
 }))`
   width: 100%;
   height: 100%;
+  max-height: 600px;
+  object-fit: contain;
   border-radius: 1rem;
   @media screen and (min-width: 800px) {
-    min-width: 25rem;
+    width: 100%;
     height: auto;
     align-self: flex-start;
   }
@@ -38,6 +66,9 @@ const CoffeeImg = styled.img.attrs((props) => ({
     position: sticky;
     top: 8rem;
     z-index: -10;
+    @media screen and (min-width: 800px) {
+      position: static;
+    }
   }
 `;
 
@@ -50,6 +81,10 @@ const ProductContainerRight = styled.div`
   }
   @media screen and (min-width: 800px) {
     width: 45%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: ${props => props.category === 'others' ? '600px' : 'calc(100vh - 4rem)'};
   }
 `;
 
@@ -91,6 +126,12 @@ const ProductInfo = styled.article`
 const SelectionsContainer = styled.div`
   margin-top: 1rem;
   font-family: ${({ theme }) => theme.fonts[1]};
+  @media screen and (min-width: 800px) {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 `;
 
 const Selections = styled.div`
@@ -139,8 +180,42 @@ const QuantityForm = styled.input`
   box-sizing: border-box;
 `;
 
+const PriceAndBuyContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  background: white;
+  padding: 1.5rem 0 1.5rem 0;
+  border-top: 2px solid ${({ theme }) => theme.colors.darkerGray};
+  z-index: 10;
+  box-shadow: 0 -2px 12px 0 rgba(0,0,0,0.07);
+  @media screen and (min-width: 800px) {
+    padding-right: 2rem;
+  }
+`;
+
+const PriceDisplay = styled.div`
+  color: ${({ theme }) => theme.colors.darkGray};
+  font-size: ${({ theme }) => theme.fontSizes.medium};
+  font-weight: 600;
+  font-family: ${({ theme }) => theme.fonts[3]};
+  flex: 1;
+  text-align: right;
+`;
+
+const StyledBuyButton = styled(SimpleButton)`
+  @media screen and (min-width: 800px) {
+    margin-right: 2rem;
+  }
+`;
+
 const SinglePage = (props) => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [productDetails, setProductDetails] = useState(null);
   const [stickyClass, setStickyClass] = useState(false);
 
@@ -153,7 +228,6 @@ const SinglePage = (props) => {
         const isCapsule = data.category === "capsules";
         const firstPresentation = data.presentations[0];
 
-
         setProductDetails({
           blendName: data.name,
           singleImg: `${data.secondary_image_url}`,
@@ -163,12 +237,15 @@ const SinglePage = (props) => {
           taste: data.flavors,
           quantity: 1,
           isCapsule,
+          category: data.category,
           grams: isCapsule ? null : parseInt(firstPresentation?.weight),
           grind: isCapsule ? null : "Molido",
-          price: isCapsule
+          price: data.category === "others" 
             ? parseFloat(data.price)
-            : parseFloat(firstPresentation?.price || 0),
-          prices: isCapsule
+            : isCapsule
+              ? parseFloat(data.price)
+              : parseFloat(firstPresentation?.price || 0),
+          prices: isCapsule || data.category === "others"
             ? {}
             : Object.fromEntries(data.presentations.map(p => [parseInt(p.weight), parseFloat(p.price)])),
         });
@@ -250,6 +327,9 @@ const SinglePage = (props) => {
   return (
     <SingleProductContainer>
       <ProductContainerLeft>
+        <BackButton onClick={() => navigate(-1)}>
+          ← Volver a tienda
+        </BackButton>
         <CoffeeImg
           src={productDetails.singleImg}
           alt={productDetails.blendName}
@@ -257,49 +337,56 @@ const SinglePage = (props) => {
         />
       </ProductContainerLeft>
 
-      <ProductContainerRight>
+      <ProductContainerRight category={productDetails.category}>
         <h1>{productDetails.blendName}</h1>
-        <CraftedSpan>Producido por Carioca</CraftedSpan>
+        <CraftedSpan>
+          {productDetails.isCapsule || productDetails.category === "others" 
+            ? "Seleccionado e importado por Carioca"
+            : "Producido por Carioca"}
+        </CraftedSpan>
 
         <ProductInfo>
           <p>{productDetails.description}</p>
-          <div>
-            <span>Tostado:</span>
-            {productDetails.roast}
-          </div>
-          <div>
-            <span>Origen:</span> {productDetails.origin}
-          </div>
-          <div>
-            <span>Sabores:</span>
-            {productDetails.taste}
-          </div>
+          {productDetails.category !== 'others' && (
+            <>
+              <div>
+                <span>Tostado:</span>
+                {productDetails.roast}
+              </div>
+              <div>
+                <span>Origen:</span> {productDetails.origin}
+              </div>
+              <div>
+                <span>Sabores:</span>
+                {productDetails.taste}
+              </div>
+            </>
+          )}
         </ProductInfo>
 
-        <SelectionsContainer>
-          {!productDetails.isCapsule && (
+        <SelectionsContainer category={productDetails.category}>
+          {!productDetails.isCapsule && productDetails.category !== 'others' && (
             <Selections>
               <span>Presentaciones:</span>
               <div>
-              {bagSizes
-                .filter((bag) => productDetails.prices[bag.amount])
-                .map((bag, index) => (
-                  <SingleProductButtons
-                    key={index}
-                    className={
-                      productDetails.grams === bag.amount ? "clicked" : null
-                    }
-                    onClick={() => setGrams(bag.amount)}
-                  >
-                    {bag.size}
-                  </SingleProductButtons>
-              ))}
-              
+                {bagSizes
+                  .filter((bag) => productDetails.prices[bag.amount])
+                  .map((bag, index) => (
+                    <SingleProductButtons
+                      key={index}
+                      className={
+                        productDetails.grams === bag.amount ? "clicked" : null
+                      }
+                      onClick={() => setGrams(bag.amount)}
+                    >
+                      {bag.size}
+                    </SingleProductButtons>
+                  ))}
               </div>
             </Selections>
           )}
 
-          {!productDetails.isCapsule && (
+          {!productDetails.isCapsule && productDetails.category !== 'others' && (
             <Selections>
               <span>Tipo de Molienda:</span>
               <div>
@@ -343,20 +430,24 @@ const SinglePage = (props) => {
                   +
                 </button>
               </FormContainer>
-              <div>${totalPrice}</div>
             </FormContainer>
           </Selections>
         </SelectionsContainer>
 
-        <SimpleButton
-          bg={(props) => props.theme.colors.darkGray}
-          color={(props) => props.theme.colors.white}
-          type="button"
-          width="100%"
-          onClick={addItemToCheckout}
-        >
-          Comprar
-        </SimpleButton>
+        <PriceAndBuyContainer>
+          <PriceDisplay>${totalPrice}</PriceDisplay>
+          <StyledBuyButton
+            bg={(props) => props.theme.colors.darkGray}
+            color={(props) => props.theme.colors.white}
+            type="button"
+            width="200px"
+            onClick={addItemToCheckout}
+            style={{ marginRight: 0 }}
+            className="buy-btn"
+          >
+            Comprar
+          </StyledBuyButton>
+        </PriceAndBuyContainer>
       </ProductContainerRight>
     </SingleProductContainer>
   );

@@ -22,7 +22,8 @@ const ProductLinks = () => {
   return (
     <Divs>
       <ScrollLink to="coffee" smooth={true} duration={500} offset={-100}>Café</ScrollLink> | 
-      <ScrollLink to="capsules" smooth={true} duration={500} offset={-100}>Capsulas</ScrollLink>
+      <ScrollLink to="capsules" smooth={true} duration={500} offset={-100}>Capsulas</ScrollLink> |
+      <ScrollLink to="methods" smooth={true} duration={500} offset={-100}>Métodos</ScrollLink>
     </Divs>
   );
 };
@@ -30,6 +31,7 @@ const ProductLinks = () => {
 const CoffeeProducts = () => {
   const [coffeeBlendsData, setCoffeeBlendsData] = useState([]);
   const [capsulesData, setCapsulesData] = useState([]);
+  const [methodsData, setMethodsData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -42,9 +44,11 @@ const CoffeeProducts = () => {
 
         const coffee = data.filter(p => p.category === "coffee");
         const capsules = data.filter(p => p.category === "capsules");
+        const methods = data.filter(p => p.category === "others");
 
         setCoffeeBlendsData(coffee);
         setCapsulesData(capsules);
+        setMethodsData(methods);
       } catch (err) {
         console.error("Error al cargar productos:", err);
       } finally {
@@ -62,6 +66,9 @@ Desde 1916, Carioca ha llevado el arte del café a tu mesa con mezclas únicas y
   const capsulastitle = `Capsulas`;
   const pcapsules = `Seleccionamos una variedad de cápsulas premium diseñadas para satisfacer los paladares más exigentes. En Carioca nos apasiona llevar calidad y tradición a tu taza.`;
 
+  const methodstitle = `Métodos`;
+  const pmethods = `Descubre nuestra selección de métodos de preparación. Cada método ofrece una experiencia única para disfrutar de tu café favorito.`;
+
   return (
     <>
       <ProductLinks />
@@ -71,11 +78,16 @@ Desde 1916, Carioca ha llevado el arte del café a tu mesa con mezclas únicas y
       ) : (
         <>
           <div id="coffee">
-            <Products h1={h1} p={p} array={coffeeBlendsData} />
+            <Products h1={h1} p={p} array={coffeeBlendsData.filter(p => p.available)} />
           </div>
           <div id="capsules">
-            <Products h1={capsulastitle} p={pcapsules} array={capsulesData} />
+            <Products h1={capsulastitle} p={pcapsules} array={capsulesData.filter(p => p.available)} />
           </div>
+          {methodsData.length > 0 && (
+            <div id="methods">
+              <Products h1={methodstitle} p={pmethods} array={methodsData.filter(p => p.available)} />
+            </div>
+          )}
         </>
       )}
     </>
