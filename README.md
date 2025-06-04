@@ -1,12 +1,34 @@
-# React E-commerce Coffee Shop Website ☕
-## Explore a world of coffee varieties and flavours, all at your fingertips for the perfect brew.
-### Description: An e-commerce website for the Two 14 coffee shop
-View site: https://two14coffee.netlify.app/ <br>
-Github: https://github.com/Tirelo-Mputle/two14-coffee-portfolio-project
+# Café Carioca ☕
 
-* Implemented React Router 6 for seamless page navigation. 
-* Developed shopping cart functionality allowing customers to add and remove items, with cart data stored in local storage.
-### Tech stack:
-![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
-![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)
-![Styled Components](https://img.shields.io/badge/styled--components-DB7093?style=for-the-badge&logo=styled-components&logoColor=white)
+Aplicación de e‑commerce desarrollada con **React** para la venta de cafés de especialidad.
+
+## Características
+
+- Navegación con **React Router 6**.
+- Estilos con **styled-components** y **Bootstrap**.
+- Integración con **MercadoPago** para pagos.
+- Carrito de compras persistente mediante `localStorage`.
+- Componentes reutilizables y diseño responsive.
+
+## Instalación
+
+```bash
+npm install
+npm start
+```
+
+Esto levantará la aplicación en `http://localhost:3000`.
+
+Para generar la versión de producción:
+
+```bash
+npm run build
+```
+
+## Despliegue
+
+El proyecto cuenta con un workflow de GitHub Actions que publica el contenido de `build/` en un bucket de **AWS S3** cada vez que se actualiza la rama `main`.
+
+## Créditos
+
+Proyecto realizado por [Tirelo Mputle](https://github.com/Tirelo-Mputle) y adaptado para Café Carioca.
