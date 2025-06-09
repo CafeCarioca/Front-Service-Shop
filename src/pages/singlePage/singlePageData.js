@@ -1,4 +1,5 @@
 export const bagSizes = [
+  { size: "100g", amount: 100 },
   { size: "250g", amount: 250 },
   { size: "500g", amount: 500 },
   { size: "1kg", amount: 1000 },
