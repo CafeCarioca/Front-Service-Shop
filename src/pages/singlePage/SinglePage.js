@@ -142,6 +142,14 @@ const Selections = styled.div`
   }
 `;
 
+const SmallNote = styled.small`
+  display: block;
+  font-size: 0.7rem;
+  color: ${({ theme }) => theme.colors.mediumGray};
+  margin-top: 0.5rem;
+  font-style: italic;
+`;
+
 const FormContainer = styled.div`
   display: flex;
   gap: 1rem;
@@ -207,6 +215,61 @@ const PriceDisplay = styled.div`
   text-align: right;
 `;
 
+const DiscountBadge = styled.div`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: ${({ theme }) => theme.colors.carioca_brickred || '#fc2626'};
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  z-index: 10;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+`;
+
+const PriceContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+  flex: 1;
+`;
+
+const OriginalPrice = styled.span`
+  text-decoration: line-through;
+  color: #888;
+  font-size: ${({ theme }) => theme.fontSizes.small};
+  font-weight: 400;
+`;
+
+const DiscountedPrice = styled.span`
+  color: ${({ theme }) => theme.colors.carioca_brickred || '#fc2626'};
+  font-size: ${({ theme }) => theme.fontSizes.big};
+  font-weight: 700;
+`;
+
+const DiscountInfo = styled.div`
+  background-color: ${({ theme }) => theme.colors.lightestGray || '#f5f5f5'};
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  
+  h3 {
+    color: ${({ theme }) => theme.colors.carioca_brickred || '#fc2626'};
+    font-size: ${({ theme }) => theme.fontSizes.small};
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+  }
+  
+  p {
+    color: ${({ theme }) => theme.colors.mediumGray};
+    font-size: ${({ theme }) => theme.fontSizes.xsmall};
+    margin: 0;
+  }
+`;
+
 const StyledBuyButton = styled(SimpleButton)`
   @media screen and (min-width: 800px) {
     margin-right: 2rem;
@@ -228,6 +291,25 @@ const SinglePage = (props) => {
         const isCapsule = data.category === "capsules";
         const firstPresentation = data.presentations[0];
 
+        const basePrice = data.category === "others" 
+          ? parseFloat(data.price)
+          : isCapsule
+            ? parseFloat(data.price)
+            : parseFloat(firstPresentation?.price || 0);
+
+        // Calcular precio con descuento si existe
+        let finalPrice = basePrice;
+        let originalPriceForDiscount = null;
+
+        if (data.has_discount && data.discount) {
+          originalPriceForDiscount = basePrice;
+          if (data.discount.type === 'percentage') {
+            finalPrice = basePrice * (1 - data.discount.value / 100);
+          } else if (data.discount.type === 'fixed_amount') {
+            finalPrice = Math.max(0, basePrice - data.discount.value);
+          }
+        }
+
         setProductDetails({
           blendName: data.name,
           singleImg: `${data.secondary_image_url}`,
@@ -240,11 +322,10 @@ const SinglePage = (props) => {
           category: data.category,
           grams: isCapsule ? null : parseInt(firstPresentation?.weight),
           grind: isCapsule ? null : "Molido",
-          price: data.category === "others" 
-            ? parseFloat(data.price)
-            : isCapsule
-              ? parseFloat(data.price)
-              : parseFloat(firstPresentation?.price || 0),
+          price: finalPrice,
+          originalPrice: originalPriceForDiscount,
+          hasDiscount: data.has_discount || false,
+          discount: data.discount || null,
           prices: isCapsule || data.category === "others"
             ? {}
             : Object.fromEntries(data.presentations.map(p => [parseInt(p.weight), parseFloat(p.price)])),
@@ -258,11 +339,28 @@ const SinglePage = (props) => {
   }, [id]);
 
   const setGrams = (amount) => {
-    setProductDetails((prev) => ({
-      ...prev,
-      grams: amount,
-      price: prev.prices[amount] || prev.price,
-    }));
+    setProductDetails((prev) => {
+      const newOriginalPrice = prev.prices[amount] || prev.price;
+      let newFinalPrice = newOriginalPrice;
+      let newOriginalPriceForDiscount = null;
+
+      // Si hay descuento, recalcularlo para la nueva presentación
+      if (prev.hasDiscount && prev.discount) {
+        newOriginalPriceForDiscount = newOriginalPrice;
+        if (prev.discount.type === 'percentage') {
+          newFinalPrice = newOriginalPrice * (1 - prev.discount.value / 100);
+        } else if (prev.discount.type === 'fixed_amount') {
+          newFinalPrice = Math.max(0, newOriginalPrice - prev.discount.value);
+        }
+      }
+
+      return {
+        ...prev,
+        grams: amount,
+        price: newFinalPrice,
+        originalPrice: newOriginalPriceForDiscount,
+      };
+    });
   };
 
   const setGrind = (grindName) => {
@@ -322,7 +420,7 @@ const SinglePage = (props) => {
 
   if (!productDetails) return <p>Cargando...</p>;
 
-  const totalPrice = (productDetails.price * productDetails.quantity).toFixed(2);
+  const totalPrice = (productDetails.price * productDetails.quantity).toFixed(0);
 
   return (
     <SingleProductContainer>
@@ -330,6 +428,13 @@ const SinglePage = (props) => {
         <BackButton onClick={() => navigate(-1)}>
           ← Volver a tienda
         </BackButton>
+        {productDetails.hasDiscount && productDetails.discount && (
+          <DiscountBadge>
+            {productDetails.discount.type === 'percentage' 
+              ? `-${productDetails.discount.value}%` 
+              : `-$${productDetails.discount.value}`}
+          </DiscountBadge>
+        )}
         <CoffeeImg
           src={productDetails.singleImg}
           alt={productDetails.blendName}
@@ -402,6 +507,7 @@ const SinglePage = (props) => {
                   </SingleProductButtons>
                 ))}
               </div>
+              <SmallNote>* En caso de no seleccionar, será molido</SmallNote>
             </Selections>
           )}
 
@@ -435,7 +541,14 @@ const SinglePage = (props) => {
         </SelectionsContainer>
 
         <PriceAndBuyContainer>
-          <PriceDisplay>${totalPrice}</PriceDisplay>
+          {productDetails.hasDiscount && productDetails.originalPrice ? (
+            <PriceContainer>
+              <OriginalPrice>${(productDetails.originalPrice * productDetails.quantity).toFixed(0)}</OriginalPrice>
+              <DiscountedPrice>${totalPrice}</DiscountedPrice>
+            </PriceContainer>
+          ) : (
+            <PriceDisplay>${totalPrice}</PriceDisplay>
+          )}
           <StyledBuyButton
             bg={(props) => props.theme.colors.darkGray}
             color={(props) => props.theme.colors.white}

@@ -17,9 +17,17 @@ const CheckoutHeader = styled.header`
 `;
 const CheckoutItemList = styled.div`
   overflow-y: scroll;
-  max-height: 23rem;
+  max-height: 35rem;
   height: 100%;
   width: auto;
+  
+  /* Ocultar scrollbar pero mantener funcionalidad */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE y Edge */
+  
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari y Opera */
+  }
 `;
 const CheckoutFooter = styled.header`
   border-top: 1px solid ${({ theme }) => theme.colors.darkerGray};
@@ -80,7 +88,7 @@ const CheckoutSummary = (props) => {
         <CheckoutFooter>
           <FooterTotalContainer>
             <span>SUBTOTAL</span>
-            <span>${itemTotals}</span>
+            <span>${itemTotals.toFixed(0)}</span>
           </FooterTotalContainer>
           <p>Envio y descuentos son aplicados al finalizar la compra.</p>
           <Buttons

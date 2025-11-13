@@ -62,10 +62,14 @@ const Products = ({ h1, p, array }) => {
             key={product.id}
             blendName={product.name}
             listImg={product.image_url}
-            to={product.name}                       // Si querés scroll o `/product/${product.id}` para navegar
+            to={product.name}
             price={product.price}
             origin={product.origin}
             category={product.category}
+            has_discount={product.has_discount}
+            discount={product.discount}
+            discounted_price={product.discounted_price}
+            original_price={product.original_price}
           />
         ))}
       </ProductImgsContainer>

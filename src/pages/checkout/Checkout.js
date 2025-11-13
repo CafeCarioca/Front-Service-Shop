@@ -113,7 +113,7 @@ const CostDetail = styled.div`
   display: flex;
   justify-content: space-between;
   font-size: ${({ fontSize }) => fontSize || '10px'};
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 
   span {
     font-weight: ${({ isBold }) => (isBold ? 'bold' : 'normal')};
@@ -128,9 +128,9 @@ const CostDetail = styled.div`
 `;
 
 const MinimumAlert = styled.div`
-  background-color: #fef3c7;
-  border: 1px solid #f59e0b;
-  color: #92400e;
+  background-color: #f5f5f5;
+  border: 1px solid ${({ theme }) => theme.colors.carioca_brickred || '#58000a'};
+  color: ${({ theme }) => theme.colors.carioca_brickred || '#58000a'};
   padding: 0.8rem 1rem;
   border-radius: 0.3rem;
   margin-bottom: 1rem;
@@ -141,7 +141,7 @@ const MinimumAlert = styled.div`
   
   strong {
     font-weight: 600;
-    color: #78350f;
+    color: ${({ theme }) => theme.colors.carioca_brickred || '#58000a'};
   }
 `;
 
@@ -164,11 +164,25 @@ const Checkout = ({ checkoutList }) => {
     });
   }, []);
   
-  // Calcular el total de los items
-  const itemTotals = checkoutList.reduce(
-    (accumulator, currValue) => accumulator + +(currValue.price * currValue.quantity),
-    0
+  // Calcular el total de los items y descuentos
+  const itemCalculations = checkoutList.reduce(
+    (acc, item) => {
+      const itemTotal = item.price * item.quantity;
+      const itemOriginalPrice = (item.originalPrice || item.price) * item.quantity;
+      const itemDiscount = item.hasDiscount ? (itemOriginalPrice - itemTotal) : 0;
+      
+      return {
+        subtotal: acc.subtotal + itemOriginalPrice,
+        itemTotal: acc.itemTotal + itemTotal,
+        totalDiscount: acc.totalDiscount + itemDiscount
+      };
+    },
+    { subtotal: 0, itemTotal: 0, totalDiscount: 0 }
   );
+
+  const itemTotals = itemCalculations.itemTotal;
+  const totalDiscounts = itemCalculations.totalDiscount;
+  const subtotalBeforeDiscount = itemCalculations.subtotal;
 
   // El envío ahora es siempre gratis, pero hay compra mínima de $1000
   const shippingCost = 0;
@@ -291,9 +305,21 @@ const Checkout = ({ checkoutList }) => {
                 </MinimumAlert>
               )}
               <TotalContainer>
+                {totalDiscounts > 0 && (
+                  <>
+                    <CostDetail fontSize='14px'>
+                      <span>Subtotal: </span>
+                      <span>${subtotalBeforeDiscount.toFixed(2)}</span>
+                    </CostDetail>
+                    <CostDetail fontSize='14px' style={{ color: '#58000a' }}>
+                      <span>Descuentos: </span>
+                      <span>-${totalDiscounts.toFixed(2)}</span>
+                    </CostDetail>
+                  </>
+                )}
                 <CostDetail fontSize='18px' isBold>
                   <span>Total: </span>
-                  <span>${totalWithShipping}</span>
+                  <span>${totalWithShipping.toFixed(2)}</span>
                 </CostDetail>
               </TotalContainer>
               {!preferenceId && (

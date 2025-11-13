@@ -65,13 +65,28 @@ const CoffeeSelection = () => {
     <>
       <CoffeesSelection>
         {products.map((product, index) => {
-          const { name, image_url } = product;
+          const { 
+            name, 
+            image_url, 
+            category,
+            has_discount, 
+            discount, 
+            discounted_price, 
+            original_price,
+            price 
+          } = product;
           console.log("Rendering product:", name, "Image:", image_url);
           return (
             <Coffee
               blendName={name}
               listImg={image_url}
               to={`/collections/coffee-blends/${name}`}
+              category={category}
+              has_discount={has_discount}
+              discount={discount}
+              discounted_price={discounted_price}
+              original_price={original_price}
+              price={price}
               key={index}
             />
           );
