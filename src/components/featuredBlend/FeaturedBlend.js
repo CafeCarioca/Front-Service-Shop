@@ -5,20 +5,22 @@ import Buttons from "../../UI/Buttons/Buttons";
 import { API_ENDPOINTS } from "../../apiConfig";
 
 const FeaturedSection = styled.section`
-  padding: 2rem 0;
+  padding: 3rem 0;
   background-color: ${({ theme }) => theme.colors.lightestGray};
   border-bottom: 1px solid ${({ theme }) => theme.colors.darkerGray};
   @media screen and (min-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
-    padding: 4rem 0;
+    padding: 5rem 0;
   }
 `;
 
 const FeaturedContainer = styled.section`
   width: 90%;
+  max-width: 1400px;
   margin: 0 auto;
   @media screen and (min-width: ${({ theme }) => theme.mediaScreen.lgLaptop}) {
     display: flex;
-    gap: 3rem;
+    gap: 4rem;
+    align-items: center;
   }
 `;
 
@@ -30,11 +32,18 @@ const SharedLRCss = css`
 const FeaturedLeft = styled.section`
   font-family: ${({ theme }) => theme.fonts[1]};
   ${SharedLRCss}
+  @media screen and (min-width: ${({ theme }) => theme.mediaScreen.lgLaptop}) {
+    flex: 1;
+  }
   h2 {
     font-family: ${({ theme }) => theme.fonts[3]};
     font-size: ${({ theme }) => theme.fontSizes.medium};
     color: ${({ theme }) => theme.colors.darkGray};
-    margin: 1.5rem 0 2rem 0;
+    margin: 1.5rem 0 1.5rem 0;
+    line-height: 1.2;
+    @media screen and (min-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
+      font-size: ${({ theme }) => theme.fontSizes.big};
+    }
     @media screen and (min-width: ${({ theme }) => theme.mediaScreen.xlgLaptop}) {
       font-size: ${({ theme }) => theme.fontSizes.xxbig};
     }
@@ -42,8 +51,13 @@ const FeaturedLeft = styled.section`
   p {
     color: ${({ theme }) => theme.colors.mediumGray};
     font-size: ${({ theme }) => theme.fontSizes.xsmall};
-    line-height: 1.3rem;
-    margin-bottom: 5rem;
+    line-height: 1.6rem;
+    margin-bottom: 3rem;
+    @media screen and (min-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
+      font-size: ${({ theme }) => theme.fontSizes.small};
+      line-height: 1.8rem;
+      margin-bottom: 3.5rem;
+    }
   }
 `;
 
@@ -51,23 +65,48 @@ const FeaturedTag = styled.span`
   font-family: ${({ theme }) => theme.fonts[1]};
   background-color: ${({ theme }) => theme.colors.mediumGray};
   color: ${({ theme }) => theme.colors.lightestGray};
-  padding: 0.3rem;
+  padding: 0.4rem 0.8rem;
   text-transform: uppercase;
-  border-radius: 0.2rem;
+  border-radius: 0.3rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  display: inline-block;
 `;
 
 const FeaturedRight = styled.section`
   ${SharedLRCss}
-`;
-
-const FeaturedImg = styled.img`
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
-  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-top: 3rem;
   @media screen and (min-width: ${({ theme }) => theme.mediaScreen.lgLaptop}) {
     margin-top: 0;
+    flex: 1;
+  }
+`;
+
+const FeaturedImg = styled.img`
+  object-fit: contain;
+  object-position: center;
+  width: 100%;
+  height: 350px;
+  border-radius: 0.8rem;
+  transition: all 0.4s ease;
+  cursor: pointer;
+  
+  &:hover {
+    transform: translateY(-5px);
+  }
+  
+  @media screen and (min-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
+    height: 380px;
+  }
+  @media screen and (min-width: ${({ theme }) => theme.mediaScreen.lgLaptop}) {
+    height: 420px;
+  }
+  @media screen and (min-width: ${({ theme }) => theme.mediaScreen.xlgLaptop}) {
+    height: 450px;
   }
 `;
 

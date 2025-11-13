@@ -10,6 +10,7 @@ import { HiOutlineShoppingCart } from "react-icons/hi";
 import { navData } from "../index";
 import Carioca from "../../assets/images/CAFE-CARIOCA-pg2.JPG";
 import Isologo from "../../assets/images/isologo_negro.svg";
+// import SearchBar from "../searchBar/SearchBar"; // DISABLED - Search feature
 const Nav = styled.section`
   position: sticky;
   top: 0;
@@ -158,6 +159,9 @@ const Navbar = ({ openCheckoutSummary, checkoutList, openSideNav }) => {
             </NavList>
           </NavCenter>
           <NavRight>
+            <NavRLeft>
+              {/* <SearchBar /> */} {/* DISABLED - Search feature */}
+            </NavRLeft>
             <NavRRight>
               <HiOutlineShoppingCart
                 className="hoverPointerGrey"

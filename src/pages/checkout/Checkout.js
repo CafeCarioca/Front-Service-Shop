@@ -127,6 +127,24 @@ const CostDetail = styled.div`
   }
 `;
 
+const MinimumAlert = styled.div`
+  background-color: #fef3c7;
+  border: 1px solid #f59e0b;
+  color: #92400e;
+  padding: 0.8rem 1rem;
+  border-radius: 0.3rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  width: 100%;
+  
+  strong {
+    font-weight: 600;
+    color: #78350f;
+  }
+`;
+
 const Checkout = ({ checkoutList }) => {
   const [wizardComplete, setWizardComplete] = useState(false);
   const [preferenceId, setPreferenceId] = useState(null);
@@ -152,10 +170,12 @@ const Checkout = ({ checkoutList }) => {
     0
   );
 
-  // Calcular el costo de envío
-  const shippingCost = deliveryType === 'takeaway' ? 0 : (itemTotals >= 1000 ? 0 : 80);
+  // El envío ahora es siempre gratis, pero hay compra mínima de $1000
+  const shippingCost = 0;
+  const MINIMUM_ORDER = 1000;
+  const canCheckout = itemTotals >= MINIMUM_ORDER;
 
-  // Calcular el total final (importe total + costo de envío)
+  // Calcular el total final
   const totalWithShipping = itemTotals + shippingCost;
 
   const createOrder = async () => {
@@ -208,19 +228,10 @@ const Checkout = ({ checkoutList }) => {
         quantity: Number(item.quantity),
       }));
   
-      // Si hay un costo de envío, lo agregamos como un ítem adicional
-      if (shippingCost > 0) {
-        items.push({
-          title: "Costo de envío",
-          unit_price: shippingCost,
-          quantity: 1,  // Solo se agrega una vez
-        });
-      }
-  
       // Cuerpo de la solicitud para crear la preferencia en Mercado Pago
       const requestBody = {
         external_reference: externalReference,
-        items: items,  // Aquí agregamos tanto los productos como el costo de envío
+        items: items,
       };
   
       console.log('Request Body:', JSON.stringify(requestBody, null, 2));
@@ -250,10 +261,8 @@ const Checkout = ({ checkoutList }) => {
     if (wizardComplete) {
       const userDetails = JSON.parse(localStorage.getItem('userDetails'));
       if (userDetails && userDetails.deliveryType) {
-        setDeliveryType(userDetails.deliveryType); // Establecer el tipo de entrega
+        setDeliveryType(userDetails.deliveryType);
       }
-      const shippingCost = deliveryType === 'takeaway' ? 0 : (itemTotals >= 1000 ? 0 : 80);
-
     }
   }, [wizardComplete]);
 
@@ -275,15 +284,13 @@ const Checkout = ({ checkoutList }) => {
           </div>
           {checkoutList.length > 0 && (
             <CheckoutFooter>
+              {!canCheckout && (
+                <MinimumAlert>
+                  <strong>¡Compra mínima no alcanzada!</strong><br />
+                  Te faltan <strong>${Math.ceil(MINIMUM_ORDER - itemTotals)}</strong> para llegar al mínimo de <strong>$1000</strong>.
+                </MinimumAlert>
+              )}
               <TotalContainer>
-                <CostDetail fontSize='5px'>
-                  <span>Subtotal (productos): </span>
-                  <span>${itemTotals}</span>
-                </CostDetail>
-                <CostDetail>
-                  <span>Costo de envío: </span>
-                  <span>${shippingCost}</span>
-                </CostDetail>
                 <CostDetail fontSize='18px' isBold>
                   <span>Total: </span>
                   <span>${totalWithShipping}</span>
@@ -295,10 +302,11 @@ const Checkout = ({ checkoutList }) => {
                   color={(props) => props.theme.colors.white}
                   type="button"
                   width="100%"
-                  disabled={!wizardComplete}
+                  disabled={!wizardComplete || !canCheckout}
                   onClick={handlePayment}
+                  style={{ opacity: (!wizardComplete || !canCheckout) ? 0.5 : 1, cursor: (!wizardComplete || !canCheckout) ? 'not-allowed' : 'pointer' }}
                 >
-                  Generar Pago
+                  {canCheckout ? 'Generar Pago' : `Mínimo $${MINIMUM_ORDER} para continuar`}
                 </SimpleButton>
               )}
               {preferenceId && (

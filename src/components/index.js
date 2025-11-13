@@ -16,6 +16,7 @@ import SideNav from "./sideNav/SideNav";
 import navData from "./navbar/navData";
 import TrustmaryWidget from "./footer/TrustmaryWidget";
 import ReviewsCarousel from "./footer/ReviewsCarousel";
+// import SearchBar from "./searchBar/SearchBar"; // DISABLED - Search feature
 
 export {
   Navbar,
@@ -28,6 +29,7 @@ export {
   Coffee,
   coffeeBlendsData,
   CapsulesData,
+  // SearchBar, // DISABLED - Search feature
   CheckoutSummary,
   SummaryItem,
   Backdrop,

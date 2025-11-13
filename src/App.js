@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { Home, SinglePage, CoffeeProducts, AboutUs, Checkout, ThankYou, Failure } from "./pages";
+// Search feature disabled - do not commit
+// import SearchResults from "./pages/searchResults/SearchResults";
 import {
   Navbar,
   Footer,
@@ -63,6 +65,8 @@ function App() {
             <Route path="thank-you" element={<ThankYou />} />
             <Route path="about-us" element={<AboutUs />} />
             <Route path="pay-failure" element={<Failure />} />
+            {/* Search feature disabled - do not commit */}
+            {/* <Route path="/search" element={<SearchResults />} /> */}
 
             <Route
               path="check-out"
