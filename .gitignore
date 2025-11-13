@@ -21,3 +21,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Search feature (disabled - do not commit)
+/src/components/searchBar/
+/src/pages/searchResults/
