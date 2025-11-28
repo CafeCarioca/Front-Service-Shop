@@ -145,11 +145,73 @@ const MinimumAlert = styled.div`
   }
 `;
 
+const CouponContainer = styled.div`
+  margin: 1rem 0;
+  text-align: center;
+`;
+
+const CouponLabel = styled.p`
+  font-size: 0.85rem;
+  color: ${({ theme }) => theme.colors.darkGray};
+  margin-bottom: 0.5rem;
+`;
+
+const CouponInputContainer = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+`;
+
+const CouponInput = styled.input`
+  padding: 0.5rem;
+  border: 1px solid ${({ theme }) => theme.colors.darkerGray};
+  border-radius: 0.2rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  width: 200px;
+`;
+
+const CouponButton = styled.button`
+  padding: 0.5rem 1.5rem;
+  background-color: ${({ theme }) => theme.colors.carioca_brickred || '#8B7E74'};
+  color: white;
+  border: none;
+  border-radius: 0.2rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  
+  &:hover {
+    opacity: 0.9;
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+const CouponError = styled.p`
+  color: #d32f2f;
+  font-size: 0.75rem;
+  margin-top: 0.3rem;
+`;
+
+const CouponSuccess = styled.p`
+  color: #388e3c;
+  font-size: 0.75rem;
+  margin-top: 0.3rem;
+  font-weight: 600;
+`;
+
 const Checkout = ({ checkoutList }) => {
   const [wizardComplete, setWizardComplete] = useState(false);
   const [preferenceId, setPreferenceId] = useState(null);
   const [external_reference, setExternalReference] = useState(null);
   const [deliveryType, setDeliveryType] = useState('delivery');
+  const [couponCode, setCouponCode] = useState('');
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [couponError, setCouponError] = useState('');
+  const [couponLoading, setCouponLoading] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -169,11 +231,20 @@ const Checkout = ({ checkoutList }) => {
     (acc, item) => {
       const itemTotal = item.price * item.quantity;
       const itemOriginalPrice = (item.originalPrice || item.price) * item.quantity;
-      const itemDiscount = item.hasDiscount ? (itemOriginalPrice - itemTotal) : 0;
+      
+      // Validar si el descuento es aplicable según el delivery_type
+      let isDiscountValid = false;
+      if (item.hasDiscount && item.discount) {
+        const discountDeliveryType = item.discount.delivery_type || 'both';
+        // El descuento es válido si es 'both' o si coincide con el tipo de entrega seleccionado
+        isDiscountValid = discountDeliveryType === 'both' || discountDeliveryType === deliveryType;
+      }
+      
+      const itemDiscount = isDiscountValid ? (itemOriginalPrice - itemTotal) : 0;
       
       return {
         subtotal: acc.subtotal + itemOriginalPrice,
-        itemTotal: acc.itemTotal + itemTotal,
+        itemTotal: acc.itemTotal + (isDiscountValid ? itemTotal : itemOriginalPrice),
         totalDiscount: acc.totalDiscount + itemDiscount
       };
     },
@@ -184,13 +255,70 @@ const Checkout = ({ checkoutList }) => {
   const totalDiscounts = itemCalculations.totalDiscount;
   const subtotalBeforeDiscount = itemCalculations.subtotal;
 
-  // El envío ahora es siempre gratis, pero hay compra mínima de $1000
-  const shippingCost = 0;
-  const MINIMUM_ORDER = 1000;
-  const canCheckout = itemTotals >= MINIMUM_ORDER;
+  // Reglas de envío y mínimos:
+  // - Delivery: $180 si el subtotal es menor a $1500, GRATIS si es >= $1500
+  // - TakeAway: Sin costo, sin mínimo
+  const FREE_SHIPPING_THRESHOLD = 1500;
+  const DELIVERY_COST = 180;
+  
+  let shippingCost = 0;
+  
+  if (deliveryType === 'delivery') {
+    // Para delivery: cobrar envío solo si no alcanza $1500
+    shippingCost = itemTotals >= FREE_SHIPPING_THRESHOLD ? 0 : DELIVERY_COST;
+  } else {
+    // Para takeaway: sin costo
+    shippingCost = 0;
+  }
+  
+  const canCheckout = true; // Sin mínimo de compra
+
+  // Aplicar descuento de cupón
+  let couponDiscount = 0;
+  if (appliedCoupon) {
+    couponDiscount = appliedCoupon.discountAmount || 0;
+  }
 
   // Calcular el total final
-  const totalWithShipping = itemTotals + shippingCost;
+  const totalWithShipping = itemTotals + shippingCost - couponDiscount;
+
+  // Función para validar cupón
+  const handleApplyCoupon = async () => {
+    if (!couponCode.trim()) {
+      setCouponError('Por favor ingresa un código de cupón');
+      return;
+    }
+
+    setCouponLoading(true);
+    setCouponError('');
+
+    try {
+      const response = await axios.post(
+        API_ENDPOINTS.VALIDATE_COUPON,
+        {
+          code: couponCode.toUpperCase(),
+          deliveryType: deliveryType,
+          orderTotal: itemTotals + shippingCost
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${process.env.REACT_APP_API_TOKEN}`,
+          },
+        }
+      );
+
+      if (response.data.valid) {
+        setAppliedCoupon(response.data);
+        setCouponError('');
+      }
+    } catch (error) {
+      setCouponError(error.response?.data?.error || 'Cupón inválido');
+      setAppliedCoupon(null);
+    } finally {
+      setCouponLoading(false);
+    }
+  };
 
   const createOrder = async () => {
     try {
@@ -205,7 +333,12 @@ const Checkout = ({ checkoutList }) => {
         order: {
           external_reference: externalReference,
           userDetails: userDetails,
-          products: checkoutList
+          products: checkoutList,
+          shippingCost: shippingCost,
+          coupon: appliedCoupon ? {
+            code: appliedCoupon.coupon.code,
+            discountAmount: appliedCoupon.discountAmount
+          } : null
         }
       };
 
@@ -236,11 +369,36 @@ const Checkout = ({ checkoutList }) => {
       setExternalReference(externalReference);
       const apiUrl = API_ENDPOINTS.CREATE_PREFERENCE;
   
+      // Calcular el subtotal de productos
+      let productSubtotal = checkoutList.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      
+      // Si hay cupón aplicado, restar el descuento del subtotal
+      const couponDiscount = appliedCoupon ? appliedCoupon.discountAmount : 0;
+      productSubtotal = Math.max(0, productSubtotal - couponDiscount);
+
       const items = checkoutList.map(item => ({
         title: item.blendName,
         unit_price: Number(item.price),
         quantity: Number(item.quantity),
       }));
+
+      // Si hay descuento de cupón, agregarlo como un item con precio negativo
+      if (couponDiscount > 0) {
+        items.push({
+          title: `Descuento (${appliedCoupon.coupon.code})`,
+          unit_price: -Number(couponDiscount),
+          quantity: 1,
+        });
+      }
+
+      // Si hay costo de envío, agregarlo como un item adicional
+      if (shippingCost > 0) {
+        items.push({
+          title: 'Costo de envío',
+          unit_price: Number(shippingCost),
+          quantity: 1,
+        });
+      }
   
       // Cuerpo de la solicitud para crear la preferencia en Mercado Pago
       const requestBody = {
@@ -271,14 +429,43 @@ const Checkout = ({ checkoutList }) => {
     }
   }, [preferenceId]);
 
+  // Actualizar deliveryType cuando cambie en el Wizard
   useEffect(() => {
-    if (wizardComplete) {
+    const updateDeliveryType = () => {
       const userDetails = JSON.parse(localStorage.getItem('userDetails'));
       if (userDetails && userDetails.deliveryType) {
-        setDeliveryType(userDetails.deliveryType);
+        const newDeliveryType = userDetails.deliveryType;
+        
+        // Si cambió el tipo de entrega, verificar si el cupón sigue siendo válido
+        if (newDeliveryType !== deliveryType && appliedCoupon) {
+          const couponDeliveryType = appliedCoupon.coupon.delivery_type;
+          
+          // Si el cupón no es válido para el nuevo tipo de entrega, limpiarlo
+          if (couponDeliveryType !== 'both' && couponDeliveryType !== newDeliveryType) {
+            setAppliedCoupon(null);
+            setCouponCode('');
+            setCouponError('El cupón no es válido para este tipo de entrega');
+          }
+        }
+        
+        setDeliveryType(newDeliveryType);
       }
-    }
-  }, [wizardComplete]);
+    };
+
+    // Verificar cambios cada vez que el wizard se actualice
+    updateDeliveryType();
+    
+    // Agregar listener para cambios en localStorage
+    window.addEventListener('storage', updateDeliveryType);
+    
+    // Intervalo para verificar cambios (backup si storage event no funciona)
+    const interval = setInterval(updateDeliveryType, 500);
+
+    return () => {
+      window.removeEventListener('storage', updateDeliveryType);
+      clearInterval(interval);
+    };
+  }, [wizardComplete, deliveryType, appliedCoupon]);
 
   return (
     <CheckoutSection>
@@ -292,18 +479,36 @@ const Checkout = ({ checkoutList }) => {
             {checkoutList.length === 0 && <H1>No tienes nada en tu carrito</H1>}
             <CheckoutItemsContainer>
               {checkoutList.map((item, index) => {
-                return <CheckoutItem key={index} {...item}></CheckoutItem>;
+                return <CheckoutItem key={index} {...item} deliveryType={deliveryType}></CheckoutItem>;
               })}
             </CheckoutItemsContainer>
           </div>
           {checkoutList.length > 0 && (
             <CheckoutFooter>
-              {!canCheckout && (
-                <MinimumAlert>
-                  <strong>¡Compra mínima no alcanzada!</strong><br />
-                  Te faltan <strong>${Math.ceil(MINIMUM_ORDER - itemTotals)}</strong> para llegar al mínimo de <strong>$1000</strong>.
-                </MinimumAlert>
-              )}
+              <CouponContainer>
+                <CouponLabel>¿Tenés un cupón de descuento?</CouponLabel>
+                <CouponInputContainer>
+                  <CouponInput
+                    type="text"
+                    placeholder="CÓDIGO"
+                    value={couponCode}
+                    onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                    disabled={appliedCoupon !== null}
+                  />
+                  <CouponButton
+                    onClick={handleApplyCoupon}
+                    disabled={couponLoading || appliedCoupon !== null}
+                  >
+                    {couponLoading ? 'Validando...' : appliedCoupon ? 'Aplicado' : 'Aplicar'}
+                  </CouponButton>
+                </CouponInputContainer>
+                {couponError && <CouponError>{couponError}</CouponError>}
+                {appliedCoupon && (
+                  <CouponSuccess>
+                    ✓ Cupón "{appliedCoupon.coupon.code}" aplicado
+                  </CouponSuccess>
+                )}
+              </CouponContainer>
               <TotalContainer>
                 {totalDiscounts > 0 && (
                   <>
@@ -317,6 +522,24 @@ const Checkout = ({ checkoutList }) => {
                     </CostDetail>
                   </>
                 )}
+                {shippingCost > 0 && (
+                  <CostDetail fontSize='14px'>
+                    <span>Envío: </span>
+                    <span>${shippingCost.toFixed(2)}</span>
+                  </CostDetail>
+                )}
+                {deliveryType === 'delivery' && itemTotals >= FREE_SHIPPING_THRESHOLD && (
+                  <CostDetail fontSize='14px' style={{ color: '#4CAF50' }}>
+                    <span>Envío: </span>
+                    <span>¡GRATIS!</span>
+                  </CostDetail>
+                )}
+                {appliedCoupon && couponDiscount > 0 && (
+                  <CostDetail fontSize='14px' style={{ color: '#58000a' }}>
+                    <span>Descuento (cupón): </span>
+                    <span>-${couponDiscount.toFixed(2)}</span>
+                  </CostDetail>
+                )}
                 <CostDetail fontSize='18px' isBold>
                   <span>Total: </span>
                   <span>${totalWithShipping.toFixed(2)}</span>
@@ -328,11 +551,11 @@ const Checkout = ({ checkoutList }) => {
                   color={(props) => props.theme.colors.white}
                   type="button"
                   width="100%"
-                  disabled={!wizardComplete || !canCheckout}
+                  disabled={!wizardComplete}
                   onClick={handlePayment}
-                  style={{ opacity: (!wizardComplete || !canCheckout) ? 0.5 : 1, cursor: (!wizardComplete || !canCheckout) ? 'not-allowed' : 'pointer' }}
+                  style={{ opacity: !wizardComplete ? 0.5 : 1, cursor: !wizardComplete ? 'not-allowed' : 'pointer' }}
                 >
-                  {canCheckout ? 'Generar Pago' : `Mínimo $${MINIMUM_ORDER} para continuar`}
+                  Generar Pago
                 </SimpleButton>
               )}
               {preferenceId && (

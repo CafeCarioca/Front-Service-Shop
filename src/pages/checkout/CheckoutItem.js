@@ -68,6 +68,14 @@ const DiscountBadge = styled.span`
   display: inline-block;
 `;
 
+const DiscountNotAvailable = styled.span`
+  color: #888;
+  font-size: 0.65rem;
+  font-style: italic;
+  display: block;
+  margin-bottom: 0.3rem;
+`;
+
 const Details = styled.p`
   font-size: ${({ theme }) => theme.fontSizes.xsmall};
 `;
@@ -81,10 +89,19 @@ const CheckoutItem = ({
   quantity,
   hasDiscount,
   originalPrice,
-  discount
+  discount,
+  deliveryType
 }) => {
+  // Validar si el descuento es aplicable según el delivery_type
+  let isDiscountValid = false;
+  if (hasDiscount && discount) {
+    const discountDeliveryType = discount.delivery_type || 'both';
+    isDiscountValid = discountDeliveryType === 'both' || discountDeliveryType === deliveryType;
+  }
+  
   const itemTotal = price * quantity;
   const itemOriginalTotal = (originalPrice || price) * quantity;
+  const displayPrice = isDiscountValid ? itemTotal : itemOriginalTotal;
   
   return (
     <CheckoutItemContainer>
@@ -94,12 +111,17 @@ const CheckoutItem = ({
       </CheckoutImgContainer>
       <CheckoutDetails>
         <BlendName>{blendName}</BlendName>
-        {hasDiscount && discount && (
+        {hasDiscount && discount && isDiscountValid && (
           <DiscountBadge>
             {discount.type === 'percentage' 
               ? `-${discount.value}%` 
               : `-$${discount.value}`}
           </DiscountBadge>
+        )}
+        {hasDiscount && discount && !isDiscountValid && (
+          <DiscountNotAvailable>
+            Descuento no disponible para {deliveryType === 'delivery' ? 'envío a domicilio' : 'retiro en local'}
+          </DiscountNotAvailable>
         )}
         <Details>
           {grams && grams !== 'null' && (
@@ -109,13 +131,13 @@ const CheckoutItem = ({
           {grind && grind !== 'null' && grind}
         </Details>
       </CheckoutDetails>
-      {hasDiscount && originalPrice ? (
+      {hasDiscount && originalPrice && isDiscountValid ? (
         <PriceContainer>
           <OriginalPrice>${itemOriginalTotal.toFixed(0)}</OriginalPrice>
           <DiscountedPrice>${itemTotal.toFixed(0)}</DiscountedPrice>
         </PriceContainer>
       ) : (
-        <Price>${itemTotal.toFixed(0)}</Price>
+        <Price>${displayPrice.toFixed(0)}</Price>
       )}
     </CheckoutItemContainer>
   );

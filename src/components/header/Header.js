@@ -36,16 +36,16 @@ const HeaderContainer = styled.header`
 
 const RotatingText = styled.div`
   display: inline-block;
-  animation: ${rotate} 10s linear infinite;
+  animation: ${rotate} 20s linear infinite;
 `;
 
 const Header = (props) => {
   return (
     <HeaderSection>
       <HeaderContainer>
-        {/* <RotatingText>
-          Envio gratis en pedidos superiores a $1000 | Entregas en 24/48 horas | 
-        </RotatingText> */}
+        <RotatingText>
+          Envío GRATIS en compras desde $1500 | Envíos dentro de Montevideo $180 | Entrega en 24-48hs |
+        </RotatingText>
       </HeaderContainer>
     </HeaderSection>
   );

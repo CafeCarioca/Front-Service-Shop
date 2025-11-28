@@ -106,6 +106,17 @@ const SummaryText = styled.span`
   color: ${({ theme }) => theme.colors.darkGray};
 `;
 
+const InfoText = styled.p`
+  background-color: ${({ theme }) => theme.colors.white};
+  border-left: 4px solid ${({ theme }) => theme.colors.darkGray};
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  font-family: ${({ theme }) => theme.fonts[1]};
+  font-size: ${({ theme }) => theme.fontSizes.small};
+  color: ${({ theme }) => theme.colors.darkGray};
+  line-height: 1.5;
+`;
+
 const WizardStep = styled.div`
   display: ${({ active }) => (active ? "block" : "none")};
   width: 100%;
@@ -764,6 +775,11 @@ const Wizard = ({ onCompletion }) => {
           <SummaryItem>
             <H4>Observaciones:</H4> <SummaryText>{remarks}</SummaryText>
           </SummaryItem>
+          
+          <InfoText>
+            Revisá tus datos antes de continuar. Al hacer clic en "Finalizar" se guardarán tus datos y podrás proceder con el pago.
+          </InfoText>
+          
           <ButtonContainer>
             <WizardButton type="button" onClick={() => setStep(deliveryType === 'takeaway' ? 3 : 4)}>Atrás</WizardButton>
             <WizardButton type="button" onClick={handleFinish}>Finalizar</WizardButton>

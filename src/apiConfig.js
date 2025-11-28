@@ -7,6 +7,7 @@ export const API_ENDPOINTS = {
   SEND_ORDER_EMAIL: `${API_BASE_URL}/emails/sendorderemail`,
   GET_PRODUCT: `${API_BASE_URL}/products`,
   GET_PRODUCT_BY_NAME: `${API_BASE_URL}/products/name`,
-  GOOGLE_REVIEWS: `${API_BASE_URL}/googleapi`, 
+  GOOGLE_REVIEWS: `${API_BASE_URL}/googleapi`,
+  VALIDATE_COUPON: `${API_BASE_URL}/coupons/validate`,
   // Agrega más endpoints según necesites
 };
