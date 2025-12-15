@@ -269,9 +269,13 @@ const PopupContainer = styled.div`
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
   padding: 1rem;
   z-index: 100;
+  max-height: 90vh;
+  overflow-y: auto;
+  width: 600px;
+  max-width: 90vw;
 
   @media screen and (max-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
-    width: 80%;
+    width: 90vw;
   }
 `;
 
@@ -335,6 +339,22 @@ const GoogleMapStyled = styled(GoogleMap)`
   height: 100%;
   position: relative;
   z-index: 0;
+`;
+
+const InfoMessage = styled.div`
+  background-color: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 4px;
+  padding: 12px;
+  margin: 16px 0;
+  font-size: 14px;
+  color: #856404;
+  line-height: 1.5;
+
+  strong {
+    color: #856404;
+    font-weight: 600;
+  }
 `;
 
 const Wizard = ({ onCompletion }) => {
@@ -466,6 +486,8 @@ const Wizard = ({ onCompletion }) => {
             postalCode,
             location,
         };
+        
+        console.log('Nueva dirección agregada:', newAddress);
     
         if (editIndex !== null) {
             const updatedAddresses = addresses.map((address, index) =>
@@ -693,12 +715,22 @@ const Wizard = ({ onCompletion }) => {
                 Agregar Dirección
               </WizardButton>
                   {addresses.map((address, index) => (
-                  <AddressSummary key={index}>
-                    <div>
+                  <AddressSummary key={index} style={{ 
+                    border: selectedAddressIndex === index ? '2px solid #58000a' : '1px solid #ccc',
+                    backgroundColor: selectedAddressIndex === index ? '#f5f5f5' : 'transparent'
+                  }}>
+                    <input
+                      type="radio"
+                      name="selectedAddress"
+                      checked={selectedAddressIndex === index}
+                      onChange={() => setSelectedAddressIndex(index)}
+                      style={{ marginRight: '10px' }}
+                    />
+                    <div style={{ flex: 1 }}>
                       {address?.street || "Calle no especificada"} {address?.doorNumber || ""}
-                      {address?.apartment && `${address.apartment}, `}
-                      {address?.department || "Departamento no especificado"}
-                      {address?.postalCode || "Código postal no especificado"}
+                      {address?.apartment && `, ${address.apartment}`}
+                      <br />
+                      {address?.department || "Departamento no especificado"}, {address?.postalCode || "Código postal no especificado"}
                     </div>
                     <div>
                       <IconButton onClick={() => handleEditAddress(index)}>
@@ -712,7 +744,7 @@ const Wizard = ({ onCompletion }) => {
                 ))}
               <ButtonContainer>
                 <WizardButton type="button" onClick={() => setStep(3)}>Atrás</WizardButton>
-                <WizardButton type="button" disabled={addresses.length === 0} onClick={() => setStep(5)}>Siguiente</WizardButton>
+                <WizardButton type="button" disabled={addresses.length === 0 || selectedAddressIndex === null} onClick={() => setStep(5)}>Siguiente</WizardButton>
               </ButtonContainer>
             </form>
           </WizardStep>
@@ -822,11 +854,10 @@ const Wizard = ({ onCompletion }) => {
                 <InlineContainer>
                   <WizardInput
                     type="text"
-                    placeholder="Montevideo"
+                    placeholder="Departamento"
                     width="100%"
-                    value="Montevideo"
+                    value={department}
                     onChange={(e) => setDepartment(e.target.value)}
-                    readOnly
                     required
                   />
                   <WizardInput
@@ -852,9 +883,15 @@ const Wizard = ({ onCompletion }) => {
                   </GoogleMapStyled>
                 </MapContainer>
   
+                {department.toLowerCase() !== 'montevideo' && (
+                  <InfoMessage>
+                    <strong>Envío al Interior:</strong> Por favor, especificar agencia de preferencia en observaciones (ej: DAC, Mirtrans, etc.). Nos contactaremos para coordinar la entrega.
+                  </InfoMessage>
+                )}
+
                 <WizardInput
                   type="text"
-                  placeholder="Observaciones"
+                  placeholder={department.toLowerCase() !== 'montevideo' ? "Observaciones (especificar agencia)" : "Observaciones"}
                   width="100%"
                   value={remarks}
                   onChange={(e) => setRemarks(e.target.value)}

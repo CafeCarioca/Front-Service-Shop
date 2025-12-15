@@ -212,19 +212,29 @@ const Checkout = ({ checkoutList }) => {
   const [appliedCoupon, setAppliedCoupon] = useState(null);
   const [couponError, setCouponError] = useState('');
   const [couponLoading, setCouponLoading] = useState(false);
+  const [userDetailsState, setUserDetailsState] = useState({});
 
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    const userDetails = JSON.parse(localStorage.getItem('userDetails'));
+    const userDetails = JSON.parse(localStorage.getItem('userDetails') || '{}');
     if (userDetails && userDetails.deliveryType) {
       setDeliveryType(userDetails.deliveryType); // Establecer el tipo de entrega
     }
+    setUserDetailsState(userDetails);
     
     initMercadoPago('APP_USR-9c44ae9b-8651-40ea-9dbf-8a4561c46895', {
       locale: 'es-UY',
     });
   }, []);
+
+  // Actualizar userDetails cuando el wizard se complete
+  useEffect(() => {
+    if (wizardComplete) {
+      const userDetails = JSON.parse(localStorage.getItem('userDetails') || '{}');
+      setUserDetailsState(userDetails);
+    }
+  }, [wizardComplete]);
   
   // Calcular el total de los items y descuentos
   const itemCalculations = checkoutList.reduce(
@@ -255,17 +265,42 @@ const Checkout = ({ checkoutList }) => {
   const totalDiscounts = itemCalculations.totalDiscount;
   const subtotalBeforeDiscount = itemCalculations.subtotal;
 
-  // Reglas de envío y mínimos:
-  // - Delivery: $180 si el subtotal es menor a $1500, GRATIS si es >= $1500
-  // - TakeAway: Sin costo, sin mínimo
-  const FREE_SHIPPING_THRESHOLD = 1500;
-  const DELIVERY_COST = 180;
+  // Obtener departamento de la dirección seleccionada para determinar si es Montevideo o Interior
+  const selectedAddress = userDetailsState.address || {};
+  const department = selectedAddress.department || 'Montevideo';
+  const isInterior = department.toLowerCase() !== 'montevideo';
+
+  console.log('Department from userDetails:', department);
+  console.log('Is Interior:', isInterior);
+  console.log('Selected Address:', selectedAddress);
+
+  // Reglas de envío:
+  // MONTEVIDEO:
+  //   - Delivery: $180 si < $1500, GRATIS si >= $1500
+  //   - TakeAway: Sin costo
+  // INTERIOR:
+  //   - Delivery: $0 (sin costo visible, se coordina después)
+  //   - TakeAway: Sin costo
   
   let shippingCost = 0;
+  let shippingMessage = '';
   
   if (deliveryType === 'delivery') {
-    // Para delivery: cobrar envío solo si no alcanza $1500
-    shippingCost = itemTotals >= FREE_SHIPPING_THRESHOLD ? 0 : DELIVERY_COST;
+    if (isInterior) {
+      // Interior: siempre $0 en el checkout (se coordina después)
+      shippingCost = 0;
+      if (itemTotals >= 3000) {
+        shippingMessage = '✓ Envío gratis al interior. Nos contactaremos para coordinar la entrega.';
+      } else {
+        shippingMessage = 'Por favor, especificar agencia de preferencia en observaciones. Nos contactaremos para coordinar.';
+      }
+    } else {
+      // Montevideo: lógica actual
+      shippingCost = itemTotals >= 1500 ? 0 : 180;
+      if (itemTotals >= 1500) {
+        shippingMessage = '✓ Envío gratis en Montevideo';
+      }
+    }
   } else {
     // Para takeaway: sin costo
     shippingCost = 0;
@@ -528,10 +563,9 @@ const Checkout = ({ checkoutList }) => {
                     <span>${shippingCost.toFixed(2)}</span>
                   </CostDetail>
                 )}
-                {deliveryType === 'delivery' && itemTotals >= FREE_SHIPPING_THRESHOLD && (
+                {deliveryType === 'delivery' && shippingCost === 0 && shippingMessage && (
                   <CostDetail fontSize='14px' style={{ color: '#4CAF50' }}>
-                    <span>Envío: </span>
-                    <span>¡GRATIS!</span>
+                    <span>{shippingMessage}</span>
                   </CostDetail>
                 )}
                 {appliedCoupon && couponDiscount > 0 && (
