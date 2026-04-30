@@ -60,7 +60,7 @@ const CoffeeProducts = () => {
   }, []);
 
   const h1 = `CAFE`;
-  const p = `Nuestro café, tu tradición.
+  const p = `Nuestro café, tu tradición !.
 Desde 1916, Carioca ha llevado el arte del café a tu mesa con mezclas únicas y cuidadosamente elaboradas. Disfruta de la calidad y el sabor que nos caracteriza en cada grano.`;
 
   const capsulastitle = `Capsulas`;
