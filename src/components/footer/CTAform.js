@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import CTAcard from "./CTAcard";
 import { SimpleButton } from "../../UI/index";
 import styled from "styled-components";
+import { API_ENDPOINTS } from "../../apiConfig";
 
 const Form = styled.form`
   display: flex;
@@ -40,61 +41,89 @@ const AlertSuccess = styled.div`
 const AlertError = styled.div`
   color: ${({ theme }) => theme.colors.lightRed};
 `;
-const CTAform = (props) => {
-  const [formIsValid, setFormIsValid] = useState(null);
+const CTAform = () => {
   const [formContent, setFormContent] = useState("");
-  const checkEmail = (str) => {
-    const isEmail = /^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i.test(str);
-    console.log(isEmail, str);
-    return isEmail;
-  };
-  const formHandler = (e) => {
+  const [formStatus, setFormStatus] = useState("idle");
+  const [formMessage, setFormMessage] = useState("");
+
+  const checkEmail = (str) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(str);
+
+  const formHandler = async (e) => {
     e.preventDefault();
-    if (formContent.length < 1 || !checkEmail(formContent)) {
-      setFormIsValid(false);
+
+    const email = formContent.trim();
+    if (!email || !checkEmail(email)) {
+      setFormStatus("error");
+      setFormMessage("Ingresa un email valido");
+      return;
     }
-    if (formContent.length > 1 && checkEmail(formContent)) {
-      setFormIsValid(true);
+
+    setFormStatus("loading");
+    setFormMessage("");
+
+    try {
+      const response = await fetch(API_ENDPOINTS.SUBSCRIBE_NEWSLETTER, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, source: "footer" }),
+      });
+
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(data.error || "No pudimos registrar tu email");
+      }
+
+      setFormStatus("success");
+      setFormMessage(data.message || "Registro con exito!");
       setFormContent("");
+    } catch (error) {
+      setFormStatus("error");
+      setFormMessage(error.message || "No pudimos registrar tu email");
     }
   };
 
   useEffect(() => {
+    if (formStatus === "idle" || formStatus === "loading") return undefined;
+
     const timer = setTimeout(() => {
-      setFormIsValid(null);
-    }, 2000);
+      setFormStatus("idle");
+      setFormMessage("");
+    }, 4000);
     return () => clearTimeout(timer);
-  }, [formIsValid]);
+  }, [formStatus]);
+
   return (
     <CTAcard bg={(props) => props.theme.colors.lightGray}>
-      <h3>REGÍSTRATE PARA RECIBIR NUESTRAS novedades</h3>
+      <h3>REGISTRATE PARA RECIBIR NUESTRAS NOVEDADES</h3>
       <p>
-        Sé el primero en conocer nuestros nuevos productos, ofertas especiales y códigos de descuento exclusivos. ¡No te pierdas ninguna novedad ni promoción!
+        Se el primero en conocer nuestros nuevos productos, ofertas especiales y
+        codigos de descuento exclusivos. No te pierdas ninguna novedad ni
+        promocion!
       </p>
 
-      <Form>
+      <Form onSubmit={formHandler}>
         <Input
           type="email"
           value={formContent}
           onChange={(e) => setFormContent(e.target.value)}
-          className={formIsValid === false ? "error" : null}
+          className={formStatus === "error" ? "error" : null}
+          placeholder="tu@email.com"
+          disabled={formStatus === "loading"}
         />
         <SimpleButton
           bg={(props) => props.theme.colors.darkGray}
           color={(props) => props.theme.colors.lightestGray}
           type="submit"
-          onClick={(e) => formHandler(e)}
+          disabled={formStatus === "loading"}
         >
-          Registrarme
+          {formStatus === "loading" ? "Registrando..." : "Registrarme"}
         </SimpleButton>
       </Form>
       <AlertContainer>
-        {formIsValid === true && (
-          <AlertSuccess>Registro con exito!</AlertSuccess>
-        )}
-        {formIsValid === false && (
-          <AlertError>Ingresa un email valido</AlertError>
-        )}
+        {formStatus === "success" && <AlertSuccess>{formMessage}</AlertSuccess>}
+        {formStatus === "error" && <AlertError>{formMessage}</AlertError>}
       </AlertContainer>
     </CTAcard>
   );
