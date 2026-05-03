@@ -9,5 +9,6 @@ export const API_ENDPOINTS = {
   GET_PRODUCT_BY_NAME: `${API_BASE_URL}/products/name`,
   GOOGLE_REVIEWS: `${API_BASE_URL}/googleapi`,
   VALIDATE_COUPON: `${API_BASE_URL}/coupons/validate`,
-  // Agrega más endpoints según necesites
+  GET_CATEGORIES: `${API_BASE_URL}/categories`,
+  SUBSCRIBE_NEWSLETTER: `${API_BASE_URL}/newsletter/subscribe`,
 };

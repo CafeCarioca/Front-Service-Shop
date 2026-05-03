@@ -4,6 +4,10 @@ import styled from "styled-components";
 import { SingleProductButtons, SimpleButton } from "../../UI";
 import { bagSizes, grind } from "./singlePageData";
 import { API_ENDPOINTS } from  "../../apiConfig"; 
+import {
+  calculateDiscountedPrice,
+  getDiscountLabel,
+} from "../../utils/productPricing";
 
 const BackButton = styled.button`
   margin-bottom: 1rem;
@@ -303,11 +307,7 @@ const SinglePage = (props) => {
 
         if (data.has_discount && data.discount) {
           originalPriceForDiscount = basePrice;
-          if (data.discount.type === 'percentage') {
-            finalPrice = basePrice * (1 - data.discount.value / 100);
-          } else if (data.discount.type === 'fixed_amount') {
-            finalPrice = Math.max(0, basePrice - data.discount.value);
-          }
+          finalPrice = calculateDiscountedPrice(basePrice, data.discount);
         }
 
         setProductDetails({
@@ -347,11 +347,7 @@ const SinglePage = (props) => {
       // Si hay descuento, recalcularlo para la nueva presentación
       if (prev.hasDiscount && prev.discount) {
         newOriginalPriceForDiscount = newOriginalPrice;
-        if (prev.discount.type === 'percentage') {
-          newFinalPrice = newOriginalPrice * (1 - prev.discount.value / 100);
-        } else if (prev.discount.type === 'fixed_amount') {
-          newFinalPrice = Math.max(0, newOriginalPrice - prev.discount.value);
-        }
+        newFinalPrice = calculateDiscountedPrice(newOriginalPrice, prev.discount);
       }
 
       return {
@@ -421,6 +417,7 @@ const SinglePage = (props) => {
   if (!productDetails) return <p>Cargando...</p>;
 
   const totalPrice = (productDetails.price * productDetails.quantity).toFixed(0);
+  const discountLabel = getDiscountLabel(productDetails.discount);
 
   return (
     <SingleProductContainer>
@@ -428,12 +425,8 @@ const SinglePage = (props) => {
         <BackButton onClick={() => navigate(-1)}>
           ← Volver a tienda
         </BackButton>
-        {productDetails.hasDiscount && productDetails.discount && (
-          <DiscountBadge>
-            {productDetails.discount.type === 'percentage' 
-              ? `-${productDetails.discount.value}%` 
-              : `-$${productDetails.discount.value}`}
-          </DiscountBadge>
+        {productDetails.hasDiscount && discountLabel && (
+          <DiscountBadge>{discountLabel}</DiscountBadge>
         )}
         <CoffeeImg
           src={productDetails.singleImg}

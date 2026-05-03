@@ -70,6 +70,7 @@ const Products = ({ h1, p, array }) => {
             discount={product.discount}
             discounted_price={product.discounted_price}
             original_price={product.original_price}
+            presentations={product.presentations}
           />
         ))}
       </ProductImgsContainer>

@@ -73,7 +73,8 @@ const CoffeeSelection = () => {
             discount, 
             discounted_price, 
             original_price,
-            price 
+            price,
+            presentations
           } = product;
           console.log("Rendering product:", name, "Image:", image_url);
           return (
@@ -87,6 +88,7 @@ const CoffeeSelection = () => {
               discounted_price={discounted_price}
               original_price={original_price}
               price={price}
+              presentations={presentations}
               key={index}
             />
           );

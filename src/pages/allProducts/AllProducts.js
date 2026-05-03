@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Products } from "../../components";
-import { Link as ScrollLink } from "react-scroll"; // ⚠️ Usamos react-scroll, no react-router-dom
+import { Link as ScrollLink } from "react-scroll";
 import styled from "styled-components";
-import { API_ENDPOINTS } from "../../apiConfig"; // ⚠️ Ajustá la ruta si es diferente
+import { API_ENDPOINTS } from "../../apiConfig";
 
-const ProductLinks = () => {
+const ProductLinks = ({ categories }) => {
   const Divs = styled.div`
     display: flex;
     justify-content: center;
@@ -21,34 +21,42 @@ const ProductLinks = () => {
   `;
   return (
     <Divs>
-      <ScrollLink to="coffee" smooth={true} duration={500} offset={-100}>Café</ScrollLink> | 
-      <ScrollLink to="capsules" smooth={true} duration={500} offset={-100}>Capsulas</ScrollLink> |
-      <ScrollLink to="methods" smooth={true} duration={500} offset={-100}>Métodos</ScrollLink>
+      {categories.map((cat, i) => (
+        <React.Fragment key={cat.slug}>
+          {i > 0 && " | "}
+          <ScrollLink to={cat.slug} smooth={true} duration={500} offset={-100}>
+            {cat.name}
+          </ScrollLink>
+        </React.Fragment>
+      ))}
     </Divs>
   );
 };
 
 const CoffeeProducts = () => {
-  const [coffeeBlendsData, setCoffeeBlendsData] = useState([]);
-  const [capsulesData, setCapsulesData] = useState([]);
-  const [methodsData, setMethodsData] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [productsByCategory, setProductsByCategory] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    const fetchProducts = async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch(API_ENDPOINTS.GET_PRODUCT);
-        const data = await res.json();
+        const [catsRes, prodsRes] = await Promise.all([
+          fetch(API_ENDPOINTS.GET_CATEGORIES),
+          fetch(API_ENDPOINTS.GET_PRODUCT),
+        ]);
+        const cats = await catsRes.json();
+        const products = await prodsRes.json();
 
-        const coffee = data.filter(p => p.category === "coffee");
-        const capsules = data.filter(p => p.category === "capsules");
-        const methods = data.filter(p => p.category === "others");
+        const grouped = {};
+        cats.forEach(cat => {
+          grouped[cat.slug] = products.filter(p => p.category === cat.slug && p.available);
+        });
 
-        setCoffeeBlendsData(coffee);
-        setCapsulesData(capsules);
-        setMethodsData(methods);
+        setCategories(cats);
+        setProductsByCategory(grouped);
       } catch (err) {
         console.error("Error al cargar productos:", err);
       } finally {
@@ -56,40 +64,24 @@ const CoffeeProducts = () => {
       }
     };
 
-    fetchProducts();
+    fetchData();
   }, []);
 
-  const h1 = `CAFE`;
-  const p = `Nuestro café, tu tradición !.
-Desde 1916, Carioca ha llevado el arte del café a tu mesa con mezclas únicas y cuidadosamente elaboradas. Disfruta de la calidad y el sabor que nos caracteriza en cada grano.`;
+  if (loading) return <p style={{ textAlign: "center" }}>Cargando productos...</p>;
 
-  const capsulastitle = `Capsulas`;
-  const pcapsules = `Seleccionamos una variedad de cápsulas premium diseñadas para satisfacer los paladares más exigentes. En Carioca nos apasiona llevar calidad y tradición a tu taza.`;
-
-  const methodstitle = `Métodos`;
-  const pmethods = `Descubre nuestra selección de métodos de preparación. Cada método ofrece una experiencia única para disfrutar de tu café favorito.`;
+  const visibleCategories = categories.filter(cat => (productsByCategory[cat.slug] || []).length > 0);
 
   return (
     <>
-      <ProductLinks />
-
-      {loading ? (
-        <p style={{ textAlign: "center" }}>Cargando productos...</p>
-      ) : (
-        <>
-          <div id="coffee">
-            <Products h1={h1} p={p} array={coffeeBlendsData.filter(p => p.available)} />
+      <ProductLinks categories={visibleCategories} />
+      {visibleCategories.map(cat => {
+        const prods = productsByCategory[cat.slug] || [];
+        return (
+          <div key={cat.slug} id={cat.slug}>
+            <Products h1={cat.name} p={cat.description || ''} array={prods} />
           </div>
-          <div id="capsules">
-            <Products h1={capsulastitle} p={pcapsules} array={capsulesData.filter(p => p.available)} />
-          </div>
-          {methodsData.length > 0 && (
-            <div id="methods">
-              <Products h1={methodstitle} p={pmethods} array={methodsData.filter(p => p.available)} />
-            </div>
-          )}
-        </>
-      )}
+        );
+      })}
     </>
   );
 };
