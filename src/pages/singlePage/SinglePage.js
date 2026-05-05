@@ -7,6 +7,7 @@ import { API_ENDPOINTS } from  "../../apiConfig";
 import {
   calculateDiscountedPrice,
   getDiscountLabel,
+  getProductBasePrice,
 } from "../../utils/productPricing";
 
 const BackButton = styled.button`
@@ -293,13 +294,12 @@ const SinglePage = (props) => {
         const data = await response.json();
 
         const isCapsule = data.category === "capsules";
-        const firstPresentation = data.presentations[0];
+        const presentations = data.presentations || [];
+        const firstPresentation = presentations[0];
+        const hasPresentationOptions =
+          !isCapsule && data.category !== "others" && presentations.length > 0;
 
-        const basePrice = data.category === "others" 
-          ? parseFloat(data.price)
-          : isCapsule
-            ? parseFloat(data.price)
-            : parseFloat(firstPresentation?.price || 0);
+        const basePrice = getProductBasePrice(data) ?? 0;
 
         // Calcular precio con descuento si existe
         let finalPrice = basePrice;
@@ -320,15 +320,16 @@ const SinglePage = (props) => {
           quantity: 1,
           isCapsule,
           category: data.category,
-          grams: isCapsule ? null : parseInt(firstPresentation?.weight),
-          grind: isCapsule ? null : "Molido",
+          hasPresentationOptions,
+          grams: hasPresentationOptions ? parseInt(firstPresentation?.weight) : null,
+          grind: hasPresentationOptions ? "Molido" : null,
           price: finalPrice,
           originalPrice: originalPriceForDiscount,
           hasDiscount: data.has_discount || false,
           discount: data.discount || null,
-          prices: isCapsule || data.category === "others"
-            ? {}
-            : Object.fromEntries(data.presentations.map(p => [parseInt(p.weight), parseFloat(p.price)])),
+          prices: hasPresentationOptions
+            ? Object.fromEntries(presentations.map(p => [parseInt(p.weight), parseFloat(p.price)]))
+            : {},
         });
       } catch (error) {
         console.error("Error al obtener los datos del producto:", error);
@@ -463,7 +464,7 @@ const SinglePage = (props) => {
         </ProductInfo>
 
         <SelectionsContainer category={productDetails.category}>
-          {!productDetails.isCapsule && productDetails.category !== 'others' && (
+          {productDetails.hasPresentationOptions && (
             <Selections>
               <span>Presentaciones:</span>
               <div>
@@ -484,7 +485,7 @@ const SinglePage = (props) => {
             </Selections>
           )}
 
-          {!productDetails.isCapsule && productDetails.category !== 'others' && (
+          {productDetails.hasPresentationOptions && (
             <Selections>
               <span>Tipo de Molienda:</span>
               <div>
