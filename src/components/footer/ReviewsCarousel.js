@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { API_ENDPOINTS } from '../../apiConfig';
 
 const CarouselContainer = styled.div`
   width: 90%;
@@ -135,19 +134,70 @@ const ReviewText = styled.p`
   line-height: 1.4;
 `;
 
-const ReviewsCarousel = () => {
-  const [reviews, setReviews] = useState([]);
+const reviews = [
+  {
+    author_name: 'P D "CWimper"',
+    rating: 5,
+    time: 'Hace 8 meses',
+    text: 'Excelente café, la mejor selección y con todo el cariño para los que nos gusta y entendemos de esto. Da gusto charlar con alguien que entiende del tema y sabe.',
+  },
+  {
+    author_name: 'Barista Escobar',
+    rating: 5,
+    time: 'Hace 9 meses',
+    text: 'Adoro el excelente asesoramiento del Sr. De León en todas las dudas que tengamos acerca del mundo del café.',
+  },
+  {
+    author_name: 'Alejandro Aizcorbe',
+    rating: 5,
+    time: 'Hace 2 años',
+    text: 'Pasé por el local para asesorarme por varios temas, tipo de café que me gusta y manera correcta de prepararlo. Me encontré con un ambiente muy agradable.',
+  },
+  {
+    author_name: 'Ottozky Atchung',
+    rating: 5,
+    time: 'Hace un año',
+    text: 'Excelente atención. El mejor café. Lo llevo sin moler y lo muelo en casa. El que atiende tiene mucho conocimiento del tema.',
+  },
+  {
+    author_name: 'Luis Juan Zuccoli Domínguez',
+    rating: 5,
+    time: 'Hace 3 años',
+    text: 'Excelente servicio y calidad de café. La atención de Sebastián es inigualable. Ese lugar es especial y el café es magnífico.',
+  },
+  {
+    author_name: 'Pedro Montano',
+    rating: 5,
+    time: 'Hace 3 años',
+    text: 'El dueño es un sabio en materia de café y prácticamente da una clase, explicando cada variedad que ofrece para catar.',
+  },
+  {
+    author_name: 'Tape Olmedo',
+    rating: 5,
+    time: 'Hace 4 años',
+    text: 'Excelente atención. Muy buen café y buen precio. Recomendable ir y charlar con Sebastián.',
+  },
+  {
+    author_name: 'Julián Rapetti',
+    rating: 5,
+    time: 'Hace 5 años',
+    text: 'Excelente atención y asesoramiento. Gran variedad de cafés para llevar o para consumir en el local.',
+  },
+  {
+    author_name: 'Jorge Eduardo Gatti Guida',
+    rating: 5,
+    time: 'Hace 5 años',
+    text: 'Excelente café, tuve una prueba degustativa y una soberbia clase de café. Recomendable.',
+  },
+  {
+    author_name: 'Simo piña',
+    rating: 5,
+    time: 'Hace 3 años',
+    text: 'Me dan gracia los comentarios porque son muy reales, pasé a comprar café y me fui con un diploma.',
+  },
+];
 
-  useEffect(() => {
-    fetch(API_ENDPOINTS.GOOGLE_REVIEWS)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.reviews) {
-          setReviews(data.reviews);
-        }
-      })
-      .catch((error) => console.error('Error al obtener resenas:', error));
-  }, []);
+const ReviewsCarousel = () => {
 
   const settings = {
     dots: true,
@@ -223,6 +273,7 @@ const ReviewsCarousel = () => {
 };
 
 const formatDate = (unixTimestamp) => {
+  if (typeof unixTimestamp === 'string') return unixTimestamp;
   if (!unixTimestamp) return '';
   const date = new Date(unixTimestamp * 1000);
   return new Intl.DateTimeFormat('es-ES', {
