@@ -6,6 +6,7 @@ import { SimpleButton } from "../../UI/Buttons/Buttons";
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
 import { API_ENDPOINTS } from "../../apiConfig";
 import axios from 'axios';
+import { getBogoDiscountAmount, isDiscountValidForDelivery } from "../../utils/discounts";
 
 const CheckoutSection = styled.section`
   background-color: ${({ theme }) => theme.colors.lightestGray};
@@ -214,6 +215,15 @@ const Checkout = ({ checkoutList }) => {
   const [couponLoading, setCouponLoading] = useState(false);
   const [userDetailsState, setUserDetailsState] = useState({});
 
+  const getBogoPromotions = (items, currentDeliveryType) => {
+    return items
+      .map((item) => ({
+        name: item.blendName,
+        discountAmount: getBogoDiscountAmount(item, currentDeliveryType)
+      }))
+      .filter((promotion) => promotion.discountAmount > 0);
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
 
@@ -243,18 +253,19 @@ const Checkout = ({ checkoutList }) => {
       const itemOriginalPrice = (item.originalPrice || item.price) * item.quantity;
       
       // Validar si el descuento es aplicable según el delivery_type
-      let isDiscountValid = false;
+      let isDiscountValid = item.hasDiscount && isDiscountValidForDelivery(item.discount, deliveryType);
       if (item.hasDiscount && item.discount) {
         const discountDeliveryType = item.discount.delivery_type || 'both';
         // El descuento es válido si es 'both' o si coincide con el tipo de entrega seleccionado
         isDiscountValid = discountDeliveryType === 'both' || discountDeliveryType === deliveryType;
       }
       
-      const itemDiscount = isDiscountValid ? (itemOriginalPrice - itemTotal) : 0;
+      const bogoDiscount = getBogoDiscountAmount(item, deliveryType);
+      const itemDiscount = isDiscountValid ? (itemOriginalPrice - itemTotal) + bogoDiscount : 0;
       
       return {
         subtotal: acc.subtotal + itemOriginalPrice,
-        itemTotal: acc.itemTotal + (isDiscountValid ? itemTotal : itemOriginalPrice),
+        itemTotal: acc.itemTotal + (isDiscountValid ? itemTotal - bogoDiscount : itemOriginalPrice),
         totalDiscount: acc.totalDiscount + itemDiscount
       };
     },
@@ -264,6 +275,9 @@ const Checkout = ({ checkoutList }) => {
   const itemTotals = itemCalculations.itemTotal;
   const totalDiscounts = itemCalculations.totalDiscount;
   const subtotalBeforeDiscount = itemCalculations.subtotal;
+  const bogoPromotions = getBogoPromotions(checkoutList, deliveryType);
+  const bogoDiscountTotal = bogoPromotions.reduce((sum, promotion) => sum + promotion.discountAmount, 0);
+  const regularDiscountTotal = Math.max(0, totalDiscounts - bogoDiscountTotal);
 
   // Obtener departamento de la dirección seleccionada para determinar si es Montevideo o Interior
   const selectedAddress = userDetailsState.address || {};
@@ -417,6 +431,14 @@ const Checkout = ({ checkoutList }) => {
         quantity: Number(item.quantity),
       }));
 
+      bogoPromotions.forEach((promotion) => {
+        items.push({
+          title: `Promo 2x1 (${promotion.name})`,
+          unit_price: -Number(promotion.discountAmount),
+          quantity: 1,
+        });
+      });
+
       // Si hay descuento de cupón, agregarlo como un item con precio negativo
       if (couponDiscount > 0) {
         items.push({
@@ -551,10 +573,18 @@ const Checkout = ({ checkoutList }) => {
                       <span>Subtotal: </span>
                       <span>${subtotalBeforeDiscount.toFixed(2)}</span>
                     </CostDetail>
-                    <CostDetail fontSize='14px' style={{ color: '#58000a' }}>
-                      <span>Descuentos: </span>
-                      <span>-${totalDiscounts.toFixed(2)}</span>
-                    </CostDetail>
+                    {regularDiscountTotal > 0 && (
+                      <CostDetail fontSize='14px' style={{ color: '#58000a' }}>
+                        <span>Descuentos: </span>
+                        <span>-${regularDiscountTotal.toFixed(2)}</span>
+                      </CostDetail>
+                    )}
+                    {bogoPromotions.map((promotion, index) => (
+                      <CostDetail key={`${promotion.name}-${index}`} fontSize='14px' style={{ color: '#58000a' }}>
+                        <span>Promo 2x1 ({promotion.name}): </span>
+                        <span>-${promotion.discountAmount.toFixed(2)}</span>
+                      </CostDetail>
+                    ))}
                   </>
                 )}
                 {shippingCost > 0 && (

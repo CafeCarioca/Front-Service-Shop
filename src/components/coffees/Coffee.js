@@ -106,6 +106,7 @@ const FromLabel = styled.span`
 const Coffee = (props) => {
   const priceInfo = getProductPriceInfo(props);
   const discountLabel = getDiscountLabel(props.discount);
+  const showDiscountedPrice = priceInfo.hasDiscount && props.discount?.type !== "bogo";
   
   return (
     <SingleCoffee>
@@ -123,7 +124,7 @@ const Coffee = (props) => {
       {priceInfo.originalPrice !== null && (
         <PriceContainer aria-label={`Precio ${props.blendName}`}>
           {priceInfo.showFromLabel && <FromLabel>Desde</FromLabel>}
-          {priceInfo.hasDiscount ? (
+          {showDiscountedPrice ? (
             <>
               <OriginalPrice>{formatPrice(priceInfo.originalPrice)}</OriginalPrice>
               <DiscountedPrice>{formatPrice(priceInfo.discountedPrice)}</DiscountedPrice>

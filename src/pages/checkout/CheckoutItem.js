@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { getBogoDiscountAmount, getDiscountLabel, isDiscountValidForDelivery } from "../../utils/discounts";
 
 const CheckoutItemContainer = styled.div`
   display: grid;
@@ -53,12 +54,12 @@ const OriginalPrice = styled.span`
 `;
 
 const DiscountedPrice = styled.span`
-  color: ${({ theme }) => theme.colors.carioca_brickred || '#fc2626'};
+  color: ${({ theme }) => theme.colors.carioca_brickred || "#fc2626"};
   font-weight: 700;
 `;
 
 const DiscountBadge = styled.span`
-  background-color: ${({ theme }) => theme.colors.carioca_brickred || '#fc2626'};
+  background-color: ${({ theme }) => theme.colors.carioca_brickred || "#fc2626"};
   color: white;
   padding: 0.15rem 0.4rem;
   border-radius: 0.2rem;
@@ -92,17 +93,13 @@ const CheckoutItem = ({
   discount,
   deliveryType
 }) => {
-  // Validar si el descuento es aplicable según el delivery_type
-  let isDiscountValid = false;
-  if (hasDiscount && discount) {
-    const discountDeliveryType = discount.delivery_type || 'both';
-    isDiscountValid = discountDeliveryType === 'both' || discountDeliveryType === deliveryType;
-  }
-  
+  const isDiscountValid = hasDiscount && isDiscountValidForDelivery(discount, deliveryType);
   const itemTotal = price * quantity;
   const itemOriginalTotal = (originalPrice || price) * quantity;
-  const displayPrice = isDiscountValid ? itemTotal : itemOriginalTotal;
-  
+  const bogoDiscountAmount = getBogoDiscountAmount({ price, quantity, discount }, deliveryType);
+  const displayPrice = isDiscountValid ? itemTotal - bogoDiscountAmount : itemOriginalTotal;
+  const discountLabel = getDiscountLabel(discount);
+
   return (
     <CheckoutItemContainer>
       <CheckoutImgContainer>
@@ -112,29 +109,25 @@ const CheckoutItem = ({
       <CheckoutDetails>
         <BlendName>{blendName}</BlendName>
         {hasDiscount && discount && isDiscountValid && (
-          <DiscountBadge>
-            {discount.type === 'percentage' 
-              ? `-${discount.value}%` 
-              : `-$${discount.value}`}
-          </DiscountBadge>
+          <DiscountBadge>{discountLabel}</DiscountBadge>
         )}
         {hasDiscount && discount && !isDiscountValid && (
           <DiscountNotAvailable>
-            Descuento no disponible para {deliveryType === 'delivery' ? 'envío a domicilio' : 'retiro en local'}
+            Descuento no disponible para {deliveryType === "delivery" ? "envio a domicilio" : "retiro en local"}
           </DiscountNotAvailable>
         )}
         <Details>
-          {grams && grams !== 'null' && (
+          {grams && grams !== "null" && (
             <span>{grams === 1000 ? "1kg" : grams + "g"}</span>
           )}
-          {grams && grams !== 'null' && grind && grind !== 'null' && ' / '}
-          {grind && grind !== 'null' && grind}
+          {grams && grams !== "null" && grind && grind !== "null" && " / "}
+          {grind && grind !== "null" && grind}
         </Details>
       </CheckoutDetails>
-      {hasDiscount && originalPrice && isDiscountValid ? (
+      {hasDiscount && isDiscountValid && (originalPrice || bogoDiscountAmount > 0) ? (
         <PriceContainer>
-          <OriginalPrice>${itemOriginalTotal.toFixed(0)}</OriginalPrice>
-          <DiscountedPrice>${itemTotal.toFixed(0)}</DiscountedPrice>
+          <OriginalPrice>${(discount.type === "bogo" ? itemTotal : itemOriginalTotal).toFixed(0)}</OriginalPrice>
+          <DiscountedPrice>${displayPrice.toFixed(0)}</DiscountedPrice>
         </PriceContainer>
       ) : (
         <Price>${displayPrice.toFixed(0)}</Price>

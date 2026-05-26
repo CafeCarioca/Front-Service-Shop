@@ -9,6 +9,7 @@ import {
   getDiscountLabel,
   getProductBasePrice,
 } from "../../utils/productPricing";
+import { getBogoDiscountAmount } from "../../utils/discounts";
 
 const BackButton = styled.button`
   margin-bottom: 1rem;
@@ -308,6 +309,9 @@ const SinglePage = (props) => {
         if (data.has_discount && data.discount) {
           originalPriceForDiscount = basePrice;
           finalPrice = calculateDiscountedPrice(basePrice, data.discount);
+          if (data.discount.type === "bogo") {
+            originalPriceForDiscount = null;
+          }
         }
 
         setProductDetails({
@@ -349,6 +353,9 @@ const SinglePage = (props) => {
       if (prev.hasDiscount && prev.discount) {
         newOriginalPriceForDiscount = newOriginalPrice;
         newFinalPrice = calculateDiscountedPrice(newOriginalPrice, prev.discount);
+        if (prev.discount.type === "bogo") {
+          newOriginalPriceForDiscount = null;
+        }
       }
 
       return {
@@ -419,6 +426,10 @@ const SinglePage = (props) => {
 
   const totalPrice = (productDetails.price * productDetails.quantity).toFixed(0);
   const discountLabel = getDiscountLabel(productDetails.discount);
+  const bogoDiscountAmount = getBogoDiscountAmount(productDetails);
+  const bogoFinalPrice = productDetails.price * productDetails.quantity - bogoDiscountAmount;
+  const showDiscountedPrice = productDetails.hasDiscount && productDetails.discount?.type !== "bogo" && productDetails.originalPrice;
+  const showBogoPrice = productDetails.hasDiscount && productDetails.discount?.type === "bogo" && bogoDiscountAmount > 0;
 
   return (
     <SingleProductContainer>
@@ -535,10 +546,12 @@ const SinglePage = (props) => {
         </SelectionsContainer>
 
         <PriceAndBuyContainer>
-          {productDetails.hasDiscount && productDetails.originalPrice ? (
+          {showDiscountedPrice || showBogoPrice ? (
             <PriceContainer>
-              <OriginalPrice>${(productDetails.originalPrice * productDetails.quantity).toFixed(0)}</OriginalPrice>
-              <DiscountedPrice>${totalPrice}</DiscountedPrice>
+              <OriginalPrice>
+                ${showBogoPrice ? totalPrice : (productDetails.originalPrice * productDetails.quantity).toFixed(0)}
+              </OriginalPrice>
+              <DiscountedPrice>${showBogoPrice ? bogoFinalPrice.toFixed(0) : totalPrice}</DiscountedPrice>
             </PriceContainer>
           ) : (
             <PriceDisplay>${totalPrice}</PriceDisplay>

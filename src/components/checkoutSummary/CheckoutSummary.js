@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { ImCross } from "react-icons/im";
 import { Buttons } from "../../UI/index";
 import { SummaryItem, Backdrop, WhiteOverlay } from "../index";
+import { getBogoDiscountAmount } from "../../utils/discounts";
 
 const CheckoutTop = styled.div`
   display: grid;
@@ -55,7 +56,7 @@ const ContinueShopping = styled.span`
 const CheckoutSummary = (props) => {
   const itemTotals = props.checkoutList.reduce(
     (accumulator, currValue) =>
-      accumulator + +(currValue.price * currValue.quantity),
+      accumulator + +(currValue.price * currValue.quantity) - getBogoDiscountAmount(currValue),
     0
   );
   const handleContinueShopping = () => {
@@ -90,7 +91,7 @@ const CheckoutSummary = (props) => {
             <span>SUBTOTAL</span>
             <span>${itemTotals.toFixed(0)}</span>
           </FooterTotalContainer>
-          <p>Envio y descuentos son aplicados al finalizar la compra.</p>
+          <p>Envio y cupones son aplicados al finalizar la compra.</p>
           <Buttons
             bg={(props) => props.theme.colors.darkGray}
             color={(props) => props.theme.colors.white}

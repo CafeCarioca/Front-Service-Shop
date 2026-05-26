@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { getBogoDiscountAmount, getDiscountLabel } from "../../utils/discounts";
 const SummaryItemContainer = styled.article`
   display: flex;
 
@@ -41,6 +42,29 @@ const RemoveListItem = styled.span`
     cursor: pointer;
   }
 `;
+const PriceContainer = styled.div`
+  text-align: right;
+`;
+const OriginalPrice = styled.span`
+  color: #888;
+  font-size: 0.85rem;
+  text-decoration: line-through;
+`;
+const DiscountedPrice = styled.span`
+  color: ${({ theme }) => theme.colors.carioca_brickred || "#58000a"};
+  font-weight: 700;
+`;
+const DiscountBadge = styled.span`
+  background-color: ${({ theme }) => theme.colors.carioca_brickred || "#58000a"};
+  color: white !important;
+  display: inline-block !important;
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.2rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-top: 0.25rem;
+  width: fit-content;
+`;
 const SummaryItem = ({
   blendName,
   singleImg,
@@ -48,19 +72,21 @@ const SummaryItem = ({
   grind,
   quantity,
   price,
+  discount,
   checkoutList,
   setCheckoutList,
   id,
 }) => {
-  let newQuantity;
-  if (quantity) newQuantity = quantity;
-  if (quantity === "") newQuantity = 1;
   const removeItem = (id) => {
     const itemToRemove = checkoutList.filter((item, index) => {
       return item.id !== id;
     });
     setCheckoutList(itemToRemove);
   };
+  const itemOriginalTotal = price * quantity;
+  const bogoDiscountAmount = getBogoDiscountAmount({ price, quantity, discount });
+  const itemFinalTotal = itemOriginalTotal - bogoDiscountAmount;
+  const discountLabel = getDiscountLabel(discount);
 
   return (
     <SummaryItemContainer>
@@ -74,8 +100,16 @@ const SummaryItem = ({
             {grams === 1000 ? "1" : grams}
             {grams === 1000 ? "kg" : "g"} / {grind}
           </span>
+          {bogoDiscountAmount > 0 && <DiscountBadge>{discountLabel}</DiscountBadge>}
         </div>
-        <span className="greenBold">${(price * quantity).toFixed(0)}</span>
+        {bogoDiscountAmount > 0 ? (
+          <PriceContainer>
+            <OriginalPrice>${itemOriginalTotal.toFixed(0)}</OriginalPrice>
+            <DiscountedPrice>${itemFinalTotal.toFixed(0)}</DiscountedPrice>
+          </PriceContainer>
+        ) : (
+          <span className="greenBold">${itemOriginalTotal.toFixed(0)}</span>
+        )}
         <span>Cantidad: {quantity}</span>
         <RemoveListItem onClick={() => removeItem(id)}>Borrar</RemoveListItem>
       </SummaryItemTable>

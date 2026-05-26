@@ -22,6 +22,10 @@ export const calculateDiscountedPrice = (originalPrice, discount) => {
     return Math.max(0, price - discountValue);
   }
 
+  if (discount.type === "bogo") {
+    return price;
+  }
+
   return price;
 };
 
@@ -62,8 +66,14 @@ export const getProductPriceInfo = (product) => {
 };
 
 export const getDiscountLabel = (discount) => {
+  if (!discount) return null;
+
+  if (discount.type === "bogo") {
+    return "2x1";
+  }
+
   const value = parsePrice(discount?.value);
-  if (!discount || value === null) return null;
+  if (value === null) return null;
 
   if (discount.type === "percentage") {
     return `-${value.toFixed(0)}%`;
