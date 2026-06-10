@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 import axios from "axios";
 import Buttons from "../../UI/Buttons/Buttons";
 import { API_ENDPOINTS } from "../../apiConfig";
+import { optimized, optimizedSrcSet, fallbackToOriginal } from "../../utils/imageUrl";
 
 const FeaturedSection = styled.section`
   padding: 3rem 0;
@@ -152,7 +153,14 @@ const FeaturedBlend = (props) => {
           </Buttons>
         </FeaturedLeft>
         <FeaturedRight>
-          <FeaturedImg src={secondary_image_url} alt="Featured coffee" />
+          <FeaturedImg
+            src={optimized(secondary_image_url, 800)}
+            srcSet={optimizedSrcSet(secondary_image_url, 800)}
+            onError={fallbackToOriginal(secondary_image_url)}
+            loading="lazy"
+            decoding="async"
+            alt={`Blend destacado ${name}`}
+          />
         </FeaturedRight>
       </FeaturedContainer>
     </FeaturedSection>

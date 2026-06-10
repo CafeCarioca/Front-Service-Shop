@@ -9,7 +9,6 @@ import { BsSearch, BsPerson } from "react-icons/bs";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 import { navData } from "../index";
 import Carioca from "../../assets/images/CAFE-CARIOCA-pg2.JPG";
-import Isologo from "../../assets/images/isologo_negro.svg";
 // import SearchBar from "../searchBar/SearchBar"; // DISABLED - Search feature
 const Nav = styled.section`
   position: sticky;

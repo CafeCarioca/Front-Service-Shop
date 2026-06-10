@@ -1,21 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
-import { Home, SinglePage, CoffeeProducts, AboutUs, Checkout, ThankYou, Failure } from "./pages";
+import Home from "./pages/home/Home";
 // Search feature disabled - do not commit
 // import SearchResults from "./pages/searchResults/SearchResults";
 import {
   Navbar,
   Footer,
-  coffeeBlendsData,
-  CapsulesData,
   CheckoutSummary,
   SideNav,
 } from "./components";
 import { Theme, GlobalStyle } from "./UI";
+import ChunkErrorBoundary from "./components/ChunkErrorBoundary";
+
+// Code splitting por ruta: cada página descarga su JS recién cuando se navega a ella.
+// La Home queda eager porque es la entrada principal.
+const SinglePage = lazy(() => import("./pages/singlePage/SinglePage"));
+const CoffeeProducts = lazy(() => import("./pages/allProducts/AllProducts"));
+const Checkout = lazy(() => import("./pages/checkout/Checkout"));
+const AboutUs = lazy(() => import("./pages/AboutUs"));
+const ThankYou = lazy(() => import("./pages/ThankYou"));
+const Failure = lazy(() => import("./pages/PayFailure"));
 
 function App() {
-  const coffeeList = coffeeBlendsData;
-  const capsulesList = CapsulesData;
   const checkoutListData =
     JSON.parse(localStorage.getItem("checkoutList")) || [];
   const [checkingOut, setCheckingOut] = useState(false);
@@ -60,6 +66,8 @@ function App() {
             checkoutList={checkoutList}
             openSideNav={openSideNav}
           />
+          <ChunkErrorBoundary>
+          <Suspense fallback={null}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="thank-you" element={<ThankYou />} />
@@ -80,8 +88,6 @@ function App() {
               path="/collections/coffee-blends/:id"
               element={
                 <SinglePage
-                  coffeeList={coffeeList}
-                  capsulesList={capsulesList}
                   openCheckoutSummary={openCheckoutSummary}
                   checkoutList={checkoutList}
                   setCheckoutList={setCheckoutList}
@@ -89,6 +95,8 @@ function App() {
               }
             />
           </Routes>
+          </Suspense>
+          </ChunkErrorBoundary>
           <Footer />
         </Router>
       </Theme>

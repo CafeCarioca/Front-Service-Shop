@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { getBogoDiscountAmount, getDiscountLabel, isDiscountValidForDelivery } from "../../utils/discounts";
+import { optimized, fallbackToOriginal } from "../../utils/imageUrl";
 
 const CheckoutItemContainer = styled.div`
   display: grid;
@@ -103,7 +104,13 @@ const CheckoutItem = ({
   return (
     <CheckoutItemContainer>
       <CheckoutImgContainer>
-        <CheckoutItemImage src={singleImg} alt={blendName} />
+        <CheckoutItemImage
+          src={optimized(singleImg, 160)}
+          onError={fallbackToOriginal(singleImg)}
+          loading="lazy"
+          decoding="async"
+          alt={blendName}
+        />
         <span>{quantity}</span>
       </CheckoutImgContainer>
       <CheckoutDetails>

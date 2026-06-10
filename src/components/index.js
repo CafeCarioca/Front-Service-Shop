@@ -6,8 +6,6 @@ import Coffees from "./coffees/Coffees";
 import Footer from "./footer/Footer";
 import Products from "./productsComponents/Products";
 import Coffee from "./coffees/Coffee";
-import coffeeBlendsData from "./coffees/CoffeeData";
-import CapsulesData from "./coffees/CapsulesData";
 import CheckoutSummary from "./checkoutSummary/CheckoutSummary";
 import SummaryItem from "./checkoutSummary/SummaryItem";
 import Backdrop from "./checkoutSummary/Backdrop";
@@ -27,8 +25,6 @@ export {
   Footer,
   Products,
   Coffee,
-  coffeeBlendsData,
-  CapsulesData,
   // SearchBar, // DISABLED - Search feature
   CheckoutSummary,
   SummaryItem,
