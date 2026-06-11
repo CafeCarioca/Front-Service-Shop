@@ -1,10 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import MainLogo from "../../UI/Logo/Logo";
-import coffeeVideo from "../../assets/images/4081313-uhd_3840_2160_24fps.mp4";  // Asegúrate de que la ruta sea correcta
-import imagefondo from "../../assets/images/image.png";
 import { Link } from "react-router-dom";
 import { FaArrowDown } from "react-icons/fa"; // Asegúrate de tener instalado react-icons
+import { optimized, fallbackToOriginal } from "../../utils/imageUrl";
+
+// Imagen hero de la home: se sirve redimensionada y en WebP vía wsrv.nl.
+// Si cambia esta URL, actualizar también el <link rel="preload"> en public/index.html.
+const HERO_IMAGE =
+  "https://bucketcarioca.s3.us-east-1.amazonaws.com/Images/image.png.png";
 
 const IntroSection = styled.section`
   @media screen and (min-width: ${({ theme }) => theme.mediaScreen.lgLaptop}) {
@@ -179,11 +182,13 @@ const Intro = () => {
     <>
       <IntroSection>
         <IntroRight>
-          {/* <video autoPlay loop muted>
-            <source src={coffeeVideo} type="video/mp4" />
-            Tu navegador no soporta el elemento de video.
-          </video> */}
-          <img src={"https://bucketcarioca.s3.us-east-1.amazonaws.com/Images/image.png.png"} alt="Carioca Logo" />
+          <img
+            src={optimized(HERO_IMAGE, 1600)}
+            onError={fallbackToOriginal(HERO_IMAGE)}
+            alt="Granos de café Carioca"
+            fetchpriority="high"
+            decoding="async"
+          />
           
             <IntroRightBanner>
             <Badge>

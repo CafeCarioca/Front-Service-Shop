@@ -19,7 +19,13 @@ const AboutUs = () => {
     <>
       {/* Hero Section */}
       <HeroSection>
-        <HeroVideo autoPlay loop muted playsInline>
+        <HeroVideo
+          autoPlay
+          loop
+          muted
+          playsInline
+          poster="/coffee-hero-poster.jpg"
+        >
           <source src="/coffee-hero.mp4" type="video/mp4" />
         </HeroVideo>
         <HeroOverlay />
@@ -46,7 +52,7 @@ const AboutUs = () => {
             <DocumentTitle>El Origen</DocumentTitle>
             <DocumentSubtitle>7 de octubre de 1916 - Registro oficial de la marca</DocumentSubtitle>
             <DocumentImageWrapper>
-              <DocumentImage src="/nuestra-historia.jpg" alt="Documento histórico registro marca El Carioca 1916" />
+              <DocumentImage src="/nuestra-historia.jpg" alt="Documento histórico registro marca El Carioca 1916" loading="lazy" decoding="async" />
               <DocumentCaption>
                 Documento original del registro de la marca "El Carioca" ante la Tesorería General 
                 del Estado, fechado el 7 de octubre de 1916, bajo la Ley de Marcas de Fábrica de Comercio 
@@ -61,9 +67,11 @@ const AboutUs = () => {
       <TimelineSection>
         <RoadContainer>
           <Road />
-          <ScrollCar 
-            src="/vintage-car.png"  
-            alt="Auto vintage" 
+          <ScrollCar
+            src="/vintage-car.png"
+            alt="Auto vintage"
+            loading="lazy"
+            decoding="async"
             style={{ 
               left: `${Math.max(0, Math.min((scrollY - 1800) / 8, 95))}%`,
               opacity: scrollY > 1600 ? Math.min((scrollY - 1600) / 200, 1) : 0
@@ -145,7 +153,7 @@ const AboutUs = () => {
               </p>
             </TextColumn>
             <ImageColumn>
-              <StyledImage src="/familia.jpeg" alt="Familia Carioca" />
+              <StyledImage src="/familia.jpeg" alt="Familia Carioca" loading="lazy" decoding="async" />
             </ImageColumn>
           </TwoColumns>
         </Container>
@@ -562,7 +570,9 @@ const ParallaxImage = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: url('/placeholder-coffee-process.jpg') center/cover;
+  /* La imagen /placeholder-coffee-process.jpg nunca existió (daba 404 en
+     cada visita); gradiente sutil hasta tener una foto real del proceso. */
+  background: radial-gradient(ellipse at center, #3a2a1a 0%, #1a1410 70%);
   opacity: 0.3;
 `;
 

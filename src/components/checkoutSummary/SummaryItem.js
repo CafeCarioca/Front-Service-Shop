@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { getBogoDiscountAmount, getDiscountLabel } from "../../utils/discounts";
+import { optimized, fallbackToOriginal } from "../../utils/imageUrl";
 const SummaryItemContainer = styled.article`
   display: flex;
 
@@ -91,7 +92,13 @@ const SummaryItem = ({
   return (
     <SummaryItemContainer>
       <SummaryItemLeft>
-        <SummaryItemImg src={singleImg} alt={blendName} />
+        <SummaryItemImg
+          src={optimized(singleImg, 160)}
+          onError={fallbackToOriginal(singleImg)}
+          loading="lazy"
+          decoding="async"
+          alt={blendName}
+        />
       </SummaryItemLeft>
       <SummaryItemTable>
         <div>

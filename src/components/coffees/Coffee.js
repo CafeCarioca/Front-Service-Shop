@@ -7,6 +7,7 @@ import {
   getDiscountLabel,
   getProductPriceInfo,
 } from "../../utils/productPricing";
+import { optimized, optimizedSrcSet, fallbackToOriginal } from "../../utils/imageUrl";
 
 const SingleCoffee = styled.article`
   text-align: center;
@@ -114,7 +115,15 @@ const Coffee = (props) => {
         {priceInfo.hasDiscount && discountLabel && (
           <DiscountBadge>{discountLabel}</DiscountBadge>
         )}
-        <CoffeeImg src={props.listImg} alt={props.blendName} category={props.category} />
+        <CoffeeImg
+          src={optimized(props.listImg, 400)}
+          srcSet={optimizedSrcSet(props.listImg, 400)}
+          onError={fallbackToOriginal(props.listImg)}
+          loading="lazy"
+          decoding="async"
+          alt={props.blendName}
+          category={props.category}
+        />
       </ImageLink>
       
       <StyledLinks to={props.to} className="linkDarkGrey">

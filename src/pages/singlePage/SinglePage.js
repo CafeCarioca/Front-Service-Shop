@@ -10,6 +10,7 @@ import {
   getProductBasePrice,
 } from "../../utils/productPricing";
 import { getBogoDiscountAmount } from "../../utils/discounts";
+import { optimized, optimizedSrcSet, fallbackToOriginal } from "../../utils/imageUrl";
 
 const BackButton = styled.button`
   margin-bottom: 1rem;
@@ -441,7 +442,10 @@ const SinglePage = (props) => {
           <DiscountBadge>{discountLabel}</DiscountBadge>
         )}
         <CoffeeImg
-          src={productDetails.singleImg}
+          src={optimized(productDetails.singleImg, 800)}
+          srcSet={optimizedSrcSet(productDetails.singleImg, 800)}
+          onError={fallbackToOriginal(productDetails.singleImg)}
+          decoding="async"
           alt={productDetails.blendName}
           className={stickyClass ? "sticky" : ""}
         />
