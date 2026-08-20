@@ -6,8 +6,10 @@ import { bagSizes, grind } from "./singlePageData";
 import { API_ENDPOINTS } from  "../../apiConfig"; 
 import {
   calculateDiscountedPrice,
+  discountAppliesToPresentation,
   getDiscountLabel,
   getProductBasePrice,
+  weightToGrams,
 } from "../../utils/productPricing";
 import { getBogoDiscountAmount } from "../../utils/discounts";
 import { optimized, optimizedSrcSet, fallbackToOriginal } from "../../utils/imageUrl";
@@ -307,7 +309,11 @@ const SinglePage = (props) => {
         let finalPrice = basePrice;
         let originalPriceForDiscount = null;
 
-        if (data.has_discount && data.discount) {
+        const firstGrams = hasPresentationOptions ? weightToGrams(firstPresentation?.weight) : null;
+        const initialDiscountApplies = data.has_discount && data.discount &&
+          discountAppliesToPresentation(data.discount, firstGrams);
+
+        if (initialDiscountApplies) {
           originalPriceForDiscount = basePrice;
           finalPrice = calculateDiscountedPrice(basePrice, data.discount);
           if (data.discount.type === "bogo") {
@@ -326,14 +332,15 @@ const SinglePage = (props) => {
           isCapsule,
           category: data.category,
           hasPresentationOptions,
-          grams: hasPresentationOptions ? parseInt(firstPresentation?.weight) : null,
+          grams: firstGrams,
           grind: hasPresentationOptions ? "Molido" : null,
           price: finalPrice,
           originalPrice: originalPriceForDiscount,
-          hasDiscount: data.has_discount || false,
+          hasDiscount: Boolean(initialDiscountApplies),
+          hasAvailableDiscount: data.has_discount || false,
           discount: data.discount || null,
           prices: hasPresentationOptions
-            ? Object.fromEntries(presentations.map(p => [parseInt(p.weight), parseFloat(p.price)]))
+            ? Object.fromEntries(presentations.map(p => [weightToGrams(p.weight), parseFloat(p.price)]))
             : {},
         });
       } catch (error) {
@@ -351,7 +358,9 @@ const SinglePage = (props) => {
       let newOriginalPriceForDiscount = null;
 
       // Si hay descuento, recalcularlo para la nueva presentación
-      if (prev.hasDiscount && prev.discount) {
+      const discountApplies = prev.hasAvailableDiscount && prev.discount &&
+        discountAppliesToPresentation(prev.discount, amount);
+      if (discountApplies) {
         newOriginalPriceForDiscount = newOriginalPrice;
         newFinalPrice = calculateDiscountedPrice(newOriginalPrice, prev.discount);
         if (prev.discount.type === "bogo") {
@@ -364,6 +373,7 @@ const SinglePage = (props) => {
         grams: amount,
         price: newFinalPrice,
         originalPrice: newOriginalPriceForDiscount,
+        hasDiscount: Boolean(discountApplies),
       };
     });
   };

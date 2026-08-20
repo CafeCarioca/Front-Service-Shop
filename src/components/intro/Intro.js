@@ -42,6 +42,17 @@ const IntroRight = styled.div`
   box-sizing: border-box;
   overflow-x: hidden;
 
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.08) 38%, rgba(0, 0, 0, 0.48) 100%),
+      radial-gradient(circle at center, transparent 20%, rgba(0, 0, 0, 0.2) 100%);
+    pointer-events: none;
+  }
+
   img {
     position: absolute;
     top: 50%;
@@ -60,7 +71,7 @@ const IntroRight = styled.div`
 const IntroRightBanner = styled.div`
   position: relative;
   margin: 0 auto;
-  padding: 2rem 0;
+  padding: 2rem 0 4rem;
   width: 90%;
   z-index: 2; // Asegúrate de que el texto esté por encima del video
   display: flex;
@@ -68,6 +79,7 @@ const IntroRightBanner = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
+  gap: 1.6rem;
   h2 {
     text-transform: uppercase;
     font-size: ${({ theme }) => theme.fontSizes.xbig};
@@ -86,7 +98,11 @@ const IntroRightBanner = styled.div`
     font-size: ${({ theme }) => theme.fontSizes.xmedium};
     color: ${({ theme }) => theme.colors.white};
     letter-spacing: ${({ theme }) => theme.letterspace.small};
-    line-height: 1.5rem;
+    line-height: 1.6;
+    max-width: 760px;
+    margin: 0;
+    text-wrap: balance;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.7);
     @media screen and (min-width: ${({ theme }) => theme.mediaScreen.xlgLaptop}) {
       font-size: ${({ theme }) => theme.fontSizes.xmedium};
     }
@@ -94,20 +110,27 @@ const IntroRightBanner = styled.div`
   button {
     background-color: ${({ theme }) => theme.colors.carioca_black};
     color: ${({ theme }) => theme.colors.white};
-    padding: 0.5rem 2.5rem;
+    padding: 0.85rem 2rem;
     border: none;
     border-radius: 0.2rem;
-    width: 100%;
-    max-width: 10rem;
-    height: 3rem;
-    margin-top: 2rem;
-    font-size: ${({ theme }) => theme.fontSizes.xmedium};
+    width: clamp(12rem, 24vw, 15rem);
+    max-width: none;
+    min-height: clamp(3.25rem, 6vw, 3.75rem);
+    height: auto;
+    margin-top: 0.4rem;
+    font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+    line-height: 1.15;
     font-family: ${({ theme }) => theme.fonts[1]};
+    font-weight: 600;
+    white-space: nowrap;
    
     cursor: pointer;
-    transition: background-color 1s;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    transition: background-color 0.3s, transform 0.3s;
     &:hover {
       background-color: ${({ theme }) => theme.colors.carioca_brickred};
+      transform: translateY(-2px);
     }
   }
   @media screen and (min-width: ${({ theme }) => theme.mediaScreen.lgLaptop}) {
@@ -133,39 +156,45 @@ const ScrollButton = styled.button`
   }
 `;
 
-const Badge = styled.div`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  border: 8px solid white;
-  border-radius: 9999px;
-  padding: 0.8rem 2rem;
-  font-weight: bold;
-  color: white;
-  background-color: transparent;
-  font-size: 1rem;
-  letter-spacing: 0.06rem;
-  font-family: ${({ theme }) => theme.fonts[1]};
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-  margin-bottom: 2rem;
-  max-width: 95%;
+const Heritage = styled.div`
+  color: ${({ theme }) => theme.colors.white};
   text-align: center;
+  text-shadow: 0 3px 18px rgba(0, 0, 0, 0.7);
+`;
 
-  .dot {
-    font-size: 1.4rem;
+const Since = styled.p`
+  && {
+    margin: 0 0 0.85rem;
+    font-family: ${({ theme }) => theme.fonts[0]}, Georgia, serif;
+    font-size: clamp(1.15rem, 3vw, 1.8rem);
+    font-weight: 700;
+    letter-spacing: 0.42em;
     line-height: 1;
   }
+`;
 
-  @media screen and (min-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
-    font-size: 1.3rem;
-    padding: 1rem 4rem;
+const BrandLine = styled.h1`
+  margin: 0;
+  font-family: ${({ theme }) => theme.fonts[0]}, Georgia, serif;
+  font-size: clamp(1.75rem, 5vw, 3.25rem);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  line-height: 1.15;
+  text-transform: uppercase;
+
+  @media screen and (max-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
+    font-size: clamp(1.55rem, 7vw, 2.2rem);
+    letter-spacing: 0.1em;
   }
 
-  @media screen and (min-width: ${({ theme }) => theme.mediaScreen.xlgLaptop}) {
-    font-size: 1.8rem;
-    padding: 1.2rem 6rem;
-    border: 10px solid white;
+  &::after {
+    content: "";
+    display: block;
+    width: 72px;
+    height: 2px;
+    margin: 1.2rem auto 0;
+    background: ${({ theme }) => theme.colors.white};
+    opacity: 0.85;
   }
 `;
 
@@ -191,16 +220,15 @@ const Intro = () => {
           />
           
             <IntroRightBanner>
-            <Badge>
-            <span>DESDE 1916</span>
-            <span className="dot">·</span>
-            <span>Montevideo, Uruguay</span>
-            </Badge>
+            <Heritage aria-label="Desde 1916, la marca del café">
+              <Since>DESDE 1916</Since>
+              <BrandLine>La marca del café</BrandLine>
+            </Heritage>
             <p>
-              Más de un siglo de pasión por el café, combinando calidad, tradición y momentos únicos. Te invitamos a ser parte de nuestra historia.
+              Más de un siglo seleccionando café con carácter, tradición y oficio en Montevideo.
             </p>
             <Link to={`/collections/coffee-blends`}>
-              <button>Comprar</button>
+              <button>Ir a tienda</button>
             </Link>
           </IntroRightBanner>
           <ScrollButton onClick={scrollToNextSection}>

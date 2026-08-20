@@ -29,6 +29,21 @@ export const calculateDiscountedPrice = (originalPrice, discount) => {
   return price;
 };
 
+export const weightToGrams = (weight) => {
+  const text = String(weight ?? "").trim().toLowerCase();
+  const value = Number.parseFloat(text);
+  if (!Number.isFinite(value)) return null;
+  return text.includes("kg") ? Math.round(value * 1000) : Math.round(value);
+};
+
+export const discountAppliesToPresentation = (discount, grams) => {
+  const weights = discount?.presentation_weights || [];
+  if (weights.length === 0) return true;
+  const rawGrams = Number(grams);
+  const selectedGrams = rawGrams > 0 && rawGrams < 10 ? rawGrams * 1000 : rawGrams;
+  return weights.some((weight) => weightToGrams(weight) === selectedGrams);
+};
+
 export const getProductBasePrice = (product) => {
   if (!product) return null;
 
@@ -48,16 +63,37 @@ export const getProductBasePrice = (product) => {
 };
 
 export const getProductPriceInfo = (product) => {
-  const originalPrice = getProductBasePrice(product);
-  const hasDiscount = Boolean(product?.has_discount && product?.discount && originalPrice !== null);
-  const discountedPrice = hasDiscount
-    ? calculateDiscountedPrice(originalPrice, product.discount)
-    : originalPrice;
+  const presentations = product?.presentations || [];
+  const restricted = (product?.discount?.presentation_weights || []).length > 0;
+  const pricedPresentations = presentations.map((presentation) => {
+    const original = parsePrice(presentation.price);
+    const eligible = product?.has_discount && discountAppliesToPresentation(
+      product.discount,
+      weightToGrams(presentation.weight)
+    );
+    return {
+      original,
+      final: eligible ? calculateDiscountedPrice(original, product.discount) : original,
+      eligible,
+    };
+  }).filter(item => item.original !== null);
+
+  const cheapest = pricedPresentations.length > 0
+    ? pricedPresentations.reduce((best, item) => item.final < best.final ? item : best)
+    : null;
+  const originalPrice = cheapest?.original ?? getProductBasePrice(product);
+  const hasDiscount = Boolean(
+    product?.has_discount && product?.discount && originalPrice !== null &&
+    (!restricted || pricedPresentations.some(item => item.eligible))
+  );
+  const showPriceDiscount = Boolean(cheapest?.eligible && product.discount?.type !== "bogo");
+  const discountedPrice = showPriceDiscount ? cheapest.final : originalPrice;
 
   return {
     originalPrice,
     discountedPrice,
     hasDiscount,
+    showPriceDiscount,
     showFromLabel:
       product?.category !== "capsules" &&
       product?.category !== "others" &&

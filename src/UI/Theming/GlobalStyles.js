@@ -8,8 +8,9 @@ const GlobalStyle = createGlobalStyle`
     }
 
     body{
-        font-family: "Inter", sans-serif;
-        color: ${({ theme }) => theme.colors.darkGray}
+        font-family: "Lora", Georgia, serif;
+        color: ${({ theme }) => theme.colors.darkGray};
+        font-synthesis: none;
     }
     a{ text-decoration:none}
     li{

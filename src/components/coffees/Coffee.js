@@ -107,7 +107,7 @@ const FromLabel = styled.span`
 const Coffee = (props) => {
   const priceInfo = getProductPriceInfo(props);
   const discountLabel = getDiscountLabel(props.discount);
-  const showDiscountedPrice = priceInfo.hasDiscount && props.discount?.type !== "bogo";
+  const showDiscountedPrice = priceInfo.showPriceDiscount;
   
   return (
     <SingleCoffee>

@@ -24,7 +24,8 @@ const theme = {
     carioca_black: "#27231f" 
 
   },
-  fonts: ["Roboto Mono", "Courier Prime", "Averia Libre", "Inter"],
+  // Cinzel mantiene el carácter patrimonial del logo; Lora aporta lectura cómoda.
+  fonts: ["Cinzel", "Lora", "Cinzel", "Cinzel"],
   fontSizes: {
     xxsmall: "0.7rem",
     xsmall: "0.85rem",

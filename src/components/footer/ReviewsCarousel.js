@@ -44,6 +44,16 @@ const StyledSlider = styled(Slider)`
     font-size: 30px;
     line-height: 1;
   }
+
+  @media (max-width: 900px) {
+    .slick-prev {
+      left: 0;
+    }
+
+    .slick-next {
+      right: 0;
+    }
+  }
 `;
 
 const ReviewCard = styled.div`

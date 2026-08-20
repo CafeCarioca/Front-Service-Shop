@@ -1,14 +1,11 @@
 import React from "react";
 import styled, { css } from "styled-components";
 
-import Header from "../header/Header";
-import Logo, { LogoGreen } from "../../UI/Logo";
 import { StyledNavLinks } from "../../UI";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { BsSearch, BsPerson } from "react-icons/bs";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 import { navData } from "../index";
-import Carioca from "../../assets/images/CAFE-CARIOCA-pg2.JPG";
+import CariocaWhite from "../../assets/images/logo-el-carioca-navbar-v2.png";
 // import SearchBar from "../searchBar/SearchBar"; // DISABLED - Search feature
 const Nav = styled.section`
   position: sticky;
@@ -125,8 +122,18 @@ const NavRLSearch = styled.div`
 
 
 const LogoImgIcon = styled.img`
-  max-height: 60px; /* Esto evita que la imagen estire el navbar */
+  display: block;
+  max-height: 43px;
+  max-width: 185px;
   width: auto;
+  object-fit: contain;
+  cursor: pointer;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+
+  @media screen and (min-width: ${({ theme }) => theme.mediaScreen.lgLaptop}) {
+    max-height: 46px;
+    max-width: 210px;
+  }
 `;
 const Navbar = ({ openCheckoutSummary, checkoutList, openSideNav }) => {
   return (
@@ -138,12 +145,12 @@ const Navbar = ({ openCheckoutSummary, checkoutList, openSideNav }) => {
               <GiHamburgerMenu className="hoverPointer" onClick={openSideNav} color="white"/>
             </NavLLeft>
             <NavLRight>
-              <LogoImgIcon src={Carioca} alt="Carioca Logo" onClick={() => window.location.href = '/'} />
+              <LogoImgIcon src={CariocaWhite} alt="El Carioca — desde 1916" onClick={() => window.location.href = '/'} />
             </NavLRight>
           </NavLeft>
           <NavCenter>
             <NavCLeft>
-              <LogoImgIcon src={Carioca} alt="Carioca Logo" onClick={() => window.location.href = '/'} />  
+              <LogoImgIcon src={CariocaWhite} alt="El Carioca — desde 1916" onClick={() => window.location.href = '/'} />  
             </NavCLeft>
 
             <NavList>
