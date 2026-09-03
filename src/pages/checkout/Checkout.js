@@ -233,7 +233,7 @@ const Checkout = ({ checkoutList }) => {
     }
     setUserDetailsState(userDetails);
     
-    initMercadoPago('APP_USR-9c44ae9b-8651-40ea-9dbf-8a4561c46895', {
+    initMercadoPago('APP_USR-0e72b53b-d142-4d4a-a89f-b947f278e124', {
       locale: 'es-UY',
     });
   }, []);
