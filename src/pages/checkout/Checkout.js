@@ -352,7 +352,6 @@ const Checkout = ({ checkoutList }) => {
         {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${process.env.REACT_APP_API_TOKEN}`,
           },
         }
       );
@@ -395,12 +394,10 @@ const Checkout = ({ checkoutList }) => {
 
       const orderApiUrl = API_ENDPOINTS.CREATE_ORDER;
       console.log('Order API URL:', orderApiUrl);
-      const APitoke = process.env.REACT_APP_API_TOKEN;
-      
+
       const response = await axios.post(orderApiUrl, orderBody, {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.REACT_APP_API_TOKEN}`,
         },
       });
 
@@ -468,7 +465,6 @@ const Checkout = ({ checkoutList }) => {
       const response = await axios.post(apiUrl, requestBody, {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.REACT_APP_API_TOKEN}`,
         },
       });
 
