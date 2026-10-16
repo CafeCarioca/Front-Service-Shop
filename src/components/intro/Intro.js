@@ -226,7 +226,6 @@ const Intro = () => {
             </Heritage>
             <p>
               Más de un siglo seleccionando café con carácter, tradición y oficio en Montevideo.
-              Café en grano, cápsulas compatibles Nespresso y Dolce Gusto, y métodos para prepararlo en casa.
             </p>
             <Link to={`/collections/coffee-blends`}>
               <button>Ir a tienda</button>

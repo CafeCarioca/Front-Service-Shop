@@ -129,15 +129,16 @@ const OfferBadge = styled.span`
   font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.5px;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  box-shadow: 0 2px 8px rgba(192, 57, 43, 0.35);
+  display: inline-block;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   animation: carioca-offer-pulse 1.8s ease-in-out infinite;
 
   @keyframes carioca-offer-pulse {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.06); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
   }
 `;
 
@@ -225,7 +226,7 @@ const FeaturedBlend = (props) => {
         <FeaturedLeft>
           <TagRow>
             <FeaturedTag>Blend destacado</FeaturedTag>
-            {showOffer && <OfferBadge><span role="img" aria-label="oferta">🔥</span> ¡Oferta! {discountLabel}</OfferBadge>}
+            {showOffer && <OfferBadge>Oferta {discountLabel}</OfferBadge>}
           </TagRow>
           <h2>{name}</h2>
           <p>{description}</p>
