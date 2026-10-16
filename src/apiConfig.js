@@ -11,4 +11,5 @@ export const API_ENDPOINTS = {
   VALIDATE_COUPON: `${API_BASE_URL}/coupons/validate`,
   GET_CATEGORIES: `${API_BASE_URL}/categories`,
   SUBSCRIBE_NEWSLETTER: `${API_BASE_URL}/newsletter/subscribe`,
+  SHIPPING_RULES: `${API_BASE_URL}/shipping/rules`,
 };

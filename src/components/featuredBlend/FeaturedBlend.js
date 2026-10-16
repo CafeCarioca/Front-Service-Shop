@@ -4,6 +4,7 @@ import axios from "axios";
 import Buttons from "../../UI/Buttons/Buttons";
 import { API_ENDPOINTS } from "../../apiConfig";
 import { optimized, optimizedSrcSet, fallbackToOriginal } from "../../utils/imageUrl";
+import { getProductPriceInfo, getDiscountLabel, formatPrice } from "../../utils/productPricing";
 
 const FeaturedSection = styled.section`
   padding: 3rem 0;
@@ -111,6 +112,85 @@ const FeaturedImg = styled.img`
   }
 `;
 
+const TagRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+`;
+
+const OfferBadge = styled.span`
+  font-family: ${({ theme }) => theme.fonts[1]};
+  background-color: ${({ theme }) => theme.colors.carioca_brickred || "#c0392b"};
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  box-shadow: 0 2px 8px rgba(192, 57, 43, 0.35);
+  animation: carioca-offer-pulse 1.8s ease-in-out infinite;
+
+  @keyframes carioca-offer-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+  }
+`;
+
+const PriceRow = styled.div`
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: -1.5rem 0 2.5rem 0;
+  font-family: ${({ theme }) => theme.fonts[3]};
+`;
+
+const FromLabel = styled.span`
+  color: ${({ theme }) => theme.colors.mediumGray};
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+`;
+
+const OriginalPrice = styled.span`
+  text-decoration: line-through;
+  color: ${({ theme }) => theme.colors.mediumGray};
+  font-size: 1.1rem;
+`;
+
+const DiscountedPrice = styled.span`
+  color: ${({ theme }) => theme.colors.carioca_brickred || "#c0392b"};
+  font-size: 1.9rem;
+  font-weight: 700;
+`;
+
+const ImageWrap = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
+const ImageOfferRibbon = styled.div`
+  position: absolute;
+  top: 0.9rem;
+  right: 0.9rem;
+  background-color: ${({ theme }) => theme.colors.carioca_brickred || "#c0392b"};
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.4rem;
+  font-family: ${({ theme }) => theme.fonts[1]};
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  z-index: 10;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+`;
+
 const FeaturedBlend = (props) => {
   const dayOfWeek = new Date().getDay();
   const id = dayOfWeek >= 1 && dayOfWeek <= 5 ? dayOfWeek : 4; // Default to 1 if not Monday-Friday
@@ -135,14 +215,27 @@ const FeaturedBlend = (props) => {
   }
 
   const { description, secondary_image_url, name } = product;
+  const priceInfo = getProductPriceInfo(product);
+  const discountLabel = getDiscountLabel(product.discount);
+  const showOffer = priceInfo.hasDiscount && Boolean(discountLabel);
 
   return (
     <FeaturedSection>
       <FeaturedContainer>
         <FeaturedLeft>
-          <FeaturedTag>Blend destacado</FeaturedTag>
+          <TagRow>
+            <FeaturedTag>Blend destacado</FeaturedTag>
+            {showOffer && <OfferBadge><span role="img" aria-label="oferta">🔥</span> ¡Oferta! {discountLabel}</OfferBadge>}
+          </TagRow>
           <h2>{name}</h2>
           <p>{description}</p>
+          {showOffer && priceInfo.showPriceDiscount && priceInfo.originalPrice !== null && (
+            <PriceRow>
+              {priceInfo.showFromLabel && <FromLabel>Desde</FromLabel>}
+              <OriginalPrice>{formatPrice(priceInfo.originalPrice)}</OriginalPrice>
+              <DiscountedPrice>{formatPrice(priceInfo.discountedPrice)}</DiscountedPrice>
+            </PriceRow>
+          )}
           <Buttons
             bg={(props) => props.theme.colors.darkGray}
             width={"100%"}
@@ -153,14 +246,17 @@ const FeaturedBlend = (props) => {
           </Buttons>
         </FeaturedLeft>
         <FeaturedRight>
-          <FeaturedImg
-            src={optimized(secondary_image_url, 800)}
-            srcSet={optimizedSrcSet(secondary_image_url, 800)}
-            onError={fallbackToOriginal(secondary_image_url)}
-            loading="lazy"
-            decoding="async"
-            alt={`Blend destacado ${name}`}
-          />
+          <ImageWrap>
+            {showOffer && <ImageOfferRibbon>{discountLabel}</ImageOfferRibbon>}
+            <FeaturedImg
+              src={optimized(secondary_image_url, 800)}
+              srcSet={optimizedSrcSet(secondary_image_url, 800)}
+              onError={fallbackToOriginal(secondary_image_url)}
+              loading="lazy"
+              decoding="async"
+              alt={`Blend destacado ${name}`}
+            />
+          </ImageWrap>
         </FeaturedRight>
       </FeaturedContainer>
     </FeaturedSection>

@@ -1,24 +1,36 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { Products } from "../../components";
-import { Link as ScrollLink } from "react-scroll";
+import { Link as ScrollLink, scroller } from "react-scroll";
 import styled from "styled-components";
 import { API_ENDPOINTS } from "../../apiConfig";
 
-const ProductLinks = ({ categories }) => {
-  const Divs = styled.div`
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin: 2rem 0;
-    a {
-      font-size: ${({ theme }) => theme.fontSizes.small};
-      color: ${({ theme }) => theme.colors.darkGray};
-      cursor: pointer;
-      &:hover {
-        color: ${({ theme }) => theme.colors.primary};
-      }
+// Pestañas de categorías: fijas debajo de la barra de navegación (70px) para
+// que no se pierdan al scrollear. Definido FUERA del componente para no
+// recrear el styled-component en cada render.
+const Divs = styled.div`
+  position: sticky;
+  top: 70px;
+  z-index: 9;
+  background-color: ${({ theme }) => theme.colors.white};
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem 1rem;
+  margin: 0 0 1.5rem 0;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.lightestGray};
+  a {
+    font-size: ${({ theme }) => theme.fontSizes.small};
+    color: ${({ theme }) => theme.colors.darkGray};
+    cursor: pointer;
+    &:hover {
+      color: ${({ theme }) => theme.colors.primary};
     }
-  `;
+  }
+`;
+
+const ProductLinks = ({ categories }) => {
   return (
     <Divs>
       {categories.map((cat, i) => (
@@ -37,6 +49,20 @@ const CoffeeProducts = () => {
   const [categories, setCategories] = useState([]);
   const [productsByCategory, setProductsByCategory] = useState({});
   const [loading, setLoading] = useState(true);
+  // ?cat=capsules → al terminar de cargar, scrollea a esa categoría (lo usan
+  // el link "Cápsulas" del menú y el bloque del Home). Con HashRouter el
+  // query vive dentro del hash, por eso se lee de location.search.
+  const location = useLocation();
+  const targetCat = new URLSearchParams(location.search).get("cat");
+
+  useEffect(() => {
+    if (!loading && targetCat) {
+      const t = setTimeout(() => {
+        scroller.scrollTo(targetCat, { smooth: true, duration: 500, offset: -130 });
+      }, 50);
+      return () => clearTimeout(t);
+    }
+  }, [loading, targetCat]);
 
   useEffect(() => {
     window.scrollTo(0, 0);

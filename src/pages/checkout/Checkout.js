@@ -214,6 +214,13 @@ const Checkout = ({ checkoutList }) => {
   const [couponError, setCouponError] = useState('');
   const [couponLoading, setCouponLoading] = useState(false);
   const [userDetailsState, setUserDetailsState] = useState({});
+  // Reglas de envío: las dicta el servidor (una sola fuente de verdad).
+  // Defaults iguales a los del backend por si el fetch falla.
+  const [shippingRules, setShippingRules] = useState({
+    mvdCost: 180,
+    mvdFreeFrom: 1500,
+    nespressoFreeQty: 10,
+  });
 
   const getBogoPromotions = (items, currentDeliveryType) => {
     return items
@@ -245,6 +252,18 @@ const Checkout = ({ checkoutList }) => {
       setUserDetailsState(userDetails);
     }
   }, [wizardComplete]);
+
+  // Traer las reglas de envío del servidor (umbrales + promo Nespresso)
+  useEffect(() => {
+    axios
+      .get(API_ENDPOINTS.SHIPPING_RULES)
+      .then((res) => {
+        if (res.data && typeof res.data === 'object') {
+          setShippingRules((prev) => ({ ...prev, ...res.data }));
+        }
+      })
+      .catch(() => {}); // si falla, quedan los defaults
+  }, []);
   
   // Calcular el total de los items y descuentos
   const itemCalculations = checkoutList.reduce(
@@ -288,19 +307,29 @@ const Checkout = ({ checkoutList }) => {
   console.log('Is Interior:', isInterior);
   console.log('Selected Address:', selectedAddress);
 
-  // Reglas de envío:
-  // MONTEVIDEO:
-  //   - Delivery: $180 si < $1500, GRATIS si >= $1500
-  //   - TakeAway: Sin costo
-  // INTERIOR:
-  //   - Delivery: $0 (sin costo visible, se coordina después)
-  //   - TakeAway: Sin costo
+  // Reglas de envío (los valores vienen del servidor: GET /shipping/rules):
+  // MONTEVIDEO:  Delivery: $mvdCost si < $mvdFreeFrom, GRATIS si >= · TakeAway: sin costo
+  // INTERIOR:    Delivery: $0 (se coordina después) · TakeAway: sin costo
+  // PROMO:       N+ cajas Nespresso → envío gratis en ambos (N = nespressoFreeQty, 0 = apagada)
   
   let shippingCost = 0;
   let shippingMessage = '';
   
+  // Promo "Nespresso x10": N+ cajas de cápsulas Nespresso → envío gratis
+  // (Montevideo e interior). La cantidad la dicta el servidor (0 = apagada).
+  const nespressoBoxes = checkoutList.reduce(
+    (sum, item) =>
+      sum + (/nespresso/i.test(String(item.blendName || '')) ? Number(item.quantity) || 0 : 0),
+    0
+  );
+  const nespressoFreeShipping =
+    shippingRules.nespressoFreeQty > 0 && nespressoBoxes >= shippingRules.nespressoFreeQty;
+
   if (deliveryType === 'delivery') {
-    if (isInterior) {
+    if (nespressoFreeShipping) {
+      shippingCost = 0;
+      shippingMessage = `✓ Envío gratis por llevar ${shippingRules.nespressoFreeQty}+ cajas Nespresso`;
+    } else if (isInterior) {
       // Interior: siempre $0 en el checkout (se coordina después)
       shippingCost = 0;
       if (itemTotals >= 3000) {
@@ -309,9 +338,9 @@ const Checkout = ({ checkoutList }) => {
         shippingMessage = 'Por favor, especificar agencia de preferencia en observaciones. Nos contactaremos para coordinar.';
       }
     } else {
-      // Montevideo: lógica actual
-      shippingCost = itemTotals >= 1500 ? 0 : 180;
-      if (itemTotals >= 1500) {
+      // Montevideo: umbral y costo los dicta el servidor (GET /shipping/rules)
+      shippingCost = itemTotals >= shippingRules.mvdFreeFrom ? 0 : shippingRules.mvdCost;
+      if (itemTotals >= shippingRules.mvdFreeFrom) {
         shippingMessage = '✓ Envío gratis en Montevideo';
       }
     }

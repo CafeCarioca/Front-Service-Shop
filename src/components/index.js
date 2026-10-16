@@ -3,6 +3,7 @@ import Header from "./header/Header";
 import Intro from "./intro/Intro";
 import FeaturedBlend from "./featuredBlend/FeaturedBlend";
 import Coffees from "./coffees/Coffees";
+import Capsules from "./capsules/Capsules";
 import Footer from "./footer/Footer";
 import Products from "./productsComponents/Products";
 import Coffee from "./coffees/Coffee";
@@ -22,6 +23,7 @@ export {
   Intro,
   FeaturedBlend,
   Coffees,
+  Capsules,
   Footer,
   Products,
   Coffee,

@@ -3,6 +3,7 @@ import {
   Intro,
   FeaturedBlend,
   Coffees,
+  Capsules,
   Header,
   ReviewsCarousel,
 } from "../../components/index";
@@ -17,6 +18,7 @@ const Home = () => {
       <Intro />
       <FeaturedBlend />
       <Coffees />
+      <Capsules />
       <ReviewsCarousel />
     </>
   );

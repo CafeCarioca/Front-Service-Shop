@@ -78,10 +78,22 @@ export const getProductPriceInfo = (product) => {
     };
   }).filter(item => item.original !== null);
 
+  const basePrice = getProductBasePrice(product);
   const cheapest = pricedPresentations.length > 0
     ? pricedPresentations.reduce((best, item) => item.final < best.final ? item : best)
-    : null;
-  const originalPrice = cheapest?.original ?? getProductBasePrice(product);
+    : basePrice !== null
+      ? {
+          // Producto sin presentaciones (cápsulas / otros): el precio base es la
+          // única "presentación". Antes esto quedaba en null y el precio
+          // rebajado nunca se mostraba aunque el badge de descuento sí.
+          original: basePrice,
+          final: product?.has_discount && !restricted
+            ? calculateDiscountedPrice(basePrice, product.discount)
+            : basePrice,
+          eligible: Boolean(product?.has_discount && !restricted),
+        }
+      : null;
+  const originalPrice = cheapest?.original ?? basePrice;
   const hasDiscount = Boolean(
     product?.has_discount && product?.discount && originalPrice !== null &&
     (!restricted || pricedPresentations.some(item => item.eligible))
