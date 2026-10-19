@@ -16,11 +16,13 @@ const Divs = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.5rem 1rem;
+  gap: 0.25rem 0.35rem;
   margin: 0 0 1.5rem 0;
-  padding: 0.9rem 1rem;
+  padding: 0.3rem 1rem;
   border-bottom: 1px solid ${({ theme }) => theme.colors.lightestGray};
   a {
+    display: inline-block;
+    padding: 0.7rem 0.25rem;
     font-size: ${({ theme }) => theme.fontSizes.small};
     color: ${({ theme }) => theme.colors.darkGray};
     cursor: pointer;

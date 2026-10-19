@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled, { css } from "styled-components";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import Buttons from "../../UI/Buttons/Buttons";
 import { API_ENDPOINTS } from "../../apiConfig";
 import { optimized, optimizedSrcSet, fallbackToOriginal } from "../../utils/imageUrl";
@@ -170,26 +171,9 @@ const DiscountedPrice = styled.span`
   font-weight: 700;
 `;
 
-const ImageWrap = styled.div`
-  position: relative;
+const ImageWrap = styled(Link)`
+  display: block;
   width: 100%;
-`;
-
-const ImageOfferRibbon = styled.div`
-  position: absolute;
-  top: 0.9rem;
-  right: 0.9rem;
-  background-color: ${({ theme }) => theme.colors.carioca_brickred || "#c0392b"};
-  color: #fff;
-  padding: 0.5rem 1rem;
-  border-radius: 0.4rem;
-  font-family: ${({ theme }) => theme.fonts[1]};
-  font-size: 1.05rem;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  z-index: 2;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-  pointer-events: none;
 `;
 
 const FeaturedBlend = (props) => {
@@ -197,6 +181,7 @@ const FeaturedBlend = (props) => {
   const id = dayOfWeek >= 1 && dayOfWeek <= 5 ? dayOfWeek : 4; // Default to 1 if not Monday-Friday
   const apiUrl = `${API_ENDPOINTS.GET_PRODUCT}/${id}`;
   const [product, setProduct] = useState(null);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -205,14 +190,23 @@ const FeaturedBlend = (props) => {
         setProduct(response.data);
       } catch (error) {
         console.error("Error fetching the product data:", error);
+        setError(true);
       }
     };
 
     fetchProduct();
   }, []);
 
+  // Si la API falla, el bloque no se muestra y el resto del home sigue funcionando.
+  if (error) return null;
   if (!product) {
-    return <div>Loading...</div>;
+    return (
+      <FeaturedSection style={{ minHeight: "420px" }}>
+        <FeaturedContainer>
+          <p>Cargando blend destacado...</p>
+        </FeaturedContainer>
+      </FeaturedSection>
+    );
   }
 
   const { description, secondary_image_url, name } = product;
@@ -247,8 +241,7 @@ const FeaturedBlend = (props) => {
           </Buttons>
         </FeaturedLeft>
         <FeaturedRight>
-          <ImageWrap>
-            {showOffer && <ImageOfferRibbon>{discountLabel}</ImageOfferRibbon>}
+          <ImageWrap to={`/collections/coffee-blends/${name}`} aria-label={`Ver ${name}`}>
             <FeaturedImg
               src={optimized(secondary_image_url, 800)}
               srcSet={optimizedSrcSet(secondary_image_url, 800)}

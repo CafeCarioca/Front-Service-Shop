@@ -6,7 +6,7 @@ const StyledInput = styled.input`
   width: 100%;
   font-size: ${({ theme }) => theme.fontSizes.small};
   color: ${({ theme }) => theme.colors.mediumGray};
-  border: 1px solid ${({ theme }) => theme.colors.darkerGray};
+  border: 1px solid ${({ theme }) => theme.colors.mediumGray};
   border-radius: 0.2rem;
   &:focus {
     border: 2px solid ${({ theme }) => theme.colors.secondaryGreen};

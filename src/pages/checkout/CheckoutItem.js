@@ -50,7 +50,7 @@ const PriceContainer = styled.div`
 
 const OriginalPrice = styled.span`
   text-decoration: line-through;
-  color: #888;
+  color: ${({ theme }) => theme.colors.mediumGray};
   font-size: 0.75rem;
 `;
 
@@ -71,7 +71,7 @@ const DiscountBadge = styled.span`
 `;
 
 const DiscountNotAvailable = styled.span`
-  color: #888;
+  color: ${({ theme }) => theme.colors.mediumGray};
   font-size: 0.65rem;
   font-style: italic;
   display: block;

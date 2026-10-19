@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
+// En celular va una versión recortada y liviana del video (1,1 MB en vez de 5 MB).
+// ponytail: se decide al cargar la página; si se rota o cambia el ancho no se recalcula
+const heroVideoSrc = window.matchMedia("(min-width: 769px)").matches ? "/coffee-hero.mp4" : "/coffee-hero-mobile.mp4";
+
 const AboutUs = () => {
   const [scrollY, setScrollY] = useState(0);
 
@@ -26,7 +30,7 @@ const AboutUs = () => {
           playsInline
           poster="/coffee-hero-poster.jpg"
         >
-          <source src="/coffee-hero.mp4" type="video/mp4" />
+          <source src={heroVideoSrc} type="video/mp4" />
         </HeroVideo>
         <HeroOverlay />
         <HeroContent>
@@ -222,6 +226,7 @@ const HeroContent = styled.div`
 `;
 
 const HeroTitle = styled.h1`
+  font-family: ${({ theme }) => theme.fonts[0]};
   font-size: clamp(2.5rem, 6vw, 4.5rem);
   font-weight: 700;
   margin-bottom: 1.5rem;
@@ -283,6 +288,7 @@ const FadeInSection = styled.div`
 `;
 
 const SectionTitle = styled.h2`
+  font-family: ${({ theme }) => theme.fonts[0]};
   font-size: clamp(2rem, 4vw, 3rem);
   color: #4A2511;
   margin-bottom: 2rem;
@@ -345,8 +351,7 @@ const DocumentTitle = styled.h2`
   color: #4A2511;
   margin-bottom: 1rem;
   font-weight: 700;
-  font-family: "Playfair Display", "Times New Roman", serif;
-  font-style: italic;
+  font-family: ${({ theme }) => theme.fonts[0]};
 `;
 
 const DocumentSubtitle = styled.p`
@@ -542,7 +547,7 @@ const TimelineItem = styled.div`
 const TimelineYear = styled.div`
   font-size: 1.6rem;
   font-weight: 700;
-  font-family: "Playfair Display", "Times New Roman", serif;
+  font-family: ${({ theme }) => theme.fonts[0]};
   color: #8B4513;
   margin-bottom: 1rem;
   margin-left: ${props => (props.even ? '0' : 'auto')};
@@ -550,6 +555,7 @@ const TimelineYear = styled.div`
 
 const TimelineContent = styled.div`
   h3 {
+    font-family: ${({ theme }) => theme.fonts[0]};
     font-size: 1.6rem;
     color: #4A2511;
     margin-bottom: 1rem;
@@ -591,6 +597,7 @@ const ContentBox = styled.div`
   color: white;
   
   h2 {
+  font-family: ${({ theme }) => theme.fonts[0]};
     font-size: 2.5rem;
     margin-bottom: 2rem;
   }
@@ -629,6 +636,7 @@ const TwoColumns = styled.div`
 
 const TextColumn = styled.div`
   h2 {
+  font-family: ${({ theme }) => theme.fonts[0]};
     font-size: 2.5rem;
     color: #4A2511;
     margin-bottom: 1.5rem;
@@ -672,6 +680,7 @@ const PromiseContent = styled.div`
   text-align: center;
   
   h2 {
+  font-family: ${({ theme }) => theme.fonts[0]};
     font-size: 2.5rem;
     margin-bottom: 2rem;
     color: white;

@@ -106,6 +106,15 @@ const SummaryText = styled.span`
   color: ${({ theme }) => theme.colors.darkGray};
 `;
 
+const FinishError = styled.p`
+  color: ${({ theme }) => theme.colors.carioca_brickred};
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0.75rem 0;
+`;
+
+const DOCUMENT_LABELS = { ci: "CI", passport: "Pasaporte" };
+
 const InfoText = styled.p`
   background-color: ${({ theme }) => theme.colors.white};
   border-left: 4px solid ${({ theme }) => theme.colors.darkGray};
@@ -161,7 +170,7 @@ const WizardInput = styled.input`
   margin-bottom: 0.5rem;
   margin-right: 0.5rem;
   gap: 0.5rem;
-  border: 1px solid ${({ theme }) => theme.colors.darkerGray};
+  border: 1px solid ${({ theme }) => theme.colors.mediumGray};
   border-radius: 0.2rem;
   font-size: ${({ theme }) => theme.fontSizes.small};
   color: ${({ theme }) => theme.colors.darkGray};
@@ -175,7 +184,7 @@ const WizardSelect = styled.select`
   padding: 0.5rem;
   margin-bottom: 0.5rem;
   margin-right: 0.5rem;
-  border: 1px solid ${({ theme }) => theme.colors.darkerGray};
+  border: 1px solid ${({ theme }) => theme.colors.mediumGray};
   border-radius: 0.2rem;
   font-size: ${({ theme }) => theme.fontSizes.small};
   color: ${({ theme }) => theme.colors.darkGray};
@@ -384,6 +393,7 @@ const Wizard = ({ onCompletion }) => {
     const [remarks, setRemarks] = useState("");
     
     const [showPopup, setShowPopup] = useState(false);
+    const [finishError, setFinishError] = useState("");
     const [deliveryType, setDeliveryType] = useState("");
     const stepsCount = 5;
     const progress = (step / stepsCount) * 100;
@@ -444,6 +454,21 @@ const Wizard = ({ onCompletion }) => {
 
     const handleFinish = (e) => {
       e.preventDefault();
+      // Si vuelve un cliente con datos guardados incompletos, lo mandamos al paso que falta
+      const missing =
+        !email ? [1, "el email"] :
+        !firstName || !lastName ? [2, "tu nombre y apellido"] :
+        !documentNumber ? [2, "el documento"] :
+        !phone ? [2, "el teléfono"] :
+        !deliveryType ? [3, "el tipo de entrega"] :
+        deliveryType === "delivery" && !addresses[selectedAddressIndex] ? [4, "la dirección de envío"] :
+        null;
+      if (missing) {
+        setFinishError(`Falta completar ${missing[1]}.`);
+        setStep(missing[0]);
+        return;
+      }
+      setFinishError("");
       const userDetails = {
       email,
       firstName,
@@ -551,9 +576,10 @@ const Wizard = ({ onCompletion }) => {
           <ProgressBarContainer>
             <ProgressBar width={progress} />
           </ProgressBarContainer>
+          {finishError && <FinishError role="alert">{finishError}</FinishError>}
     
           <WizardStep active={step === 1}>
-            <H3>Ingresa tu email</H3>
+            <H3>Ingresá tu email</H3>
             <form onSubmit={handleEmailSubmit}>
               <WizardInput
                 type="email"
@@ -672,7 +698,7 @@ const Wizard = ({ onCompletion }) => {
           </WizardStep>
   
           <WizardStep active={step === 3}>
-            <H3>SELECCIONA EL TIPO DE ENTREGA</H3>
+            <H3>Seleccioná el tipo de entrega</H3>
             <ButtonContainer>
               <WizardButton type="button" onClick={() => handleDeliveryChoice('delivery')}>
                 Envío a domicilio
@@ -757,15 +783,21 @@ const Wizard = ({ onCompletion }) => {
           <SummaryItem>
             <H4>Nombre:</H4> <SummaryText>{firstName} {lastName}</SummaryText>
           </SummaryItem>
-          <SummaryItem>
-            <H4>País de Origen:</H4> <SummaryText>{country}</SummaryText>
-          </SummaryItem>
-          <SummaryItem>
-            <H4>Documento:</H4> <SummaryText>{documentType} - {documentNumber}</SummaryText>
-          </SummaryItem>
-          <SummaryItem>
-            <H4>Teléfono:</H4> <SummaryText>{phone}</SummaryText>
-          </SummaryItem>
+          {country && (
+            <SummaryItem>
+              <H4>País:</H4> <SummaryText>{country}</SummaryText>
+            </SummaryItem>
+          )}
+          {documentNumber && (
+            <SummaryItem>
+              <H4>Documento:</H4> <SummaryText>{[DOCUMENT_LABELS[documentType], documentNumber].filter(Boolean).join(" ")}</SummaryText>
+            </SummaryItem>
+          )}
+          {phone && (
+            <SummaryItem>
+              <H4>Teléfono:</H4> <SummaryText>{phone}</SummaryText>
+            </SummaryItem>
+          )}
           {facturaConRUT && (
             <>
               <SummaryItem>
@@ -788,25 +820,30 @@ const Wizard = ({ onCompletion }) => {
           {/* Mostrar destinatario solo si es entrega a domicilio */}
           {deliveryType === 'delivery' && (
             <>
-              <SummaryItem>
-                <H4>Destinatario:</H4> <SummaryText>{recipient}</SummaryText>
-              </SummaryItem>
+              {recipient && (
+                <SummaryItem>
+                  <H4>Destinatario:</H4> <SummaryText>{recipient}</SummaryText>
+                </SummaryItem>
+              )}
               {addresses[selectedAddressIndex] && (
                 <SummaryItem>
                   <H4>Dirección de Envío:</H4>
                   <SummaryText>
-                    {addresses[selectedAddressIndex].street} {addresses[selectedAddressIndex].doorNumber},
-                    {addresses[selectedAddressIndex].apartment && ` ${addresses[selectedAddressIndex].apartment}, `}
-                    {addresses[selectedAddressIndex].department}, {addresses[selectedAddressIndex].postalCode}
+                    {(({ street, doorNumber, apartment, department, postalCode }) =>
+                      [`${street || ""} ${doorNumber || ""}`.trim(), apartment, department, postalCode]
+                        .filter(Boolean)
+                        .join(", "))(addresses[selectedAddressIndex])}
                   </SummaryText>
                 </SummaryItem>
               )}
             </>
           )}
 
-          <SummaryItem>
-            <H4>Observaciones:</H4> <SummaryText>{remarks}</SummaryText>
-          </SummaryItem>
+          {remarks && (
+            <SummaryItem>
+              <H4>Observaciones:</H4> <SummaryText>{remarks}</SummaryText>
+            </SummaryItem>
+          )}
           
           <InfoText>
             Revisá tus datos antes de continuar. Al hacer clic en "Finalizar" se guardarán tus datos y podrás proceder con el pago.

@@ -123,7 +123,7 @@ const CostDetail = styled.div`
 
   span {
     font-weight: ${({ isBold }) => (isBold ? 'bold' : 'normal')};
-    font-family: 'Courier New', Courier, monospace;
+    font-variant-numeric: tabular-nums;
   }
 
   &:last-child {
@@ -170,7 +170,7 @@ const CouponInputContainer = styled.div`
 
 const CouponInput = styled.input`
   padding: 0.5rem;
-  border: 1px solid ${({ theme }) => theme.colors.darkerGray};
+  border: 1px solid ${({ theme }) => theme.colors.mediumGray};
   border-radius: 0.2rem;
   font-size: 0.85rem;
   text-transform: uppercase;
@@ -216,6 +216,12 @@ const CouponSuccess = styled.p`
   margin-top: 0.3rem;
   font-weight: 600;
 `;
+
+// Monto tal cual se cobra: sin ",00" si es entero, con coma decimal si tiene centavos.
+const money = (n) => {
+  const v = Math.round(Number(n || 0) * 100) / 100;
+  return Number.isInteger(v) ? `$${v}` : `$${v.toFixed(2).replace('.', ',')}`;
+};
 
 const Checkout = ({ checkoutList }) => {
   const [wizardComplete, setWizardComplete] = useState(false);
@@ -378,7 +384,7 @@ const Checkout = ({ checkoutList }) => {
   // Función para validar cupón
   const handleApplyCoupon = async () => {
     if (!couponCode.trim()) {
-      setCouponError('Por favor ingresa un código de cupón');
+      setCouponError('Ingresá un código de cupón');
       return;
     }
 
@@ -579,7 +585,7 @@ const Checkout = ({ checkoutList }) => {
         <CheckoutContainer>
           <div>
             <H1>Detalle del pedido</H1>
-            {checkoutList.length === 0 && <H1>No tienes nada en tu carrito</H1>}
+            {checkoutList.length === 0 && <H1>No tenés nada en el carrito</H1>}
             <CheckoutItemsContainer>
               {checkoutList.map((item, index) => {
                 return <CheckoutItem key={index} {...item} deliveryType={deliveryType}></CheckoutItem>;
@@ -617,18 +623,18 @@ const Checkout = ({ checkoutList }) => {
                   <>
                     <CostDetail fontSize='14px'>
                       <span>Subtotal: </span>
-                      <span>${subtotalBeforeDiscount.toFixed(2)}</span>
+                      <span>{money(subtotalBeforeDiscount)}</span>
                     </CostDetail>
                     {regularDiscountTotal > 0 && (
                       <CostDetail fontSize='14px' style={{ color: '#58000a' }}>
                         <span>Descuentos: </span>
-                        <span>-${regularDiscountTotal.toFixed(2)}</span>
+                        <span>-{money(regularDiscountTotal)}</span>
                       </CostDetail>
                     )}
                     {bogoPromotions.map((promotion, index) => (
                       <CostDetail key={`${promotion.name}-${index}`} fontSize='14px' style={{ color: '#58000a' }}>
                         <span>Promo 2x1 ({promotion.name}): </span>
-                        <span>-${promotion.discountAmount.toFixed(2)}</span>
+                        <span>-{money(promotion.discountAmount)}</span>
                       </CostDetail>
                     ))}
                   </>
@@ -636,7 +642,7 @@ const Checkout = ({ checkoutList }) => {
                 {shippingCost > 0 && (
                   <CostDetail fontSize='14px'>
                     <span>Envío: </span>
-                    <span>${shippingCost.toFixed(2)}</span>
+                    <span>{money(shippingCost)}</span>
                   </CostDetail>
                 )}
                 {deliveryType === 'delivery' && shippingCost === 0 && shippingMessage && (
@@ -647,12 +653,12 @@ const Checkout = ({ checkoutList }) => {
                 {appliedCoupon && couponDiscount > 0 && (
                   <CostDetail fontSize='14px' style={{ color: '#58000a' }}>
                     <span>Descuento (cupón): </span>
-                    <span>-${couponDiscount.toFixed(2)}</span>
+                    <span>-{money(couponDiscount)}</span>
                   </CostDetail>
                 )}
                 <CostDetail fontSize='18px' isBold>
                   <span>Total: </span>
-                  <span>${totalWithShipping.toFixed(2)}</span>
+                  <span>{money(totalWithShipping)}</span>
                 </CostDetail>
               </TotalContainer>
               {!preferenceId && (

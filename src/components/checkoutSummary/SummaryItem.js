@@ -37,9 +37,9 @@ const SummaryItemTable = styled.div.attrs((props) => ({
   }
 `;
 const RemoveListItem = styled.span`
-  color: ${({ theme }) => theme.colors.darkRed};
+  color: ${({ theme }) => theme.colors.carioca_brickred};
   &:hover {
-    color: ${({ theme }) => theme.colors.lightRed};
+    color: ${({ theme }) => theme.colors.mediumGray};
     cursor: pointer;
   }
 `;
@@ -47,7 +47,7 @@ const PriceContainer = styled.div`
   text-align: right;
 `;
 const OriginalPrice = styled.span`
-  color: #888;
+  color: ${({ theme }) => theme.colors.mediumGray};
   font-size: 0.85rem;
   text-decoration: line-through;
 `;

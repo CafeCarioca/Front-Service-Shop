@@ -13,6 +13,14 @@ const GlobalStyle = createGlobalStyle`
         font-synthesis: none;
     }
     a{ text-decoration:none}
+
+    /* Quien pide reducir movimiento en su sistema no ve animaciones */
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            animation: none !important;
+            transition: none !important;
+        }
+    }
     li{
         list-style: none;
     }

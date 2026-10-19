@@ -248,7 +248,7 @@ const PriceContainer = styled.div`
 
 const OriginalPrice = styled.span`
   text-decoration: line-through;
-  color: #888;
+  color: ${({ theme }) => theme.colors.mediumGray};
   font-size: ${({ theme }) => theme.fontSizes.small};
   font-weight: 400;
 `;

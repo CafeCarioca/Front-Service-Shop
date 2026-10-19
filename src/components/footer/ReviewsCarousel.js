@@ -3,6 +3,26 @@ import styled from 'styled-components';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { MoreInfoArrow } from '../../UI';
+
+// Perfil del local en Google Maps (mismo PLACE_ID que GoogleReviews.js)
+const GOOGLE_REVIEWS_URL = 'https://www.google.com/maps/place/?q=place_id:ChIJ8f9tgHqBn5URB2SmHOSOaW8';
+
+const ReviewsTitle = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+  h2 {
+    text-transform: uppercase;
+    font-size: ${({ theme }) => theme.fontSizes.medium};
+  }
+  a {
+    color: ${({ theme }) => theme.colors.darkGray};
+  }
+`;
 
 const CarouselContainer = styled.div`
   width: 90%;
@@ -131,12 +151,6 @@ const RatingStars = styled.div`
   line-height: 1;
 `;
 
-const ReviewDate = styled.span`
-  color: #888;
-  font-size: 0.8rem;
-  white-space: nowrap;
-`;
-
 const ReviewText = styled.p`
   margin-top: 12px;
   color: #444;
@@ -215,7 +229,7 @@ const ReviewsCarousel = () => {
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
-    autoplay: true,
+    autoplay: !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
     autoplaySpeed: 4000,
     responsive: [
       {
@@ -250,6 +264,12 @@ const ReviewsCarousel = () => {
 
   return (
     <CarouselContainer>
+      <ReviewsTitle>
+        <h2>Opiniones en Google</h2>
+        <a href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener noreferrer">
+          <MoreInfoArrow>Ver todas en Google</MoreInfoArrow>
+        </a>
+      </ReviewsTitle>
       <StyledSlider {...settings}>
         {reviews.map((review, index) => (
           <ReviewCard key={`${review.author_name}-${review.time || index}`}>
@@ -272,7 +292,6 @@ const ReviewsCarousel = () => {
               </AuthorInfo>
               <StarsAndDate>
                 <RatingStars>{renderStars(review.rating)}</RatingStars>
-                <ReviewDate>{formatDate(review.time)}</ReviewDate>
               </StarsAndDate>
             </ReviewHeader>
             <ReviewText>{review.text}</ReviewText>
@@ -281,17 +300,6 @@ const ReviewsCarousel = () => {
       </StyledSlider>
     </CarouselContainer>
   );
-};
-
-const formatDate = (unixTimestamp) => {
-  if (typeof unixTimestamp === 'string') return unixTimestamp;
-  if (!unixTimestamp) return '';
-  const date = new Date(unixTimestamp * 1000);
-  return new Intl.DateTimeFormat('es-ES', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  }).format(date);
 };
 
 export default ReviewsCarousel;

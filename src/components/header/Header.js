@@ -29,14 +29,19 @@ const HeaderContainer = styled.header`
     font-size: ${({ theme }) => theme.fontSizes.xmedium};
   }
 
-  @media screen and (max-width: ${({ theme }) => theme.mediaScreen.mobile}) {
-    font-size: ${({ theme }) => theme.fontSizes.xxxlarge};
+  @media (prefers-reduced-motion: reduce) {
+    white-space: normal;
   }
 `;
 
+// En pantallas anchas el texto entra entero: queda fijo. Solo se mueve en celular.
 const RotatingText = styled.div`
   display: inline-block;
   animation: ${rotate} 20s linear infinite;
+
+  @media screen and (min-width: ${({ theme }) => theme.mediaScreen.laptop768}) {
+    animation: none;
+  }
 `;
 
 const Header = (props) => {

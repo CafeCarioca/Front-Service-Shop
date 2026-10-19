@@ -20,9 +20,9 @@ const CTAsocials = (props) => {
       colorH3={(props) => props.theme.colors.lightestGray}
       color={(props) => props.theme.colors.lightGray}
     >
-      <h3>Síguenos</h3>
+      <h3>Seguinos</h3>
       <p>
-        Síguenos en nuestras redes sociales y ayudanos a difundir nuestra pasión por el café.
+        Seguinos en nuestras redes sociales y ayudanos a difundir nuestra pasión por el café.
       </p>
       <SocialLinks>
         <a
