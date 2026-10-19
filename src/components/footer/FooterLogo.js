@@ -17,7 +17,7 @@ const FooterLogoImage = styled.img`
 const FooterLogo = () => {
   return (
     <FooterLogoSection>
-      <FooterLogoImage src={CariocaRed} alt="El Carioca — la marca del café desde 1916" />
+      <FooterLogoImage src={CariocaRed} alt="El Carioca, la marca del café desde 1916" />
     </FooterLogoSection>
   );
 };

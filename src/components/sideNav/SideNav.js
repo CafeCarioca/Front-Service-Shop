@@ -11,19 +11,39 @@ const NavLinksContainer = styled.nav.attrs((props) => ({
   text-transform: capitalize;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.25rem;
+
+  a {
+    display: block;
+    padding: 0.7rem 0;
+  }
 
   &.fontColor {
     color: ${({ theme }) => theme.colors.mediumGray};
   }
 `;
+const CloseButton = styled.button`
+  background: none;
+  border: none;
+  padding: 0;
+  margin: -0.75rem 0 0 -0.75rem;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  color: inherit;
+  cursor: pointer;
+`;
+
 const SideNav = (props) => {
   return (
     <>
       <Backdrop onClick={props.closeSideNav} />
       <WhiteOverlay className="left">
         <div>
-          <ImCross onClick={props.closeSideNav} />
+          <CloseButton type="button" aria-label="Cerrar menú" onClick={props.closeSideNav}>
+            <ImCross />
+          </CloseButton>
           <NavLinksContainer>
             {navData.map((item, index) => {
               return (

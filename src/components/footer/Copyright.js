@@ -29,7 +29,7 @@ const Copyright = () => {
         <span>&copy; Copyright Todos los Derechos Reservados</span>
         <CopyrightRight>
           <span>Privacidad</span>
-          <span>Terminos</span>
+          <span>Términos</span>
         </CopyrightRight>
       </CopyrightContainer>
     </CopyrightSection>

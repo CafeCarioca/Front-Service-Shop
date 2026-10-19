@@ -20,7 +20,7 @@ const ProductsBanner = styled.section`
   p {
     font-family: ${({ theme }) => theme.fonts[1]};
     font-size: ${({ theme }) => theme.fontSizes.xsmall};
-    color: ${({ theme }) => theme.colors.darkerGray};
+    color: ${({ theme }) => theme.colors.mediumGray};
     line-height: 1.3rem;
     max-width: 40rem;
   }

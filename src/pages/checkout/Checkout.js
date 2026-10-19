@@ -36,7 +36,8 @@ const CheckoutContainer = styled.div`
   }
 
   @media screen and (max-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
-    width: 80%;  // Ajusta el ancho para que ocupe más espacio horizontalmente
+    width: 100%;
+    margin-left: 0;
     h1 {
       margin-bottom: 2rem;
     }
@@ -58,6 +59,10 @@ const CheckoutFooter = styled.div`
   text-align: center;
   display: grid;
   place-items: center;
+
+  @media screen and (max-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
+    width: 100%;
+  }
 `;
 
 const H1 = styled.h1`
@@ -102,9 +107,9 @@ const TotalContainer = styled.div`
   }
 
   @media screen and (max-width: ${({ theme }) => theme.mediaScreen.tablet640}) {
-    padding: 1.5rem 3rem;
+    padding: 1rem 0.5rem;
     span {
-      font-size: ${({ theme }) => theme.fontSizes.xmedium};
+      font-size: ${({ theme }) => theme.fontSizes.small};
     }
   }
   
@@ -170,6 +175,8 @@ const CouponInput = styled.input`
   font-size: 0.85rem;
   text-transform: uppercase;
   width: 200px;
+  min-width: 0;
+  flex: 0 1 200px;
 `;
 
 const CouponButton = styled.button`
@@ -192,13 +199,19 @@ const CouponButton = styled.button`
 `;
 
 const CouponError = styled.p`
-  color: #d32f2f;
+  color: ${({ theme }) => theme.colors.carioca_brickred};
   font-size: 0.75rem;
   margin-top: 0.3rem;
 `;
 
+const PaymentError = styled.p`
+  color: ${({ theme }) => theme.colors.carioca_brickred};
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+`;
+
 const CouponSuccess = styled.p`
-  color: #388e3c;
+  color: ${({ theme }) => theme.colors.carioca_lightgreen};
   font-size: 0.75rem;
   margin-top: 0.3rem;
   font-weight: 600;
@@ -213,6 +226,8 @@ const Checkout = ({ checkoutList }) => {
   const [appliedCoupon, setAppliedCoupon] = useState(null);
   const [couponError, setCouponError] = useState('');
   const [couponLoading, setCouponLoading] = useState(false);
+  const [paying, setPaying] = useState(false);
+  const [paymentError, setPaymentError] = useState('');
   const [userDetailsState, setUserDetailsState] = useState({});
   // Reglas de envío: las dicta el servidor (una sola fuente de verdad).
   // Defaults iguales a los del backend por si el fetch falla.
@@ -438,6 +453,10 @@ const Checkout = ({ checkoutList }) => {
   };
 
   const handlePayment = async () => {
+    // ponytail: solo evita el doble clic y avisa si falla; el orden de las llamadas queda igual que antes
+    if (paying) return;
+    setPaying(true);
+    setPaymentError('');
     try {
       createOrder();
       const externalReference = localStorage.getItem('externalReference');
@@ -502,6 +521,8 @@ const Checkout = ({ checkoutList }) => {
       console.log('PreferenceId:', response.data.id);
     } catch (error) {
       console.error("Error al obtener el preferenceId:", error);
+      setPaymentError('No pudimos generar el pago. Probá de nuevo o escribinos por WhatsApp al 094 429 464.');
+      setPaying(false);
     }
   };
 
@@ -619,7 +640,7 @@ const Checkout = ({ checkoutList }) => {
                   </CostDetail>
                 )}
                 {deliveryType === 'delivery' && shippingCost === 0 && shippingMessage && (
-                  <CostDetail fontSize='14px' style={{ color: '#4CAF50' }}>
+                  <CostDetail fontSize='14px' style={{ color: '#606c37' }}>
                     <span>{shippingMessage}</span>
                   </CostDetail>
                 )}
@@ -640,13 +661,14 @@ const Checkout = ({ checkoutList }) => {
                   color={(props) => props.theme.colors.white}
                   type="button"
                   width="100%"
-                  disabled={!wizardComplete}
+                  disabled={!wizardComplete || paying}
                   onClick={handlePayment}
-                  style={{ opacity: !wizardComplete ? 0.5 : 1, cursor: !wizardComplete ? 'not-allowed' : 'pointer' }}
+                  style={{ opacity: !wizardComplete || paying ? 0.5 : 1, cursor: !wizardComplete || paying ? 'not-allowed' : 'pointer' }}
                 >
-                  Generar Pago
+                  {paying ? 'Generando pago...' : 'Generar Pago'}
                 </SimpleButton>
               )}
+              {paymentError && !preferenceId && <PaymentError>{paymentError}</PaymentError>}
               {preferenceId && (
                 <Wallet initialization={{ preferenceId: preferenceId }} />
               )}

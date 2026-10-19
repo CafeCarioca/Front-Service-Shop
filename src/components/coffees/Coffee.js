@@ -60,7 +60,7 @@ const DiscountBadge = styled.div`
   border-radius: 0.4rem;
   font-size: 0.85rem;
   font-weight: 700;
-  z-index: 10;
+  z-index: 2;
   box-shadow: 0 2px 6px rgba(0,0,0,0.3);
   letter-spacing: 0.5px;
   pointer-events: none;
@@ -145,7 +145,7 @@ const Coffee = (props) => {
       )}
       
       <StyledLinks to={props.to}>
-        <MoreInfoArrow>Ver mas</MoreInfoArrow>
+        <MoreInfoArrow>Ver más</MoreInfoArrow>
       </StyledLinks>
     </SingleCoffee>
   );

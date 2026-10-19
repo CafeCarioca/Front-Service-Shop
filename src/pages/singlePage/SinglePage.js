@@ -234,7 +234,7 @@ const DiscountBadge = styled.div`
   border-radius: 0.5rem;
   font-size: 1rem;
   font-weight: 700;
-  z-index: 10;
+  z-index: 2;
   box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 `;
 

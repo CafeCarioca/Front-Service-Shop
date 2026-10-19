@@ -36,7 +36,7 @@ const Coffees = () => {
           <h2>blends de café</h2>
           <div>
             <StyledLinks to="/collections/coffee-blends/">
-              <MoreInfoArrow>Ver mas productos</MoreInfoArrow>
+              <MoreInfoArrow>Ver más productos</MoreInfoArrow>
             </StyledLinks>
           </div>
         </CoffeesText>

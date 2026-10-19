@@ -593,7 +593,7 @@ const Wizard = ({ onCompletion }) => {
               <InlineContainer>
                 <WizardInput
                   type="text"
-                  placeholder="Pais de Origen"
+                  placeholder="País de origen"
                   width="100%"
                   value={country}
                   onChange={(e) => setCountry(e.target.value)}
@@ -620,7 +620,7 @@ const Wizard = ({ onCompletion }) => {
               />
               <WizardInput
                 type="text"
-                placeholder="Numero de Telefono"
+                placeholder="Número de teléfono"
                 width="100%"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
@@ -675,7 +675,7 @@ const Wizard = ({ onCompletion }) => {
             <H3>SELECCIONA EL TIPO DE ENTREGA</H3>
             <ButtonContainer>
               <WizardButton type="button" onClick={() => handleDeliveryChoice('delivery')}>
-                Envio a domicilio
+                Envío a domicilio
               </WizardButton>
               <WizardButton type="button" onClick={() => handleDeliveryChoice('takeaway')}>
                 Retirar en Local

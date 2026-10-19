@@ -54,7 +54,7 @@ const CTAform = () => {
     const email = formContent.trim();
     if (!email || !checkEmail(email)) {
       setFormStatus("error");
-      setFormMessage("Ingresa un email valido");
+      setFormMessage("Ingresá un email válido");
       return;
     }
 
@@ -76,7 +76,7 @@ const CTAform = () => {
       }
 
       setFormStatus("success");
-      setFormMessage(data.message || "Registro con exito!");
+      setFormMessage(data.message || "¡Registro con éxito!");
       setFormContent("");
     } catch (error) {
       setFormStatus("error");
@@ -98,9 +98,9 @@ const CTAform = () => {
     <CTAcard bg={(props) => props.theme.colors.lightGray}>
       <h3>REGISTRATE PARA RECIBIR NUESTRAS NOVEDADES</h3>
       <p>
-        Se el primero en conocer nuestros nuevos productos, ofertas especiales y
-        codigos de descuento exclusivos. No te pierdas ninguna novedad ni
-        promocion!
+        Sé el primero en conocer nuestros nuevos productos, ofertas especiales y
+        códigos de descuento exclusivos. ¡No te pierdas ninguna novedad ni
+        promoción!
       </p>
 
       <Form onSubmit={formHandler}>

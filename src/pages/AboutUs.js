@@ -467,6 +467,12 @@ const Timeline = styled.div`
     background: #d4b896;
     transform: translateX(-50%);
   }
+
+  @media (max-width: 768px) {
+    &::before {
+      left: 12px;
+    }
+  }
 `;
 
 const TimelineItem = styled.div`

@@ -91,7 +91,7 @@ const CheckoutSummary = (props) => {
             <span>SUBTOTAL</span>
             <span>${itemTotals.toFixed(0)}</span>
           </FooterTotalContainer>
-          <p>Envio y cupones son aplicados al finalizar la compra.</p>
+          <p>Envío y cupones se aplican al finalizar la compra.</p>
           <Buttons
             bg={(props) => props.theme.colors.darkGray}
             color={(props) => props.theme.colors.white}

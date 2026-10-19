@@ -40,7 +40,6 @@ display: flex;
   gap: 1rem;`;
 const NavLLeft = styled.div`
   ${SharedNavStyles}
-  margin-top: 0.5rem;
   gap: 1.5rem;
   @media screen and (min-width: ${({ theme }) => theme.mediaScreen.lgLaptop}) {
     display: none;
@@ -97,9 +96,24 @@ const NavRLeft = styled.div`
 `;
 const NavRRight = styled.div`
   ${SharedNavStyles}
-  gap: 1rem;
+  gap: 0.25rem;
   align-items: center;
 `;
+// Área táctil mínima de 44px para íconos (menú, carrito, cerrar)
+const IconButton = styled.button`
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-grid;
+  place-items: center;
+  color: inherit;
+  font-size: inherit;
+  cursor: pointer;
+`;
+
 const CartNum = styled.div`
   background-color: ${({ theme }) => theme.colors.carioca_brickred};
   font-size: ${({ theme }) => theme.fontSizes.xsmall};
@@ -142,15 +156,17 @@ const Navbar = ({ openCheckoutSummary, checkoutList, openSideNav }) => {
         <NavContainer>
           <NavLeft>
             <NavLLeft>
-              <GiHamburgerMenu className="hoverPointer" onClick={openSideNav} color="white"/>
+              <IconButton type="button" aria-label="Abrir menú" onClick={openSideNav}>
+                <GiHamburgerMenu className="hoverPointer" color="white"/>
+              </IconButton>
             </NavLLeft>
             <NavLRight>
-              <LogoImgIcon src={CariocaWhite} alt="El Carioca — desde 1916" onClick={() => window.location.href = '/'} />
+              <LogoImgIcon src={CariocaWhite} alt="El Carioca, desde 1916" onClick={() => window.location.href = '/'} />
             </NavLRight>
           </NavLeft>
           <NavCenter>
             <NavCLeft>
-              <LogoImgIcon src={CariocaWhite} alt="El Carioca — desde 1916" onClick={() => window.location.href = '/'} />  
+              <LogoImgIcon src={CariocaWhite} alt="El Carioca, desde 1916" onClick={() => window.location.href = '/'} />  
             </NavCLeft>
 
             <NavList>
@@ -169,11 +185,9 @@ const Navbar = ({ openCheckoutSummary, checkoutList, openSideNav }) => {
               {/* <SearchBar /> */} {/* DISABLED - Search feature */}
             </NavRLeft>
             <NavRRight>
-              <HiOutlineShoppingCart
-                className="hoverPointerGrey"
-                onClick={openCheckoutSummary}
-                color= "white"
-              />
+              <IconButton type="button" aria-label="Ver carrito" onClick={openCheckoutSummary}>
+                <HiOutlineShoppingCart className="hoverPointerGrey" color="white" />
+              </IconButton>
               <CartNum onClick={openCheckoutSummary}>
                 {checkoutList.length}
               </CartNum>

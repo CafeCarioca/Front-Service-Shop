@@ -187,7 +187,7 @@ const ImageOfferRibbon = styled.div`
   font-size: 1.05rem;
   font-weight: 800;
   letter-spacing: 0.5px;
-  z-index: 10;
+  z-index: 2;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
   pointer-events: none;
 `;
