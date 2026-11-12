@@ -352,13 +352,9 @@ const Checkout = ({ checkoutList }) => {
       shippingCost = 0;
       shippingMessage = `✓ Envío gratis por llevar ${shippingRules.nespressoFreeQty}+ cajas Nespresso`;
     } else if (isInterior) {
-      // Interior: siempre $0 en el checkout (se coordina después)
+      // Interior: $0 en la web, el cliente paga la agencia
       shippingCost = 0;
-      if (itemTotals >= 3000) {
-        shippingMessage = '✓ Envío gratis al interior. Nos contactaremos para coordinar la entrega.';
-      } else {
-        shippingMessage = 'Envío al interior: el costo del envío estará a cargo del cliente.';
-      }
+      shippingMessage = 'Envío al interior: el costo del envío estará a cargo del cliente.';
     } else {
       // Montevideo: umbral y costo los dicta el servidor (GET /shipping/rules)
       shippingCost = itemTotals >= shippingRules.mvdFreeFrom ? 0 : shippingRules.mvdCost;
