@@ -49,7 +49,7 @@ const Header = (props) => {
     <HeaderSection>
       <HeaderContainer>
         <RotatingText>
-          Envío GRATIS en compras desde $1500 | Envíos dentro de Montevideo $180 | Entrega en 24-48hs |
+          Envío GRATIS en compras desde $1500 dentro de Montevideo | Por compras menores $180 | Entrega en 24-48 hs hábiles
         </RotatingText>
       </HeaderContainer>
     </HeaderSection>

@@ -922,7 +922,7 @@ const Wizard = ({ onCompletion }) => {
   
                 {department.toLowerCase() !== 'montevideo' && (
                   <InfoMessage>
-                    <strong>Envío al Interior:</strong> Por favor, especificar agencia de preferencia en observaciones (ej: DAC, Mirtrans, etc.). Nos contactaremos para coordinar la entrega.
+                    <strong>Envíos al Interior:</strong> Por favor, especificar la agencia de preferencia en el campo de observaciones (ej.: DAC, Mirtrans, etc.). El costo del envío estará a cargo del cliente.
                   </InfoMessage>
                 )}
 

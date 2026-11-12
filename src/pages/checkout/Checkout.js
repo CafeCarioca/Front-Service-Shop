@@ -241,6 +241,7 @@ const Checkout = ({ checkoutList }) => {
     mvdCost: 180,
     mvdFreeFrom: 1500,
     nespressoFreeQty: 10,
+    interiorMinPurchase: 1000,
   });
 
   const getBogoPromotions = (items, currentDeliveryType) => {
@@ -356,7 +357,7 @@ const Checkout = ({ checkoutList }) => {
       if (itemTotals >= 3000) {
         shippingMessage = '✓ Envío gratis al interior. Nos contactaremos para coordinar la entrega.';
       } else {
-        shippingMessage = 'Por favor, especificar agencia de preferencia en observaciones. Nos contactaremos para coordinar.';
+        shippingMessage = 'Envío al interior: el costo del envío estará a cargo del cliente.';
       }
     } else {
       // Montevideo: umbral y costo los dicta el servidor (GET /shipping/rules)
@@ -370,7 +371,13 @@ const Checkout = ({ checkoutList }) => {
     shippingCost = 0;
   }
   
-  const canCheckout = true; // Sin mínimo de compra
+  // Compra mínima para envíos al interior (el cliente paga la agencia). El servidor también lo valida.
+  const interiorShortfall =
+    deliveryType === 'delivery' && isInterior && shippingRules.interiorMinPurchase > 0 &&
+    itemTotals < shippingRules.interiorMinPurchase
+      ? shippingRules.interiorMinPurchase - itemTotals
+      : 0;
+  const canCheckout = interiorShortfall === 0;
 
   // Aplicar descuento de cupón
   let couponDiscount = 0;
@@ -661,15 +668,21 @@ const Checkout = ({ checkoutList }) => {
                   <span>{money(totalWithShipping)}</span>
                 </CostDetail>
               </TotalContainer>
+              {!canCheckout && !preferenceId && (
+                <MinimumAlert role="alert">
+                  El mínimo de compra para envíos al interior es <strong>{money(shippingRules.interiorMinPurchase)}</strong>.
+                  Te faltan <strong>{money(interiorShortfall)}</strong>.
+                </MinimumAlert>
+              )}
               {!preferenceId && (
                 <SimpleButton
                   bg={(props) => props.theme.colors.darkGray}
                   color={(props) => props.theme.colors.white}
                   type="button"
                   width="100%"
-                  disabled={!wizardComplete || paying}
+                  disabled={!wizardComplete || paying || !canCheckout}
                   onClick={handlePayment}
-                  style={{ opacity: !wizardComplete || paying ? 0.5 : 1, cursor: !wizardComplete || paying ? 'not-allowed' : 'pointer' }}
+                  style={{ opacity: !wizardComplete || paying || !canCheckout ? 0.5 : 1, cursor: !wizardComplete || paying || !canCheckout ? 'not-allowed' : 'pointer' }}
                 >
                   {paying ? 'Generando pago...' : 'Generar Pago'}
                 </SimpleButton>
